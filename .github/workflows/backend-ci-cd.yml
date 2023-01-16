@@ -53,4 +53,4 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://art-here-deploy/$GITHUB_SHA.zip
 
       - name: Code Deploy
-        run: aws deploy create-deployment --deployment-config-name CodeDeployDefault.AllAtOnce --application-name art-here --deployment-group-name art-here-group --s3-location bucket=art-here-deploy,bundleType=zip,key=$GITHUB_SHA.zip
+        run: aws deploy create-deployment --deployment-config-name CodeDeployDefault.OneAtTime --application-name art-here --deployment-group-name art-here-group --s3-location bucket=art-here-deploy,bundleType=zip,key=$GITHUB_SHA.zip
