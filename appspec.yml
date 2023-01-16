@@ -1,0 +1,5 @@
+version: 0.0 #deploy 버전
+os: linux
+files:
+  - source: / #S3에서 복사할 파일 위치
+    destination: /home/ec2-user/app/github-actions/build/ #zip 파일을 복사해 압축을 풀 위치
