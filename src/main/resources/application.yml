@@ -3,10 +3,9 @@ spring:
     default: local
     jpa:
       show-sql: true
+
   datasource:
         driver-class-name: org.h2.Driver # 시작할때 실행시킬 script
 
-jasypt:
-  encryptor:
-    password: art_here_jasypt_key
+
 
