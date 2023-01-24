@@ -1,12 +1,19 @@
 spring:
-  profiles:
-    default: local
-    jpa:
-      show-sql: true
-  datasource:
-        driver-class-name: org.h2.Driver # 시작할때 실행시킬 script
+  jpa:
+    show-sql: true
 
 jasypt:
   encryptor:
     password: art_here_jasypt_key
 
+---
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  profiles:
+    group:
+      set1: prod
+      set2: prod
