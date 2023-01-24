@@ -5,6 +5,10 @@ plugins {
     id 'org.asciidoctor.convert' version '1.5.8'
 }
 
+jar {
+    enabled = false
+}
+
 group = 'com.backend'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
