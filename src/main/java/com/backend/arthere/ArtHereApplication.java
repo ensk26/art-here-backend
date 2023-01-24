@@ -1,9 +1,11 @@
 package com.backend.arthere;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class ArtHereApplication {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.location="
