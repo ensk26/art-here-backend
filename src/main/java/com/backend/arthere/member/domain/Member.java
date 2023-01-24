@@ -18,26 +18,28 @@ import java.time.LocalDateTime;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
+    @Column(name = "profile")
     private String profile;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false, name = "create_date")
+    @Column(name = "create_date", nullable = false, updatable = false)
     private LocalDateTime createDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "role", nullable = false)
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "social_type", nullable = false)
     private SocialType socialType;
 
     @Builder
