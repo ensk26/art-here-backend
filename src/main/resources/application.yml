@@ -2,9 +2,8 @@ spring:
   jpa:
     show-sql: true
 
-jasypt:
-  encryptor:
-    password: art_here_jasypt_key
+
+
 
 ---
 spring:
