@@ -1,4 +1,4 @@
-package com.backend.arthere.config;
+package com.backend.arthere.global.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
