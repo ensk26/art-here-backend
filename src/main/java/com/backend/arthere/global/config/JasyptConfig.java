@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JasyptConfig {
 
-    @Value("${JASYPT_ENCRYPTOR_PASSWORD}")
+    @Value("${jasypt.encryptor.password}")
     private String encryptKey;
     private final static String ALGORITHM = "PBEWithMD5AndDES";
 
