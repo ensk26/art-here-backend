@@ -1,12 +1,12 @@
 package com.backend.arthere.auth.domain;
 
 import com.backend.arthere.member.domain.Member;
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
