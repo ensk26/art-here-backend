@@ -2,7 +2,14 @@ spring:
   jpa:
     show-sql: true
 
-
+security:
+  jwt:
+    token:
+      secret-key: ENC(ohijKSt7tsZAm7dHHW/Mp15MHaahEqQ21qIx32Ug4841SIiWOsalDteer69+Gvf1PmgG8HOTaACRSvhaViWt3g==)
+      access:
+        expire-length: 3600000 # 1시간
+      refresh:
+        expire-length: 1209600000 # 2주
 
 
 ---
