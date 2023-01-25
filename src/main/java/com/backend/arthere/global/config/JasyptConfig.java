@@ -1,4 +1,4 @@
-package com.backend.arthere.config;
+package com.backend.arthere.global.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JasyptConfig {
 
-    @Value("${JASYPT_ENCRYPTOR_PASSWORD}")
+    @Value("${jasypt.encryptor.password}")
     private String encryptKey;
     private final static String ALGORITHM = "PBEWithMD5AndDES";
 
