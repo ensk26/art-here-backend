@@ -1,7 +1,11 @@
 package com.backend.arthere.global.config;
 
+import com.backend.arthere.auth.application.CustomOAuth2UserService;
 import com.backend.arthere.auth.application.CustomUserDetailsService;
+import com.backend.arthere.auth.domain.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.backend.arthere.auth.domain.TokenRepository;
+import com.backend.arthere.auth.handler.OAuth2LoginFailureHandler;
+import com.backend.arthere.auth.handler.OAuth2LoginSuccessHandler;
 import com.backend.arthere.auth.jwt.JwtAccessDeniedHandler;
 import com.backend.arthere.auth.jwt.JwtAuthenticationEntryPoint;
 import com.backend.arthere.auth.jwt.JwtTokenAuthenticationFilter;
@@ -31,6 +35,12 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final TokenRepository tokenRepository;
 
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.httpBasic().disable()
@@ -43,11 +53,23 @@ public class SecurityConfig {
                 .antMatchers("/actuator/health").permitAll()
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/auth/**","/oauth2/**", "/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(jwtAccessDeniedHandler)
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint);
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .oauth2Login()
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorization")
+                .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
+                .and()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .successHandler(oAuth2LoginSuccessHandler)
+                .failureHandler(oAuth2LoginFailureHandler);
 
         httpSecurity.addFilterBefore(new JwtTokenAuthenticationFilter
                         (jwtTokenProvider,customUserDetailsService, tokenRepository),

@@ -1,6 +1,19 @@
 spring:
   jpa:
     show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(IU+Ra5VdMAWg207rEfiNzG3fMlmi7vskee2PMthvatTU1PZSo+I0BgHUVKCXZRGLHZOIJYCr9HD/GXA1akEkG8A8MwMAPvbWnaBbijAjrCoXBO0Dh7qFDw==)
+            client-secret: ENC(6pD7u/p3IqYNn7QYtW5IihQWH/mEOW9GdJu63LltnBKyEHMCl3Kd4CD4bWIrKseK)
+            scope:
+              - profile
+              - email
+
+oauth:
+  redirect-uri: http://localhost:3000/oauth/success
 
 security:
   jwt:
@@ -10,6 +23,7 @@ security:
         expire-length: 3600000 # 1시간
       refresh:
         expire-length: 1209600000 # 2주
+
 
 
 ---
