@@ -5,7 +5,7 @@ import com.backend.arthere.auth.dto.request.TokenRequest;
 import com.backend.arthere.auth.dto.response.TokenResponse;
 import com.backend.arthere.auth.exception.InvalidRefreshTokenException;
 import com.backend.arthere.auth.exception.RefreshTokenNotFoundException;
-import com.backend.arthere.global.ControllerAdvice;
+import com.backend.arthere.global.error.ControllerAdvice;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
