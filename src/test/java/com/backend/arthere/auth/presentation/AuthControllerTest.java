@@ -59,7 +59,7 @@ class AuthControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                        post("/api/auth/token/reissue")
+                        post("/auth/token/reissue")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(tokenRequest))
@@ -81,7 +81,7 @@ class AuthControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                        post("/api/auth/token/reissue")
+                        post("/auth/token/reissue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(tokenRequest))
         );
@@ -99,7 +99,7 @@ class AuthControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/api/auth/token/reissue")
+                post("/auth/token/reissue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(tokenRequest))
         );
@@ -121,7 +121,7 @@ class AuthControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/api/auth/token/reissue")
+                post("/auth/token/reissue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(tokenRequest))
         );
@@ -140,7 +140,7 @@ class AuthControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/api/auth/logout")
+                post("/auth/logout")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(tokenRequest))
         );
@@ -157,7 +157,7 @@ class AuthControllerTest {
         TokenRequest tokenRequest = 리프레시_토큰_없이_요청();
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/api/auth/logout")
+                post("/auth/logout")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(tokenRequest))
         );
@@ -177,7 +177,7 @@ class AuthControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/api/auth/logout")
+                post("/auth/logout")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(tokenRequest))
         );
