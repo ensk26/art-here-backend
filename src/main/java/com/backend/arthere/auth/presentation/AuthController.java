@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RestController
 public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/token/reissue")
     public ResponseEntity<?> reissue(@RequestBody @Valid final TokenRequest tokenRequest) {
-        TokenResponse tokenResponse = authService.reissue(tokenRequest.getRefreshToken());
+        TokenResponse tokenResponse = authService.reissue(tokenRequest);
         return ResponseEntity.ok(tokenResponse);
     }
 

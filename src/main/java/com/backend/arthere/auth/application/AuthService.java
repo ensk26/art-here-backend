@@ -2,6 +2,7 @@ package com.backend.arthere.auth.application;
 
 import com.backend.arthere.auth.domain.Token;
 import com.backend.arthere.auth.domain.TokenRepository;
+import com.backend.arthere.auth.dto.request.TokenRequest;
 import com.backend.arthere.auth.dto.response.TokenResponse;
 import com.backend.arthere.auth.exception.InvalidRefreshTokenException;
 import com.backend.arthere.auth.exception.RefreshTokenNotFoundException;
@@ -17,25 +18,26 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional(readOnly = true)
-    public TokenResponse reissue(String refreshToken) {
-        if(!jwtTokenProvider.validateToken(refreshToken)) {
+    public TokenResponse reissue(final TokenRequest tokenRequest) {
+        if(!jwtTokenProvider.validateToken(tokenRequest.getRefreshToken())) {
             throw new InvalidRefreshTokenException();
         }
 
-        Long id = jwtTokenProvider.getIdFromToken(refreshToken);
-        Token findRefreshToken = tokenRepository.findByMemberId(id)
+        Token findRefreshToken = tokenRepository.findByMemberId(tokenRequest.getId())
                 .orElseThrow(InvalidRefreshTokenException::new);
 
-        if(!findRefreshToken.isSameRefreshToken(refreshToken)) {
+        if(!findRefreshToken.isSameRefreshToken(tokenRequest.getRefreshToken())) {
             throw new InvalidRefreshTokenException();
         }
 
-        String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(findRefreshToken.getId()));
+        String accessToken = jwtTokenProvider
+                .createAccessToken(String.valueOf(tokenRequest.getId()));
+
         return new TokenResponse(accessToken);
     }
 
     @Transactional
-    public void logout(String refreshToken) {
+    public void logout(final String refreshToken) {
         if(!tokenRepository.existsByRefreshToken(refreshToken)) {
             throw new RefreshTokenNotFoundException();
         }
