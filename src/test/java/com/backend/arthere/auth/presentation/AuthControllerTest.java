@@ -156,6 +156,7 @@ class AuthControllerTest extends ControllerTest {
                         .content(new Gson().toJson(tokenRequest))
                         .with(csrf().asHeader())
         );
+        
         //then
         resultActions.andExpect(status().isUnauthorized())
                 .andDo(print())
@@ -179,6 +180,7 @@ class AuthControllerTest extends ControllerTest {
                         .content(new Gson().toJson(tokenRequest))
                         .with(csrf().asHeader())
         );
+        
         //then
         resultActions.andExpect(status().isOk())
                 .andDo(print())
@@ -209,6 +211,7 @@ class AuthControllerTest extends ControllerTest {
                         .content(new Gson().toJson(tokenRequest))
                         .with(csrf().asHeader())
         );
+        
         //then
         resultActions.andExpect(status().isBadRequest())
                 .andDo(print())
@@ -234,6 +237,7 @@ class AuthControllerTest extends ControllerTest {
                         .content(new Gson().toJson(tokenRequest))
                         .with(csrf().asHeader())
         );
+        
         //then
         resultActions.andExpect(status().isNotFound())
                 .andDo(print())
