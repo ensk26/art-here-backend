@@ -20,8 +20,7 @@ public class JwtTokenProvider {
 
     public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") String secretKey,
                             @Value("${security.jwt.token.access.expire-length}") long accessTokenExpireTime,
-                            @Value("${security.jwt.token.refresh.expire-length}") long refreshTokenExpireTime,
-                            TokenRepository tokenRepository) {
+                            @Value("${security.jwt.token.refresh.expire-length}") long refreshTokenExpireTime) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.accessTokenExpireTime = accessTokenExpireTime;
         this.refreshTokenExpireTime = refreshTokenExpireTime;

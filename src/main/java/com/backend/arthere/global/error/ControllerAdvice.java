@@ -1,5 +1,6 @@
 package com.backend.arthere.global.error;
 
+import com.backend.arthere.auth.exception.FailedTokenAuthenticationException;
 import com.backend.arthere.auth.exception.InvalidRefreshTokenException;
 import com.backend.arthere.auth.exception.RefreshTokenNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerAdvice {
 
-    @ExceptionHandler(InvalidRefreshTokenException.class)
+    @ExceptionHandler({InvalidRefreshTokenException.class, FailedTokenAuthenticationException.class})
     public ResponseEntity<ErrorResponse> handleInvalidRefreshToken(final RuntimeException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
