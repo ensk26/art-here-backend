@@ -16,9 +16,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.backend.arthere.member.domain.Role.ADMIN;
 
 @Configuration
 @RequiredArgsConstructor
@@ -53,7 +56,8 @@ public class SecurityConfig {
                 .antMatchers("/actuator/health").permitAll()
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/auth/**","/oauth2/**", "/login/**").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**", "/login/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole(ADMIN.getRoleName())
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
@@ -72,9 +76,17 @@ public class SecurityConfig {
                 .failureHandler(oAuth2LoginFailureHandler);
 
         httpSecurity.addFilterBefore(new JwtTokenAuthenticationFilter
-                        (jwtTokenProvider,customUserDetailsService, tokenRepository),
+                        (jwtTokenProvider, customUserDetailsService, tokenRepository),
                 UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().antMatchers(AUTH_WHITELLIST);
+    }
+
+    private static final String[] AUTH_WHITELLIST = {
+            "/api/image/share"
+    };
 }
