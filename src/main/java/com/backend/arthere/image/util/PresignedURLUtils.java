@@ -11,25 +11,27 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.Instant;
 import java.util.Date;
 
+
+@Component
 public class PresignedURLUtils {
 
     @Value("${aws.s3.region}")
-    Regions clientRegion;
+    private Regions clientRegion;
 
     @Value("${aws.s3.bucket}")
-    String bucketName;
+    private String bucketName;
 
     @Value("${aws.credentials.accessKey}")
-    String accessKey;
+    private String accessKey;
 
     @Value("${aws.credentials.secretKey}")
-    String secretKey;
-
+    private String secretKey;
 
     public String createImageShareURL(String objectKey) {
 
