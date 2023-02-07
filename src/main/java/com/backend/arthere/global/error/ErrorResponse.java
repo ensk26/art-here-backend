@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ErrorResponse {
-    private String errorMessage;
-    ErrorResponse(final String errorMessage) {
-        this.errorMessage = errorMessage;
+    private String message;
+    ErrorResponse(final String message) {
+        this.message = message;
     }
 }
