@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
@@ -34,6 +35,7 @@ import static com.backend.arthere.auth.domain.HttpCookieOAuth2AuthorizationReque
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenRepository tokenRepository;
