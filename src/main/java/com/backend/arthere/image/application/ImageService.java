@@ -32,6 +32,5 @@ public class ImageService {
 
         String preSignedURL = presignedURLUtils.createImageDeleteURL(imageURL);
         return new ImageResponse(preSignedURL);
-
     }
 }
