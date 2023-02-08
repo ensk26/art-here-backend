@@ -29,6 +29,5 @@ public class AuthController {
         authService.logout(tokenRequest.getRefreshToken());
         return ResponseEntity.ok().build();
     }
-
-
+    
 }

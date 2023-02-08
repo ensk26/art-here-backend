@@ -1,0 +1,12 @@
+= Art Here API 문서
+:toc-title: 목차
+:toc: left
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toclevels: 3
+:sectnums:
+:docinfo: shared-head
+
+
+include::auth.adoc[]
