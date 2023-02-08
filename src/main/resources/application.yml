@@ -12,9 +12,6 @@ spring:
               - profile
               - email
 
-oauth:
-  redirect-uri: http://localhost:5173/oauth/success
-
 security:
   jwt:
     token:
