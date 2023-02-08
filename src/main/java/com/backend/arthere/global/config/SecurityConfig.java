@@ -21,8 +21,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.backend.arthere.member.domain.Role.ADMIN;
-
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -57,7 +55,7 @@ public class SecurityConfig {
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/auth/**", "/oauth2/**", "/login/**").permitAll()
-                .antMatchers("/api/admin/**").hasRole(ADMIN.getRoleName())
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
