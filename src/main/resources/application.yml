@@ -24,7 +24,13 @@ security:
       refresh:
         expire-length: 1209600000 # 2주
 
-
+aws:
+  s3:
+    bucket: ENC(0AClSBk5oQuvJUVYFRrSxg+yzNxE5bgvBoDldVNxy6E=)
+    region: ENC(ovMoFG6VmdsVbj3GY6zLH4Ze0RDWLLfy)
+  credentials:
+    accessKey: ENC(bPe+s6Qdfbp9babO9iB9BRv9ve2nzm3dZgYanNkM/Ok=)
+    secretKey: ENC(IU/VVNYkDtjMxFC9NaJu0svRz127W7aHHHK9h8FsIY9qD5JCqZFewU1X2WfqqCNeUZ0qyzKWJBA=)
 
 ---
 spring:
