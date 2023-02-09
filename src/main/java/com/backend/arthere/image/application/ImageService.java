@@ -14,7 +14,7 @@ public class ImageService {
 
     final private PresignedURLUtils presignedURLUtils;
 
-    public ImageResponse createAdminUserImageSharePresignedURL(String imageURL) {
+    public ImageResponse createImageSharePresignedURL(String imageURL) {
 
         String preSignedURL = presignedURLUtils.createImageShareURL(imageURL);
         return new ImageResponse(preSignedURL);

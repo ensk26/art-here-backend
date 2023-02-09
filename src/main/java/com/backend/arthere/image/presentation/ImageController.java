@@ -18,9 +18,9 @@ public class ImageController {
     final private ImageService imageService;
 
     @GetMapping("/image/share")
-    public ResponseEntity<?> createAdminUserImageSharePresignedURL(@RequestParam("image") String imageURL) {
+    public ResponseEntity<?> createImageSharePresignedURL(@RequestParam("image") String imageURL) {
 
-        ImageResponse imageResponse = imageService.createAdminUserImageSharePresignedURL(imageURL);
+        ImageResponse imageResponse = imageService.createImageSharePresignedURL(imageURL);
         return ResponseEntity.ok(imageResponse);
     }
 
