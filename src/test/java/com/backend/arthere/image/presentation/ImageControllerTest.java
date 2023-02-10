@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -19,6 +20,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,16 +49,26 @@ class ImageControllerTest {
 
         //given
         ImageResponse response = imageResponse();
-
         given(imageService.createImageSharePresignedURL(anyString())).willReturn(response);
 
         //when
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/api/image/share")
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/share")
                 .param("image", "image/sand.jpg"));
 
         //then
         resultActions.andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(
+                        document("image/share",
+                                requestParameters(
+                                        parameterWithName("image").description("이미지 경로")
+                                ),
+                                responseFields(
+                                        fieldWithPath("preSignedURL").type(JsonFieldType.STRING).description("인증된 URL")
+                                )
+                        )
+                );
     }
 
     @Test
@@ -62,11 +80,25 @@ class ImageControllerTest {
         given(imageService.createAdminImageUploadPresignedURL()).willReturn(response);
 
         //when
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/image/upload"));
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/admin/image/upload")
+                .header("authorization", "accessToken"));
 
         //then
         resultActions.andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(
+                        document("admin/image/upload",
+                                requestHeaders(
+                                        headerWithName("authorization").description("관리자 Bearer access token")
+                                ),
+                                responseFields(
+                                        fieldWithPath("preSignedURL").type(JsonFieldType.STRING).description("인증된 URL"),
+                                        fieldWithPath("key").type(JsonFieldType.STRING).description("저장할 파일 경로")
+                                )
+                        )
+                );
+
     }
 
     @Test
@@ -78,12 +110,27 @@ class ImageControllerTest {
         given(imageService.createAdminDeletePresignedURL(anyString())).willReturn(response);
 
         //when
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/api/admin/image/delete")
-                .param("image", "image/sand.jpg"));
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/admin/image/delete")
+                .param("image", "image/sand.jpg")
+                .header("authorization", "accessToken"));
 
         //then
         resultActions.andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andDo(
+                        document("admin/image/delete",
+                                requestHeaders(
+                                        headerWithName("authorization").description("관리자 Bearer access token")
+                                ),
+                                requestParameters(
+                                        parameterWithName("image").description("이미지 경로")
+                                ),
+                                responseFields(
+                                        fieldWithPath("preSignedURL").type(JsonFieldType.STRING).description("인증된 URL")
+                                )
+                        )
+                );
     }
 
     private ImageResponse imageResponse() {
