@@ -1,0 +1,20 @@
+[[Image]]
+== Image
+
+=== 이미지 공유
+해당 이미지 url과 함께 요청하면 preSignedURL를 반환한다.
+
+==== 성공
+operation::image/share[snippets='request-parameters,response-fields,http-request,http-response']
+
+=== 이미지 추가 (ADMIN)
+ADMIN의 Access Token과 함께 요청하면 preSignedURL, key를 반환한다.
+
+==== 성공
+operation::admin/image/upload[snippets='request-headers,response-fields,http-request,http-response']
+
+=== 이미지 삭제 (ADMIN)
+해당 이미지 url, ADMIN의 Access Token과 함께 요청하면 preSignedURL를 반환한다.
+
+==== 성공
+operation::admin/image/delete[snippets='request-headers,request-parameters,response-fields,http-request,http-response']
