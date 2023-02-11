@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .antMatchers("/actuator/health").permitAll()
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/auth/**", "/oauth2/**", "/login/**").permitAll()
+                .antMatchers("/api/auth/**", "/oauth2/**", "/login/**").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
