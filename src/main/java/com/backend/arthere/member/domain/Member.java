@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,25 +22,30 @@ public class Member {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @NotNull
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @NotNull
+    @Column(name = "name", length = 50)
     private String name;
 
+    @NotNull
     @Column(name = "profile")
     private String profile;
-
+    
     @CreatedDate
-    @Column(name = "create_date", nullable = false, updatable = false)
+    @Column(name = "create_date", updatable = false)
     private LocalDateTime createDate;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role", length = 50)
     private Role role;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "social_type", nullable = false)
+    @Column(name = "social_type", length = 50)
     private SocialType socialType;
 
     @Builder
@@ -54,6 +60,10 @@ public class Member {
 
     public String getRoleName() {
         return this.role.getRoleName();
+    }
+
+    public void changeName(final String name) {
+        this.name = name;
     }
 
 }
