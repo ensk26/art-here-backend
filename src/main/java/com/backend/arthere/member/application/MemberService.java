@@ -10,12 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class MemberService {
     private final MemberRepository memberRepository;
-    public MemberResponse findMember(Long id) {
+
+    @Transactional(readOnly = true)
+    public MemberResponse findMember(final Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
         return new MemberResponse(member);
+    }
+
+    @Transactional
+    public void updateName(final Long id, final String name) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+        member.changeName(name);
     }
 }

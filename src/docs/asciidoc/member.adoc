@@ -1,0 +1,20 @@
+[[Member]]
+== Member
+
+=== 회원 조회
+
+==== 성공
+operation::api/member[snippets='request-headers,response-fields,http-request,http-response']
+
+==== 실패 (존재하지 않은 회원 조회)
+operation::api/member/notFound[snippets='http-request,http-response']
+
+---
+
+=== 회원 이름 변경
+
+==== 성공
+operation::api/memberName[snippets='request-headers,request-fields,http-request,http-response']
+
+==== 실패 (이름을 입력하지 않은 경우)
+operation::api/memberName/invalid[snippets='http-request,http-response']
