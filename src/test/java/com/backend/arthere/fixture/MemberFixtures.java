@@ -3,9 +3,11 @@ package com.backend.arthere.fixture;
 import com.backend.arthere.member.domain.Member;
 import com.backend.arthere.member.domain.Role;
 import com.backend.arthere.member.domain.SocialType;
+import com.backend.arthere.member.dto.response.MemberResponse;
 
 public class MemberFixtures {
 
+    private static final Long ID = 1L;
     private static final String EMAIL = "123@gmail.com";
     private static final String USER_NAME = "회원";
     private static final String ADMIN_NAME = "관리자";
@@ -20,5 +22,9 @@ public class MemberFixtures {
 
     public static  Member 회원() {
         return new Member(EMAIL, USER_NAME, PROFILE, USER_ROLE, SOCIAL_TYPE);
+    }
+
+    public static MemberResponse 회원_응답() {
+        return new MemberResponse(1L, EMAIL, USER_NAME, PROFILE, SOCIAL_TYPE);
     }
 }
