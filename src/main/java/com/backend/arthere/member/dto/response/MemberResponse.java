@@ -21,4 +21,13 @@ public class MemberResponse {
         this.profile = member.getProfile();
         this.socialType = member.getSocialType();
     }
+
+    public MemberResponse(Long id, String email, String name,
+                          String profile, SocialType socialType) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.profile = profile;
+        this.socialType = socialType;
+    }
 }
