@@ -62,4 +62,8 @@ public class Member {
         return this.role.getRoleName();
     }
 
+    public void changeName(final String name) {
+        this.name = name;
+    }
+
 }
