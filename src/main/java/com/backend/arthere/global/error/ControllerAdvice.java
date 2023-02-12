@@ -3,6 +3,7 @@ package com.backend.arthere.global.error;
 import com.backend.arthere.auth.exception.FailedTokenAuthenticationException;
 import com.backend.arthere.auth.exception.InvalidRefreshTokenException;
 import com.backend.arthere.auth.exception.RefreshTokenNotFoundException;
+import com.backend.arthere.member.exception.MemberNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,7 +30,7 @@ public class ControllerAdvice {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler(RefreshTokenNotFoundException.class)
+    @ExceptionHandler({RefreshTokenNotFoundException.class, MemberNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFound(final RuntimeException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
