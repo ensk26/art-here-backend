@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/image")
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class ArtsController {
     public ResponseEntity<?> findArtImageByRevisionDate(@RequestParam("offset") Long offset,
                                                         @RequestParam("offset") Long limit) {
 
-        ArtImageResponse artImageResponse = artsService.findArtImageByRevisionDate(offset, limit);
+        List<ArtImageResponse> artImageResponse = artsService.findArtImageByRevisionDate(offset, limit);
         return ResponseEntity.ok(artImageResponse);
     }
 }
