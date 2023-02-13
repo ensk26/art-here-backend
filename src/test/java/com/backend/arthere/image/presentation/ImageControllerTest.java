@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ImageController.class)
-class ImageControllerControllerTest extends BaseControllerTest {
+class ImageControllerTest extends BaseControllerTest {
 
     @MockBean
     private ImageService imageService;
