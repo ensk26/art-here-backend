@@ -20,7 +20,7 @@ public class ArtsController {
 
     @GetMapping("/media")
     public ResponseEntity<?> findArtImageByRevisionDate(@RequestParam("offset") Long offset,
-                                                        @RequestParam("offset") Long limit) {
+                                                        @RequestParam("limit") Long limit) {
 
         List<ArtImageResponse> artImageResponse = artsService.findArtImageByRevisionDate(offset, limit);
         return ResponseEntity.ok(artImageResponse);
