@@ -1,18 +1,17 @@
 package com.backend.arthere.arts.domain;
 
+import com.backend.arthere.global.domain.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Arts {
+public class Arts extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,38 +25,24 @@ public class Arts {
     @Column(name = "image_url")
     private String imageURL;
 
-    @NotNull
-    private Long latitude;
+    @Embedded
+    private Location location;
 
-    @NotNull
-    private Long longitude;
-
-    @NotNull
-    @Column(name = "load_address")
-    private String loadAddress;
-
-    @NotNull
-    @Column(name = "old_address")
-    private String oldAddress;
+    @Embedded
+    private Address address;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @CreatedDate
-    @Column(name = "revision_date")
-    private LocalDateTime revisionDate;
 
     @Builder
-    public Arts(String artName, String imageURL, Long latitude, Long longitude,
-                String loadAddress, String oldAddress, Category category) {
 
+    public Arts(String artName, String imageURL, Location location, Address address, Category category) {
         this.artName = artName;
         this.imageURL = imageURL;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.loadAddress = loadAddress;
-        this.oldAddress = oldAddress;
+        this.location = location;
+        this.address = address;
         this.category = category;
     }
 }
