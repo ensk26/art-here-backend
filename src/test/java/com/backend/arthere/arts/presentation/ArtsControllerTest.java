@@ -56,7 +56,7 @@ class ArtsControllerTest extends BaseControllerTest {
                                 responseFields(
                                         fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("id"),
                                         fieldWithPath("[].artName").type(JsonFieldType.STRING).description("작품 이름"),
-                                        fieldWithPath("[].imageURL").type(JsonFieldType.STRING).description("이미지URL")
+                                        fieldWithPath("[].imageURL").type(JsonFieldType.STRING).description("이미지 URL")
                                 )
                         )
                 );
@@ -65,11 +65,12 @@ class ArtsControllerTest extends BaseControllerTest {
     private List<ArtImageResponse> artsImageResponse() {
 
         String artName = "모래작품";
-        String imageURL = "image/sand";
+        String imageURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand";
         List<ArtImageResponse> responseList = new ArrayList<>();
 
         for (int i = 1; i < 6; i++) {
-            responseList.add(new ArtImageResponse((long) i, artName + i, imageURL + i + ".jpg"));
+            responseList.add(new ArtImageResponse((long) i, artName + i,
+                    imageURL + i + ".jpg?X-Amz-Algorithm"));
         }
 
         return responseList;
