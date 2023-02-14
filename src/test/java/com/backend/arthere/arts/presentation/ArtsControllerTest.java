@@ -2,6 +2,7 @@ package com.backend.arthere.arts.presentation;
 
 import com.backend.arthere.arts.application.ArtsService;
 import com.backend.arthere.arts.dto.ArtImageResponse;
+import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.global.BaseControllerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -59,6 +60,27 @@ class ArtsControllerTest extends BaseControllerTest {
                                         fieldWithPath("[].imageURL").type(JsonFieldType.STRING).description("이미지 URL")
                                 )
                         )
+                );
+    }
+
+    @Test
+    @WithMockUser
+    void 메인화면_이미지_수정일_내림차순_데이터_없는_예외_응답() throws Exception {
+
+        //given
+        given(artsService.findArtImageByRevisionDate(anyLong(), anyLong())).willThrow(new ArtsNotFoundException());
+
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/media")
+                .param("offset", "1")
+                .param("limit", "5"));
+
+        //then
+        resultActions.andExpect(status().isNotFound())
+                .andDo(print())
+                .andDo(
+                        document("image/media/notfound")
                 );
     }
 
