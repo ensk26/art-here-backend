@@ -1,6 +1,6 @@
 package com.backend.arthere.auth.domain;
 
-import com.backend.arthere.global.config.JpaConfig;
+import com.backend.arthere.global.TestConfig;
 import com.backend.arthere.member.domain.Member;
 import com.backend.arthere.member.domain.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +16,7 @@ import static com.backend.arthere.fixture.TokenFixtures.토큰;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import(JpaConfig.class)
+@Import(TestConfig.class)
 class TokenRepositoryTest {
 
     @Autowired
@@ -27,7 +27,7 @@ class TokenRepositoryTest {
 
     @Test
     @DisplayName("회원 아이디로 토큰 조회에 성공한다.")
-    public void 회원_아이디로_토큰_조회_성공 () throws Exception {
+    public void 회원_아이디로_토큰_조회_성공() throws Exception {
         //given
         Member member = 회원();
         memberRepository.save(member);
@@ -44,7 +44,7 @@ class TokenRepositoryTest {
 
     @Test
     @DisplayName("저장되어 있지 않은 회원 아이디로 토큰 조회시 empty 객체를 반환한다.")
-    public void 저장되어_있지_않은_회원_아이디로_토큰_조회 () throws Exception {
+    public void 저장되어_있지_않은_회원_아이디로_토큰_조회() throws Exception {
         //given //when
         Optional<Token> findToken = tokenRepository.findByMemberId(0L);
 

@@ -1,6 +1,6 @@
 package com.backend.arthere.member.domain;
 
-import com.backend.arthere.global.config.JpaConfig;
+import com.backend.arthere.global.TestConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @DataJpaTest
-@Import(JpaConfig.class)
+@Import(TestConfig.class)
 class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
-    
+
     @Test
     @DisplayName("이메일로 회원을 조회한다.")
     public void 이메일로_회원_조회() throws Exception {
