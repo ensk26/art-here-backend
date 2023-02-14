@@ -14,4 +14,8 @@ public class ArtImageResponse {
     private String artName;
 
     private String imageURL;
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 }
