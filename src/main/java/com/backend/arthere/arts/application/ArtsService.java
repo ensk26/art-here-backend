@@ -2,6 +2,7 @@ package com.backend.arthere.arts.application;
 
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.ArtImageResponse;
+import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,11 @@ public class ArtsService {
     public List<ArtImageResponse> findArtImageByRevisionDate(Long offset, Long limit) {
 
         List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(offset, limit);
+
+        if (artImageResponses.isEmpty()) {
+            throw new ArtsNotFoundException();
+        }
+
         createImageSharePresignedURLByImageURL(artImageResponses);
 
         return artImageResponses;

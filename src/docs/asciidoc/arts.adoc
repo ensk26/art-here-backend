@@ -1,0 +1,13 @@
+[[Arts]]
+== Arts
+
+=== 수정일 순으로 이미지 요청
+수정일 내림차순으로 요청한 offset과 limit로 id, 작품 이름, 이미지 URL 데이터 반환한다.
+
+==== 성공
+operation::image/media[snippets='request-parameters,response-fields,http-request,http-response']
+
+==== 실패
+offset과 limit에 해당하는 데이터가 존재하지 않는다.
+
+operation::image/media/notfound[snippets='http-response']
