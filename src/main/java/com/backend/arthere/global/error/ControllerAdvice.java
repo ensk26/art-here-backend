@@ -1,5 +1,6 @@
 package com.backend.arthere.global.error;
 
+import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.auth.exception.FailedTokenAuthenticationException;
 import com.backend.arthere.auth.exception.InvalidRefreshTokenException;
 import com.backend.arthere.auth.exception.RefreshTokenNotFoundException;
@@ -30,7 +31,7 @@ public class ControllerAdvice {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler({RefreshTokenNotFoundException.class, MemberNotFoundException.class})
+    @ExceptionHandler({RefreshTokenNotFoundException.class, MemberNotFoundException.class, ArtsNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFound(final RuntimeException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
