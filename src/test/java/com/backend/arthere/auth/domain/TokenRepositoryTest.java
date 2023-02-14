@@ -1,6 +1,7 @@
 package com.backend.arthere.auth.domain;
 
-import com.backend.arthere.global.TestConfig;
+import com.backend.arthere.global.config.JpaConfig;
+import com.backend.arthere.global.config.QueryDslConfig;
 import com.backend.arthere.member.domain.Member;
 import com.backend.arthere.member.domain.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +17,7 @@ import static com.backend.arthere.fixture.TokenFixtures.토큰;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import(TestConfig.class)
+@Import({QueryDslConfig.class, JpaConfig.class})
 class TokenRepositoryTest {
 
     @Autowired

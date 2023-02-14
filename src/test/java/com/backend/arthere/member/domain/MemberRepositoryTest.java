@@ -1,6 +1,7 @@
 package com.backend.arthere.member.domain;
 
-import com.backend.arthere.global.TestConfig;
+import com.backend.arthere.global.config.JpaConfig;
+import com.backend.arthere.global.config.QueryDslConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @DataJpaTest
-@Import(TestConfig.class)
+@Import({QueryDslConfig.class, JpaConfig.class})
 class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
