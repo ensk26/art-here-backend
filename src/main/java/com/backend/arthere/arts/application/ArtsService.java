@@ -42,12 +42,27 @@ public class ArtsService {
         List<ArtImageByLocationResponse> artImageResponses = artsRepository.findArtImageByLocation(locationRangeResponse);
         locationUtils.removeIncorrectLocation(latitude, longitude, artImageResponses);
 
+        if (artImageResponses.isEmpty()) {
+            throw new ArtsNotFoundException();
+        }
+
+        createImageBylocationSharePresignedURLByImageURL(artImageResponses);
+
         return artImageResponses;
     }
 
     private void createImageSharePresignedURLByImageURL(List<ArtImageResponse> artImageResponses) {
 
         for (ArtImageResponse artImageRespons : artImageResponses) {
+
+            String presignedURL = presignedURLUtils.createImageShareURL(artImageRespons.getImageURL());
+            artImageRespons.setImageURL(presignedURL);
+        }
+    }
+
+    private void createImageBylocationSharePresignedURLByImageURL(List<ArtImageByLocationResponse> artImageResponses) {
+
+        for (ArtImageByLocationResponse artImageRespons : artImageResponses) {
 
             String presignedURL = presignedURLUtils.createImageShareURL(artImageRespons.getImageURL());
             artImageRespons.setImageURL(presignedURL);
