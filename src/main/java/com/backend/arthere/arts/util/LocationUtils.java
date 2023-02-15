@@ -24,4 +24,34 @@ public class LocationUtils {
 
         return new LocationRangeResponse(maxLatitude, minLatitude, maxLongitude, minLongitude);
     }
+
+    public void removeIncorrectLocation(Double centerLatitude, Double centerLongitude,
+                                        List<ArtImageByLocationResponse> locationResponses) {
+
+        for (int i = locationResponses.size() - 1; i >= 0; i--) {
+
+            Double latitude = locationResponses.get(i).getLatitude();
+            Double longitude = locationResponses.get(i).getLongitude();
+            double distance = getDistanceLocation(centerLatitude, centerLongitude, latitude, longitude);
+
+            if (distance > radius) {
+                locationResponses.remove(i);
+            }
+        }
+    }
+
+    private double getDistanceLocation(Double centerLatitude, Double centerLongitude,
+                                       Double latitude, Double longitude) {
+
+        double diffLatitude = Math.toRadians(latitude - centerLatitude);
+        double diffLongitude = Math.toRadians(longitude - centerLongitude);
+
+        double a = Math.sin(diffLatitude / 2) * Math.sin(diffLatitude / 2)
+                + Math.cos(Math.toRadians(centerLatitude)) * Math.cos(Math.toRadians(latitude))
+                * Math.sin(diffLongitude / 2) * Math.sin(diffLongitude / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return EARTH_RADIUS * c * 1000;  // 단위는 m
+    }
 }
