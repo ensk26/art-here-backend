@@ -1,8 +1,11 @@
 package com.backend.arthere.arts.application;
 
 import com.backend.arthere.arts.domain.ArtsRepository;
+import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
 import com.backend.arthere.arts.dto.ArtImageResponse;
+import com.backend.arthere.arts.dto.LocationRangeResponse;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
+import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ public class ArtsService {
 
     private final PresignedURLUtils presignedURLUtils;
 
+    private final LocationUtils locationUtils;
+
     public List<ArtImageResponse> findArtImageByRevisionDate(Long offset, Long limit) {
 
         List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(offset, limit);
@@ -26,6 +31,16 @@ public class ArtsService {
         }
 
         createImageSharePresignedURLByImageURL(artImageResponses);
+
+        return artImageResponses;
+    }
+
+    public List<ArtImageByLocationResponse> findArtImageByLocation(Double latitude, Double longitude) {
+
+        LocationRangeResponse locationRangeResponse = locationUtils.getLocationRange(latitude, longitude);
+
+        List<ArtImageByLocationResponse> artImageResponses = artsRepository.findArtImageByLocation(locationRangeResponse);
+        locationUtils.removeIncorrectLocation(latitude, longitude, artImageResponses);
 
         return artImageResponses;
     }
