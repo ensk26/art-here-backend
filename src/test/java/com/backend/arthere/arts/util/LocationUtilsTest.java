@@ -32,4 +32,36 @@ class LocationUtilsTest {
         //then
         Assertions.assertThat(locationRangeResponse).usingRecursiveComparison().isEqualTo(response);
     }
+
+    @Test
+    void 두좌표_거리가_만족하는_좌표만_반환() {
+
+        //given
+        Double centerlatitude = 37.565328;
+        Double centerlongitude = 126.976431;
+        List<ArtImageByLocationResponse> locationResponses = testPositionProvider();
+
+        //when
+        locationUtils.removeIncorrectLocation(centerlatitude, centerlongitude, locationResponses);
+
+        //then
+        Assertions.assertThat(locationResponses).hasSize(4);
+    }
+
+    private List<ArtImageByLocationResponse> testPositionProvider() {
+
+        List<ArtImageByLocationResponse> locationResponses = new ArrayList<>();
+        locationResponses.add(new ArtImageByLocationResponse(1L, "name", "url",
+                37.56577766080296, 126.976431));
+        locationResponses.add(new ArtImageByLocationResponse(2L, "name", "url",
+                37.564878339197044, 126.976431));
+        locationResponses.add(new ArtImageByLocationResponse(3L, "name", "url",
+                37.565328, 126.97699828171982));
+        locationResponses.add(new ArtImageByLocationResponse(4L, "name", "url",
+                37.565328, 126.9758637182802));
+        locationResponses.add(new ArtImageByLocationResponse(5L, "name", "url",
+                37.56577766080296, 126.9758637182802));
+
+        return locationResponses;
+    }
 }
