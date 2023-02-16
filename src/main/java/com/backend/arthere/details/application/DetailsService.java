@@ -9,6 +9,7 @@ import com.backend.arthere.details.dto.response.ArtResponse;
 import com.backend.arthere.arts.domain.Arts;
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
+import com.backend.arthere.details.dto.response.ArtSaveResponse;
 import com.backend.arthere.details.exception.DetailsNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,13 +24,13 @@ public class DetailsService {
     private final ArtsRepository artsRepository;
 
     @Transactional
-    public Long save(final ArtRequest artRequest) {
+    public ArtSaveResponse save(final ArtRequest artRequest) {
         Arts arts = artsRepository.save(artRequest.toArts());
 
         boolean state = saveState(artRequest.getEndDate());
         Details details = artRequest.toDetails(arts, state);
         detailsRepository.save(details);
-        return arts.getId();
+        return new ArtSaveResponse(arts.getId());
     }
 
     private boolean saveState(final LocalDate endDate) {
