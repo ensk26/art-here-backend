@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .antMatchers("/actuator/health").permitAll()
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/api/auth/**", "/oauth2/**", "/login/**").permitAll()
+                .antMatchers("/api/auth/**", "/oauth2/**", "/login/**", "/api/art/**").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -87,7 +87,6 @@ public class SecurityConfig {
     private static final String[] AUTH_WHITELLIST = {
             "/api/image/share",
             "/api/image/media",
-            "/api/art",
             "/api/image/map"
     };
 }
