@@ -32,6 +32,7 @@ public class Arts extends BaseEntity {
     private Address address;
 
     @NotNull
+    @Column(length = 50)
     @Enumerated(EnumType.STRING)
     private Category category;
 
