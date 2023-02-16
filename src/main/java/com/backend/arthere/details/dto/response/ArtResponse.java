@@ -25,14 +25,6 @@ public class ArtResponse {
 
     private LocalDate endDate;
 
-    private String artName;
-
-    private String imageURL;
-
-    private Double latitude;
-
-    private Double longitude;
-
     private String roadAddress;
 
     private String oldAddress;
@@ -54,10 +46,6 @@ public class ArtResponse {
     }
 
     private void fromArts(final Arts arts) {
-        this.artName = arts.getArtName();
-        this.imageURL = arts.getImageURL();
-        this.latitude = arts.getLocation().getLatitude();
-        this.longitude = arts.getLocation().getLongitude();
         this.roadAddress = arts.getAddress().getRoadAddress();
         this.oldAddress = arts.getAddress().getOldAddress();
         this.category = arts.getCategory().getCategoryName();
