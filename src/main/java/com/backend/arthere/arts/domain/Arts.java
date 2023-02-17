@@ -36,9 +36,7 @@ public class Arts extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-
     @Builder
-
     public Arts(String artName, String imageURL, Location location, Address address, Category category) {
         this.artName = artName;
         this.imageURL = imageURL;
