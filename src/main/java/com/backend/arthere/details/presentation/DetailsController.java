@@ -21,7 +21,6 @@ public class DetailsController {
     private final DetailsService detailsService;
 
     @PostMapping("/admin/art")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ArtSaveResponse> save(@Valid @RequestBody ArtRequest artRequest) {
         ArtSaveResponse artSaveResponse = detailsService.save(artRequest);
         return ResponseEntity.ok(artSaveResponse);
