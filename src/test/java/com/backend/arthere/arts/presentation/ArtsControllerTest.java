@@ -159,8 +159,8 @@ class ArtsControllerTest extends BaseControllerTest {
 
         String artName = "모래작품";
         String imageURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand";
-        Double latitude = 37.58724;
-        Double longitude = 127.01994;
+        double latitude = 37.58724;
+        double longitude = 127.01994;
         List<ArtImageByLocationResponse> responseList = new ArrayList<>();
 
         for (int i = 1; i < 6; i++) {
