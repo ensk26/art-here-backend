@@ -1,6 +1,8 @@
 package com.backend.arthere.arts.domain;
 
+import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
 import com.backend.arthere.arts.dto.ArtImageResponse;
+import com.backend.arthere.arts.dto.LocationRangeResponse;
 import com.backend.arthere.global.config.JpaConfig;
 import com.backend.arthere.global.config.QueryDslConfig;
 import org.assertj.core.api.Assertions;
@@ -34,16 +36,35 @@ class ArtsRepositoryTest {
         Assertions.assertThat(artImageResponses.get(4)).usingRecursiveComparison().isEqualTo(response);
     }
 
+    @Test
+    void 지도화면_이미지_중심위치_지정반경_데이터_반환() {
+
+        //given
+        artsSaveData();
+
+        //when
+        List<ArtImageByLocationResponse> responses = artsRepository.findArtImageByLocation(locationRangeResponse());
+
+        ///then
+        Assertions.assertThat(responses.size()).isEqualTo(4);
+    }
+
     private void artsSaveData() {
 
         String artName = "모래작품";
         String imageURL = "image/sand";
-        Location location = new Location(1.22, 1.33);
         Address address = new Address("loadAddress", "oldAddress");
 
         for (int i = 1; i < 6; i++) {
-            artsRepository.save(new Arts(artName + i, imageURL + i, location,
+            artsRepository.save(new Arts(artName + i, imageURL + i,
+                    new Location(37.564878339197044 + (0.0002 * i), 126.9758637182802 + (0.0002 * i)),
                     address, Category.PICTURE));
         }
+    }
+
+    private LocationRangeResponse locationRangeResponse() {
+
+        return new LocationRangeResponse(37.56577766080296,
+                37.564878339197044, 126.97699828171982, 126.9758637182802);
     }
 }
