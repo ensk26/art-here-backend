@@ -1,7 +1,10 @@
 package com.backend.arthere.arts.domain;
 
+import com.backend.arthere.arts.exception.InvalidCategoryException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
 
 @Getter
 @RequiredArgsConstructor
@@ -11,4 +14,11 @@ public enum Category {
     OTHER("기타");
 
     private final String categoryName;
+
+    public static Category valueOfName(String categoryName) {
+        return Arrays.stream(values())
+                .filter(value -> value.categoryName.equals(categoryName))
+                .findAny()
+                .orElseThrow(InvalidCategoryException::new);
+    }
 }
