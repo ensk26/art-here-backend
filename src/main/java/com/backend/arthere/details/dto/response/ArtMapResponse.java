@@ -21,6 +21,16 @@ public class ArtMapResponse {
 
     private String agency;
 
+    public ArtMapResponse(final Long id, final String artName, final String roadAddress,
+                          final String authorName, final String info, final String agency) {
+        this.id = id;
+        this.artName = artName;
+        this.roadAddress = roadAddress;
+        this.authorName = authorName;
+        this.info = info;
+        this.agency = agency;
+    }
+
     public ArtMapResponse(final Details details, final Arts arts) {
         fromDetails(details);
         fromArts(arts);
