@@ -30,7 +30,7 @@ public class DetailsService {
         boolean state = saveState(artRequest.getEndDate());
         Details details = artRequest.toDetails(arts, state);
         detailsRepository.save(details);
-        return new ArtSaveResponse(arts.getId());
+        return new ArtSaveResponse(arts.getId(), arts.getArtName());
     }
 
     private boolean saveState(final LocalDate endDate) {
