@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(indexes = @Index(name = "idx_revision_date", columnList = "revision_date"))
 public class Arts extends BaseEntity {
 
     @Id
