@@ -29,7 +29,7 @@ public class Details {
     private String agency;
 
     @NotNull
-    @Column(name = "info", length = 500)
+    @Column(name = "info")
     private String info;
 
     @NotNull

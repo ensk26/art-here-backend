@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ArtSaveResponse {
     private Long id;
+    private String artName;
 
-    public ArtSaveResponse(final Long id) {
+    public ArtSaveResponse(final Long id, final String artName) {
         this.id = id;
+        this.artName = artName;
     }
 }

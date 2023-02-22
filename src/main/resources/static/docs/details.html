@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Art Here API 문서</title>
+<title>Details</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,1262 +435,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="book toc2 toc-left">
+<body class="article">
 <div id="header">
-<h1>Art Here API 문서</h1>
-<div class="details">
-<span id="revnumber">version 0.0.1-SNAPSHOT</span>
-</div>
-<div id="toc" class="toc2">
-<div id="toctitle">목차</div>
-<ul class="sectlevel1">
-<li><a href="#Auth">1. Auth</a>
-<ul class="sectlevel2">
-<li><a href="#_액세스_토큰_재발급">1.1. 액세스 토큰 재발급</a>
-<ul class="sectlevel3">
-<li><a href="#_성공">1.1.1. 성공</a></li>
-<li><a href="#_실패_리프레시_토큰_기간_만료">1.1.2. 실패 (리프레시 토큰 기간 만료)</a></li>
-<li><a href="#_실패_리프레시_토큰을_입력하지_않은_경우">1.1.3. 실패 (리프레시 토큰을 입력하지 않은 경우)</a></li>
-</ul>
-</li>
-<li><a href="#_로그아웃">1.2. 로그아웃</a>
-<ul class="sectlevel3">
-<li><a href="#_성공_2">1.2.1. 성공</a></li>
-<li><a href="#_실패_잘못된_리프레시_토큰을_입력한_경우">1.2.2. 실패 (잘못된 리프레시 토큰을 입력한 경우)</a></li>
-<li><a href="#_실패_리프레시_토큰을_입력하지_않은_경우_2">1.2.3. 실패 (리프레시 토큰을 입력하지 않은 경우)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#Member">2. Member</a>
-<ul class="sectlevel2">
-<li><a href="#_회원_조회">2.1. 회원 조회</a>
-<ul class="sectlevel3">
-<li><a href="#_성공_3">2.1.1. 성공</a></li>
-<li><a href="#_실패_존재하지_않은_회원_조회">2.1.2. 실패 (존재하지 않은 회원 조회)</a></li>
-</ul>
-</li>
-<li><a href="#_회원_이름_변경">2.2. 회원 이름 변경</a>
-<ul class="sectlevel3">
-<li><a href="#_성공_4">2.2.1. 성공</a></li>
-<li><a href="#_실패_이름을_입력하지_않은_경우">2.2.2. 실패 (이름을 입력하지 않은 경우)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#Image">3. Image</a>
-<ul class="sectlevel2">
-<li><a href="#_이미지_공유">3.1. 이미지 공유</a>
-<ul class="sectlevel3">
-<li><a href="#_성공_5">3.1.1. 성공</a></li>
-</ul>
-</li>
-<li><a href="#_이미지_추가_admin">3.2. 이미지 추가 (ADMIN)</a>
-<ul class="sectlevel3">
-<li><a href="#_성공_6">3.2.1. 성공</a></li>
-</ul>
-</li>
-<li><a href="#_이미지_삭제_admin">3.3. 이미지 삭제 (ADMIN)</a>
-<ul class="sectlevel3">
-<li><a href="#_성공_7">3.3.1. 성공</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#Arts">4. Arts</a>
-<ul class="sectlevel2">
-<li><a href="#_수정일_순으로_이미지_요청">4.1. 수정일 순으로 이미지 요청</a>
-<ul class="sectlevel3">
-<li><a href="#_수정일_순으로_이미지_요청_request_parameters">4.1.1. Request parameters</a></li>
-<li><a href="#_수정일_순으로_이미지_요청_response_fields">4.1.2. Response fields</a></li>
-<li><a href="#_수정일_순으로_이미지_요청_http_request">4.1.3. HTTP request</a></li>
-<li><a href="#_성공_8">4.1.4. 성공</a></li>
-<li><a href="#_실패">4.1.5. 실패</a></li>
-</ul>
-</li>
-<li><a href="#_중심위치_지정_반경내_이미지_요청">4.2. 중심위치 지정 반경내 이미지 요청</a>
-<ul class="sectlevel3">
-<li><a href="#_중심위치_지정_반경내_이미지_요청_request_parameters">4.2.1. Request parameters</a></li>
-<li><a href="#_중심위치_지정_반경내_이미지_요청_response_fields">4.2.2. Response fields</a></li>
-<li><a href="#_중심위치_지정_반경내_이미지_요청_http_request">4.2.3. HTTP request</a></li>
-<li><a href="#_성공_9">4.2.4. 성공</a></li>
-<li><a href="#_실패_2">4.2.5. 실패</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#Details">5. Details</a>
-<ul class="sectlevel2">
-<li><a href="#_작품_저장_admin">5.1. 작품 저장 (ADMIN)</a>
-<ul class="sectlevel3">
-<li><a href="#_성공_9">5.1.1. 성공</a></li>
-<li><a href="#_실패_권한_없는_사용자">5.1.2. 실패 (권한 없는 사용자)</a></li>
-<li><a href="#_실패_데이터_입력하지_않은_경우">5.1.3. 실패 (데이터 입력하지 않은 경우)</a></li>
-</ul>
-</li>
-<li><a href="#_작품_전체_조회">5.2. 작품 전체 조회</a>
-<ul class="sectlevel3">
-<li><a href="#_성공_10">5.2.1. 성공</a></li>
-<li><a href="#_실패_잘못된_작품_아이디">5.2.2. 실패 (잘못된 작품 아이디)</a></li>
-</ul>
-</li>
-<li><a href="#_맵_화면에서_작품_조회">5.3. 맵 화면에서 작품 조회</a>
-<ul class="sectlevel3">
-<li><a href="#_성공_11">5.3.1. 성공</a></li>
-<li><a href="#_실패_잘못된_작품_아이디_2">5.3.2. 실패 (잘못된 작품 아이디)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="Auth">1. Auth</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_액세스_토큰_재발급">1.1. 액세스 토큰 재발급</h3>
-<div class="paragraph">
-<p>액세스 토큰 기간이 만료되었을 때 재발급 요청을 보낸다.</p>
-</div>
-<div class="sect3">
-<h4 id="_성공">1.1.1. 성공</h4>
-<div class="sect4">
-<h5 id="_성공_request_fields">Request fields</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refreshToken</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리프레시 토큰</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_response_fields">Response fields</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accessToken</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/token/reissue HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Accept: application/json
-Content-Length: 51
-Host: localhost:8080
-
-{
-  "id" : 1,
-  "refreshToken" : "testRefresh"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_성공_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 36
-
-{
-  "accessToken" : "testAccess"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_실패_리프레시_토큰_기간_만료">1.1.2. 실패 (리프레시 토큰 기간 만료)</h4>
-<div class="sect4">
-<h5 id="_실패_리프레시_토큰_기간_만료_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/token/reissue HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 51
-Host: localhost:8080
-
-{
-  "id" : 1,
-  "refreshToken" : "testRefresh"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_실패_리프레시_토큰_기간_만료_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 401 Unauthorized
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 71
-
-{
-  "message" : "유효하지 않은 리프레시 토큰입니다."
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_실패_리프레시_토큰을_입력하지_않은_경우">1.1.3. 실패 (리프레시 토큰을 입력하지 않은 경우)</h4>
-<div class="sect4">
-<h5 id="_실패_리프레시_토큰을_입력하지_않은_경우_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/token/reissue HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 16
-Host: localhost:8080
-
-{
-  "id" : 1
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_실패_리프레시_토큰을_입력하지_않은_경우_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 65
-
-{
-  "message" : "리프레시 토큰을 입력하세요.\r\n"
-}</code></pre>
-</div>
-</div>
-</div>
-<hr>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_로그아웃">1.2. 로그아웃</h3>
-<div class="sect3">
-<h4 id="_성공_2">1.2.1. 성공</h4>
-<div class="sect4">
-<h5 id="_성공_2_request_fields">Request fields</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refreshToken</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리프레시 토큰</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_2_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/logout HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 51
-Host: localhost:8080
-
-{
-  "id" : 1,
-  "refreshToken" : "testRefresh"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_성공_2_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_실패_잘못된_리프레시_토큰을_입력한_경우">1.2.2. 실패 (잘못된 리프레시 토큰을 입력한 경우)</h4>
-<div class="sect4">
-<h5 id="_실패_잘못된_리프레시_토큰을_입력한_경우_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/logout HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 51
-Host: localhost:8080
-
-{
-  "id" : 1,
-  "refreshToken" : "testRefresh"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_실패_잘못된_리프레시_토큰을_입력한_경우_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 71
-
-{
-  "message" : "존재하지 않는 리프레시 토큰입니다."
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_실패_리프레시_토큰을_입력하지_않은_경우_2">1.2.3. 실패 (리프레시 토큰을 입력하지 않은 경우)</h4>
-<div class="sect4">
-<h5 id="_실패_리프레시_토큰을_입력하지_않은_경우_2_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/logout HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 16
-Host: localhost:8080
-
-{
-  "id" : 1
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_실패_리프레시_토큰을_입력하지_않은_경우_2_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 65
-
-{
-  "message" : "리프레시 토큰을 입력하세요.\r\n"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="Member">2. Member</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_회원_조회">2.1. 회원 조회</h3>
-<div class="sect3">
-<h4 id="_성공_3">2.1.1. 성공</h4>
-<div class="sect4">
-<h5 id="_성공_3_request_headers">Request headers</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_3_response_fields">Response fields</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profile</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지 경로</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>socialType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">소셜 타입</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_3_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/member HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Accept: application/json
-Authorization: Bearer testAccess
-Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_성공_3_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 122
-
-{
-  "id" : 1,
-  "email" : "123@gmail.com",
-  "name" : "회원",
-  "profile" : "사진1",
-  "socialType" : "GOOGLE"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_실패_존재하지_않은_회원_조회">2.1.2. 실패 (존재하지 않은 회원 조회)</h4>
-<div class="sect4">
-<h5 id="_실패_존재하지_않은_회원_조회_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/member HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Accept: application/json
-Authorization: Bearer testAccess
-Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_실패_존재하지_않은_회원_조회_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 58
-
-{
-  "message" : "존재하지 않는 회원입니다."
-}</code></pre>
-</div>
-</div>
-</div>
-<hr>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_회원_이름_변경">2.2. 회원 이름 변경</h3>
-<div class="sect3">
-<h4 id="_성공_4">2.2.1. 성공</h4>
-<div class="sect4">
-<h5 id="_성공_4_request_headers">Request headers</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_4_request_fields">Request fields</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_4_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/member/name HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Accept: application/json
-Authorization: Bearer testAccess
-Content-Length: 31
-Host: localhost:8080
-
-{
-  "name" : "이름변경"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_성공_4_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_실패_이름을_입력하지_않은_경우">2.2.2. 실패 (이름을 입력하지 않은 경우)</h4>
-<div class="sect4">
-<h5 id="_실패_이름을_입력하지_않은_경우_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/member/name HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Accept: application/json
-Authorization: Bearer testAccess
-Content-Length: 3
-Host: localhost:8080
-
-{ }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_실패_이름을_입력하지_않은_경우_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 59
-
-{
-  "message" : "회원 이름을 입력하세요.\r\n"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="Image">3. Image</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_이미지_공유">3.1. 이미지 공유</h3>
-<div class="paragraph">
-<p>해당 이미지 url과 함께 요청하면 preSignedURL를 반환한다.</p>
-</div>
-<div class="sect3">
-<h4 id="_성공_5">3.1.1. 성공</h4>
-<div class="sect4">
-<h5 id="_성공_5_request_parameters">Request parameters</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지 경로</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_5_response_fields">Response fields</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>preSignedURL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">인증된 URL</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_5_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/share?image=image%2Fsand.jpg HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_성공_5_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 115
-
-{
-  "preSignedURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_이미지_추가_admin">3.2. 이미지 추가 (ADMIN)</h3>
-<div class="paragraph">
-<p>ADMIN의 Access Token과 함께 요청하면 preSignedURL, key를 반환한다.</p>
-</div>
-<div class="sect3">
-<h4 id="_성공_6">3.2.1. 성공</h4>
-<div class="sect4">
-<h5 id="_성공_6_request_headers">Request headers</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">관리자 Bearer access token</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_6_response_fields">Response fields</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>preSignedURL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">인증된 URL</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>key</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">저장할 파일 경로</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_6_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/admin/image/upload HTTP/1.1
-authorization: accessToken
-Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_성공_6_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 144
-
-{
-  "preSignedURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm",
-  "key" : "image/sand.jpg"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_이미지_삭제_admin">3.3. 이미지 삭제 (ADMIN)</h3>
-<div class="paragraph">
-<p>해당 이미지 url, ADMIN의 Access Token과 함께 요청하면 preSignedURL를 반환한다.</p>
-</div>
-<div class="sect3">
-<h4 id="_성공_7">3.3.1. 성공</h4>
-<div class="sect4">
-<h5 id="_성공_7_request_headers">Request headers</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">관리자 Bearer access token</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_7_request_parameters">Request parameters</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>image</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지 경로</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_7_response_fields">Response fields</h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>preSignedURL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">인증된 URL</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_성공_7_http_request">HTTP request</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/admin/image/delete?image=image%2Fsand.jpg HTTP/1.1
-authorization: accessToken
-Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_성공_7_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 115
-
-{
-  "preSignedURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="Arts">4. Arts</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_수정일_순으로_이미지_요청">4.1. 수정일 순으로 이미지 요청</h3>
-<div class="paragraph">
-<p>수정일 내림차순으로 요청한 offset과 limit로 id, 작품 이름, 이미지 URL 데이터 반환한다.</p>
-</div>
-<div class="sect3">
-<h4 id="_수정일_순으로_이미지_요청_request_parameters">4.1.1. Request parameters</h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>offset</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청하는 데이터 시작 위치</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>limit</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청하는 데이터 개수</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_수정일_순으로_이미지_요청_response_fields">4.1.2. Response fields</h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].artName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작품 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].imageURL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지 URL</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_수정일_순으로_이미지_요청_http_request">4.1.3. HTTP request</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/media?offset=1&amp;limit=5 HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_성공_8">4.1.4. 성공</h4>
-<div class="sect4">
-<h5 id="_성공_8_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 797
-
-[ {
-  "id" : 1,
-  "artName" : "모래작품1",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand1.jpg?X-Amz-Algorithm"
-}, {
-  "id" : 2,
-  "artName" : "모래작품2",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand2.jpg?X-Amz-Algorithm"
-}, {
-  "id" : 3,
-  "artName" : "모래작품3",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand3.jpg?X-Amz-Algorithm"
-}, {
-  "id" : 4,
-  "artName" : "모래작품4",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand4.jpg?X-Amz-Algorithm"
-}, {
-  "id" : 5,
-  "artName" : "모래작품5",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand5.jpg?X-Amz-Algorithm"
-} ]</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_실패">4.1.5. 실패</h4>
-<div class="paragraph">
-<p>offset과 limit에 해당하는 데이터가 존재하지 않는다.</p>
-</div>
-<div class="sect4">
-<h5 id="_실패_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 68
-
-{
-  "message" : "해당 데이터가 존재하지 않습니다."
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_중심위치_지정_반경내_이미지_요청">4.2. 중심위치 지정 반경내 이미지 요청</h3>
-<div class="paragraph">
-<p>요청한 중심위치 위도 (latitude), 경도 (longitude)로 id, 작품 이름, 이미지 URL, 위도, 경도 데이터 반환한다.</p>
-</div>
-<div class="sect3">
-<h4 id="_중심위치_지정_반경내_이미지_요청_request_parameters">4.2.1. Request parameters</h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>latitude</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 위치 위도</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>longitude</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 위치 경도</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_중심위치_지정_반경내_이미지_요청_response_fields">4.2.2. Response fields</h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].artName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작품 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].imageURL</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미지 URL</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].latitude</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">위도</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].longitude</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">경도</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_중심위치_지정_반경내_이미지_요청_http_request">4.2.3. HTTP request</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/map?latitude=37.587241&amp;longitude=127.019941 HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_성공_9">4.2.4. 성공</h4>
-<div class="sect4">
-<h5 id="_성공_9_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 1112
-
-[ {
-  "id" : 1,
-  "artName" : "모래작품1",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand1.jpg?X-Amz-Algorithm",
-  "latitude" : 38.58724,
-  "longitude" : 128.01994000000002
-}, {
-  "id" : 2,
-  "artName" : "모래작품2",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand2.jpg?X-Amz-Algorithm",
-  "latitude" : 39.58724,
-  "longitude" : 129.01994000000002
-}, {
-  "id" : 3,
-  "artName" : "모래작품3",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand3.jpg?X-Amz-Algorithm",
-  "latitude" : 40.58724,
-  "longitude" : 130.01994000000002
-}, {
-  "id" : 4,
-  "artName" : "모래작품4",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand4.jpg?X-Amz-Algorithm",
-  "latitude" : 41.58724,
-  "longitude" : 131.01994000000002
-}, {
-  "id" : 5,
-  "artName" : "모래작품5",
-  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand5.jpg?X-Amz-Algorithm",
-  "latitude" : 42.58724,
-  "longitude" : 132.01994000000002
-} ]</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_실패_2">4.2.5. 실패</h4>
-<div class="paragraph">
-<p>요청에 해당하는 데이터가 존재하지 않는다.</p>
-</div>
-<div class="sect4">
-<h5 id="_실패_2_http_response">HTTP response</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Content-Length: 68
-
-{
-  "message" : "해당 데이터가 존재하지 않습니다."
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="Details">5. Details</h2>
+<h2 id="Details">Details</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>작품 저장, 수정, 삭제, 조회 API</p>
 </div>
 <div class="sect2">
-<h3 id="_작품_저장_admin">5.1. 작품 저장 (ADMIN)</h3>
+<h3 id="_작품_저장_admin">작품 저장 (ADMIN)</h3>
 <div class="sect3">
-<h4 id="_성공_9">5.1.1. 성공</h4>
+<h4 id="_성공">성공</h4>
 <div class="sect4">
-<h5 id="_성공_9_request_headers">Request headers</h5>
+<h5 id="_성공_request_headers">Request headers</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1711,7 +472,7 @@ Content-Length: 68
 </table>
 </div>
 <div class="sect4">
-<h5 id="_성공_9_request_fields">Request fields</h5>
+<h5 id="_성공_request_fields">Request fields</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1790,7 +551,7 @@ Content-Length: 68
 </table>
 </div>
 <div class="sect4">
-<h5 id="_성공_9_response_fields">Response fields</h5>
+<h5 id="_성공_response_fields">Response fields</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1819,10 +580,10 @@ Content-Length: 68
 </table>
 </div>
 <div class="sect4">
-<h5 id="_성공_9_http_request">HTTP request</h5>
+<h5 id="_성공_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/admin/art HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/admin/art HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
@@ -1847,10 +608,10 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect4">
-<h5 id="_성공_9_http_response">HTTP response</h5>
+<h5 id="_성공_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
@@ -1866,12 +627,12 @@ Content-Length: 41
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_권한_없는_사용자">5.1.2. 실패 (권한 없는 사용자)</h4>
+<h4 id="_실패_권한_없는_사용자">실패 (권한 없는 사용자)</h4>
 <div class="sect4">
 <h5 id="_실패_권한_없는_사용자_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/admin/art HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/admin/art HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
@@ -1899,18 +660,18 @@ Host: localhost:8080
 <h5 id="_실패_권한_없는_사용자_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 403 Forbidden</code></pre>
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 403 Forbidden</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_데이터_입력하지_않은_경우">5.1.3. 실패 (데이터 입력하지 않은 경우)</h4>
+<h4 id="_실패_데이터_입력하지_않은_경우">실패 (데이터 입력하지 않은 경우)</h4>
 <div class="sect4">
 <h5 id="_실패_데이터_입력하지_않은_경우_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/admin/art HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/admin/art HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
@@ -1938,7 +699,7 @@ Host: localhost:8080
 <h5 id="_실패_데이터_입력하지_않은_경우_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
@@ -1955,11 +716,11 @@ Content-Length: 374
 </div>
 </div>
 <div class="sect2">
-<h3 id="_작품_전체_조회">5.2. 작품 전체 조회</h3>
+<h3 id="_작품_전체_조회">작품 전체 조회</h3>
 <div class="sect3">
-<h4 id="_성공_10">5.2.1. 성공</h4>
+<h4 id="_성공_2">성공</h4>
 <div class="sect4">
-<h5 id="_성공_10_request_parameters">Request parameters</h5>
+<h5 id="_성공_2_request_parameters">Request parameters</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1980,7 +741,7 @@ Content-Length: 374
 </table>
 </div>
 <div class="sect4">
-<h5 id="_성공_10_response_fields">Response fields</h5>
+<h5 id="_성공_2_response_fields">Response fields</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2049,10 +810,10 @@ Content-Length: 374
 </table>
 </div>
 <div class="sect4">
-<h5 id="_성공_10_http_request">HTTP request</h5>
+<h5 id="_성공_2_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/art?id=2 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/art?id=2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Host: localhost:8080</code></pre>
@@ -2060,10 +821,10 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_성공_10_http_response">HTTP response</h5>
+<h5 id="_성공_2_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
@@ -2087,12 +848,12 @@ Content-Length: 275
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_잘못된_작품_아이디">5.2.2. 실패 (잘못된 작품 아이디)</h4>
+<h4 id="_실패_잘못된_작품_아이디">실패 (잘못된 작품 아이디)</h4>
 <div class="sect4">
 <h5 id="_실패_잘못된_작품_아이디_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/art?id=2 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/art?id=2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Host: localhost:8080</code></pre>
@@ -2103,7 +864,7 @@ Host: localhost:8080</code></pre>
 <h5 id="_실패_잘못된_작품_아이디_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
@@ -2120,11 +881,11 @@ Content-Length: 68
 </div>
 </div>
 <div class="sect2">
-<h3 id="_맵_화면에서_작품_조회">5.3. 맵 화면에서 작품 조회</h3>
+<h3 id="_맵_화면에서_작품_조회">맵 화면에서 작품 조회</h3>
 <div class="sect3">
-<h4 id="_성공_11">5.3.1. 성공</h4>
+<h4 id="_성공_3">성공</h4>
 <div class="sect4">
-<h5 id="_성공_11_request_parameters">Request parameters</h5>
+<h5 id="_성공_3_request_parameters">Request parameters</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -2145,7 +906,7 @@ Content-Length: 68
 </table>
 </div>
 <div class="sect4">
-<h5 id="_성공_11_response_fields">Response fields</h5>
+<h5 id="_성공_3_response_fields">Response fields</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2194,10 +955,10 @@ Content-Length: 68
 </table>
 </div>
 <div class="sect4">
-<h5 id="_성공_11_http_request">HTTP request</h5>
+<h5 id="_성공_3_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/art/map?id=2 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/art/map?id=2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Host: localhost:8080</code></pre>
@@ -2205,10 +966,10 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_성공_11_http_response">HTTP response</h5>
+<h5 id="_성공_3_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
@@ -2228,12 +989,12 @@ Content-Length: 157
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_잘못된_작품_아이디_2">5.3.2. 실패 (잘못된 작품 아이디)</h4>
+<h4 id="_실패_잘못된_작품_아이디_2">실패 (잘못된 작품 아이디)</h4>
 <div class="sect4">
 <h5 id="_실패_잘못된_작품_아이디_2_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/art/map?id=2 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/art/map?id=2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Host: localhost:8080</code></pre>
@@ -2244,7 +1005,7 @@ Host: localhost:8080</code></pre>
 <h5 id="_실패_잘못된_작품_아이디_2_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
@@ -2265,13 +1026,8 @@ Content-Length: 68
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-
-Last updated 2023-02-19 00:29:18 +0900
-
+Last updated 2023-02-19 17:52:17 +0900
 </div>
 </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
 </body>
 </html>
