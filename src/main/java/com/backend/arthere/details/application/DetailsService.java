@@ -21,11 +21,10 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class DetailsService {
     private final DetailsRepository detailsRepository;
-    private final ArtsRepository artsRepository;
 
     @Transactional
     public ArtSaveResponse save(final ArtRequest artRequest) {
-        Arts arts = artsRepository.save(artRequest.toArts());
+        Arts arts = artRequest.toArts();
 
         boolean state = saveState(artRequest.getEndDate());
         Details details = artRequest.toDetails(arts, state);
@@ -41,26 +40,37 @@ public class DetailsService {
     }
 
     @Transactional
-    public ArtResponse findArt(final Long artsId) {
-        Arts arts = artsRepository.findById(artsId)
-                .orElseThrow(ArtsNotFoundException::new);
+    public void update(final Long artsId, final ArtRequest artRequest) {
+        Details details = detailsRepository.findByArtsId(artsId)
+                .orElseThrow(DetailsNotFoundException::new);
 
-        Details details = detailsRepository.findByArts(arts)
+        details.getArts().update(artRequest.toArts());
+        boolean state = saveState(artRequest.getEndDate());
+        details.update(artRequest.toDetails(details.getArts(), state));
+    }
+
+    @Transactional
+    public void delete(final Long artsId) {
+        Details details = detailsRepository.findByArtsId(artsId)
+                .orElseThrow(DetailsNotFoundException::new);
+        detailsRepository.delete(details);
+    }
+
+    @Transactional
+    public ArtResponse findArt(final Long artsId) {
+        Details details = detailsRepository.findByArtsId(artsId)
                 .orElseThrow(DetailsNotFoundException::new);
 
         details.changeState();
-        return new ArtResponse(details, arts);
+        return new ArtResponse(details, details.getArts());
     }
 
     @Transactional(readOnly = true)
     public ArtMapResponse findArtOnMap(final Long artsId) {
-        Arts arts = artsRepository.findById(artsId)
-                .orElseThrow(ArtsNotFoundException::new);
-
-        Details details = detailsRepository.findByArts(arts)
+        Details details = detailsRepository.findByArtsId(artsId)
                 .orElseThrow(DetailsNotFoundException::new);
 
-        return new ArtMapResponse(details, arts);
+        return new ArtMapResponse(details, details.getArts());
     }
 
 }
