@@ -44,4 +44,32 @@ public class Arts extends BaseEntity {
         this.address = address;
         this.category = category;
     }
+
+    public void update(final Arts updateArts) {
+        updateArtName(updateArts.getArtName());
+        updateImageURL(updateArts.getImageURL());
+        updateLocation(updateArts.getLocation());
+        updateAddress(updateArts.getAddress());
+        updateCategory(updateArts.getCategory());
+    }
+
+    public void updateArtName(final String artName) {
+        this.artName = artName;
+    }
+
+    public void updateImageURL(final String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public void updateLocation(final Location location) {
+        this.location = location;
+    }
+
+    public void updateAddress(final Address address) {
+        this.address = address;
+    }
+
+    public void updateCategory(final Category category) {
+        this.category = category;
+    }
 }
