@@ -7,8 +7,6 @@ import com.backend.arthere.details.dto.request.ArtRequest;
 import com.backend.arthere.details.dto.response.ArtMapResponse;
 import com.backend.arthere.details.dto.response.ArtResponse;
 import com.backend.arthere.arts.domain.Arts;
-import com.backend.arthere.arts.domain.ArtsRepository;
-import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.details.dto.response.ArtSaveResponse;
 import com.backend.arthere.details.exception.DetailsNotFoundException;
 import lombok.RequiredArgsConstructor;
