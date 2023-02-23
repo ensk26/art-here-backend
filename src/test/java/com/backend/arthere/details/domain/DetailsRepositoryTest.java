@@ -32,7 +32,7 @@ class DetailsRepositoryTest {
         Details details = detailsRepository.save(작품_세부정보(arts));
 
         //when
-        Optional<Details> findDetails = detailsRepository.findByArts(arts);
+        Optional<Details> findDetails = detailsRepository.findByArtsId(arts.getId());
 
         //then
         assertThat(findDetails).isNotEmpty();
