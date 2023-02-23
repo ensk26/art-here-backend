@@ -39,7 +39,7 @@ public class Details {
     @Embedded
     private ExhibitionPeriod period;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "arts_id")
     private Arts arts;
 
@@ -67,5 +67,34 @@ public class Details {
             state = true;
         }
     }
+
+    public void update(final Details updateDetails) {
+        updateAuthorName(updateDetails.authorName);
+        updateAgency(updateDetails.agency);
+        updateInfo(updateDetails.info);
+        updateState(updateDetails.isState());
+        updatePeriod(updateDetails.period);
+    }
+
+    public void updateAuthorName(final String authorName) {
+        this.authorName = authorName;
+    }
+
+    public void updateAgency(final String agency) {
+        this.agency = agency;
+    }
+
+    public void updateInfo(final String info) {
+        this.info = info;
+    }
+
+    public void updateState(final boolean state) {
+        this.state = state;
+    }
+
+    public void updatePeriod(final ExhibitionPeriod period) {
+        this.period = period;
+    }
+
 
 }
