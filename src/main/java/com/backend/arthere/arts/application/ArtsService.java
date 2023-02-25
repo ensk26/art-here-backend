@@ -2,6 +2,7 @@ package com.backend.arthere.arts.application;
 
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
+import com.backend.arthere.arts.dto.ArtImageByRevisionDateResponse;
 import com.backend.arthere.arts.dto.ArtImageResponse;
 import com.backend.arthere.arts.dto.LocationRangeResponse;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
@@ -10,6 +11,7 @@ import com.backend.arthere.image.util.PresignedURLUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,17 +24,22 @@ public class ArtsService {
 
     private final LocationUtils locationUtils;
 
-    public List<ArtImageResponse> findArtImageByRevisionDate(Long offset, Long limit) {
+    public ArtImageByRevisionDateResponse findArtImageByRevisionDate(LocalDateTime revisionDateIdx, Integer limit) {
 
-        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(offset, limit);
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(revisionDateIdx, limit);
 
         if (artImageResponses.isEmpty()) {
             throw new ArtsNotFoundException();
         }
 
+        Boolean hasNext = hasNext(artImageResponses, limit + 1);
+
+        Long id = artImageResponses.get(artImageResponses.size() - 1).getId();
+        String next = artsRepository.findRevisionDateById(id);
+
         createImageSharePresignedURLByImageURL(artImageResponses);
 
-        return artImageResponses;
+        return new ArtImageByRevisionDateResponse(artImageResponses, next, hasNext);
     }
 
     public List<ArtImageByLocationResponse> findArtImageByLocation(Double latitude, Double longitude) {
@@ -67,5 +74,13 @@ public class ArtsService {
             String presignedURL = presignedURLUtils.createImageShareURL(artImageRespons.getImageURL());
             artImageRespons.setImageURL(presignedURL);
         }
+    }
+
+    private Boolean hasNext(List<ArtImageResponse> artImageResponses, int size) {
+        if (artImageResponses.size() == size) {
+            artImageResponses.remove(size - 1);
+            return true;
+        }
+        return false;
     }
 }
