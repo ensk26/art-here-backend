@@ -5,10 +5,12 @@ import com.backend.arthere.arts.dto.ArtImageResponse;
 import com.backend.arthere.arts.dto.LocationRangeResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.backend.arthere.arts.domain.QArts.arts;
@@ -20,12 +22,12 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ArtImageResponse> findArtImageByRevisionDate(Long offset, Long limit) {
+    public List<ArtImageResponse> findArtImageByRevisionDate(LocalDateTime revisionDateIdx, Integer limit) {
         return jpaQueryFactory.select(Projections.constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
                 .from(arts)
-                .orderBy(arts.revisionDate.desc())
-                .offset(offset)
-                .limit(limit)
+                .where(revisionDateIdx(revisionDateIdx))
+                .orderBy(arts.id.desc())
+                .limit(limit + 1)
                 .fetch();
     }
 
@@ -52,5 +54,22 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
                 .orderBy(arts.location.latitude.asc())
                 .where(builder)
                 .fetch();
+    }
+
+    @Override
+    public String findRevisionDateById(Long id) {
+        return jpaQueryFactory.select(arts.revisionDate)
+                .from(arts)
+                .where(arts.id.eq(id))
+                .fetch()
+                .toString();
+    }
+
+    private BooleanExpression revisionDateIdx(LocalDateTime lastIdx) {
+        if (lastIdx == null) {
+            return null;
+        }
+
+        return arts.revisionDate.lt(lastIdx);
     }
 }
