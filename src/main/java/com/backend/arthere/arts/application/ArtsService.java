@@ -1,10 +1,7 @@
 package com.backend.arthere.arts.application;
 
 import com.backend.arthere.arts.domain.ArtsRepository;
-import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateResponse;
-import com.backend.arthere.arts.dto.ArtImageResponse;
-import com.backend.arthere.arts.dto.LocationRangeResponse;
+import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
@@ -24,22 +21,22 @@ public class ArtsService {
 
     private final LocationUtils locationUtils;
 
-    public ArtImageByRevisionDateResponse findArtImageByRevisionDate(LocalDateTime revisionDateIdx, Integer limit) {
+    public ArtImageByRevisionDateResponse findArtImageByRevisionDate(ArtImageByRevisionDateRequest request) {
 
-        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(revisionDateIdx, limit);
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(request);
 
         if (artImageResponses.isEmpty()) {
             throw new ArtsNotFoundException();
         }
 
-        Boolean hasNext = hasNext(artImageResponses, limit + 1);
+        Boolean hasNext = hasNext(artImageResponses, request.getLimit() + 1);
 
         Long id = artImageResponses.get(artImageResponses.size() - 1).getId();
-        String next = artsRepository.findRevisionDateById(id);
+        LocalDateTime next = artsRepository.findRevisionDateById(id).get(0);
 
         createImageSharePresignedURLByImageURL(artImageResponses);
 
-        return new ArtImageByRevisionDateResponse(artImageResponses, next, hasNext);
+        return new ArtImageByRevisionDateResponse(artImageResponses, id, next, hasNext);
     }
 
     public List<ArtImageByLocationResponse> findArtImageByLocation(Double latitude, Double longitude) {
