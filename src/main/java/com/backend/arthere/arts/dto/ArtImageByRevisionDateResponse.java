@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -13,7 +14,9 @@ public class ArtImageByRevisionDateResponse {
 
     private List<ArtImageResponse> artImageResponses;
 
-    private String next;
+    private Long nextIdx;
+
+    private LocalDateTime nextRevisionDateIdx;
 
     private Boolean hasNext;
 }
