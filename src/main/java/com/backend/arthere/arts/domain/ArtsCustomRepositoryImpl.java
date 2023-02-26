@@ -1,6 +1,7 @@
 package com.backend.arthere.arts.domain;
 
 import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
+import com.backend.arthere.arts.dto.ArtImageByRevisionDateRequest;
 import com.backend.arthere.arts.dto.ArtImageResponse;
 import com.backend.arthere.arts.dto.LocationRangeResponse;
 import com.querydsl.core.BooleanBuilder;
@@ -22,12 +23,12 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ArtImageResponse> findArtImageByRevisionDate(LocalDateTime revisionDateIdx, Integer limit) {
+    public List<ArtImageResponse> findArtImageByRevisionDate(ArtImageByRevisionDateRequest request) {
         return jpaQueryFactory.select(Projections.constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
                 .from(arts)
-                .where(revisionDateIdx(revisionDateIdx))
+                .where(revisionDateIdx(request.getRevisionDateIdx(), request.getIdx()))
                 .orderBy(arts.id.desc())
-                .limit(limit + 1)
+                .limit(request.getLimit() + 1)
                 .fetch();
     }
 
@@ -57,19 +58,18 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
     }
 
     @Override
-    public String findRevisionDateById(Long id) {
+    public List<LocalDateTime> findRevisionDateById(Long id) {
         return jpaQueryFactory.select(arts.revisionDate)
                 .from(arts)
                 .where(arts.id.eq(id))
-                .fetch()
-                .toString();
+                .fetch();
     }
 
-    private BooleanExpression revisionDateIdx(LocalDateTime lastIdx) {
-        if (lastIdx == null) {
+    private BooleanExpression revisionDateIdx(LocalDateTime dateIdx, Long idx) {
+        if (dateIdx == null || idx == null) {
             return null;
         }
 
-        return arts.revisionDate.lt(lastIdx);
+        return arts.revisionDate.lt(dateIdx).or(arts.revisionDate.eq(dateIdx).and(arts.id.lt(idx)));
     }
 }
