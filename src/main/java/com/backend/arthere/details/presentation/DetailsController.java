@@ -26,6 +26,19 @@ public class DetailsController {
         return ResponseEntity.ok(artSaveResponse);
     }
 
+    @PatchMapping("/admin/art")
+    public ResponseEntity<Void> update(@RequestParam("id") Long artsId,
+                                              @Valid @RequestBody ArtRequest artRequest) {
+        detailsService.update(artsId, artRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/admin/art")
+    public ResponseEntity<Void> delete(@RequestParam("id") Long artsId) {
+        detailsService.delete(artsId);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/art")
     public ResponseEntity<ArtResponse> findArt(@RequestParam("id") Long artsId) {
         ArtResponse artResponse = detailsService.findArt(artsId);

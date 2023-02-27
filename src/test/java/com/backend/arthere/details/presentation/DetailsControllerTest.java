@@ -1,13 +1,13 @@
 package com.backend.arthere.details.presentation;
 
 import com.backend.arthere.arts.domain.Arts;
-import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.details.application.DetailsService;
 import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.dto.request.ArtRequest;
 import com.backend.arthere.details.dto.response.ArtMapResponse;
 import com.backend.arthere.details.dto.response.ArtResponse;
 import com.backend.arthere.details.dto.response.ArtSaveResponse;
+import com.backend.arthere.details.exception.DetailsNotFoundException;
 import com.backend.arthere.global.BaseControllerTest;
 import com.backend.arthere.global.TestConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,14 +25,15 @@ import org.springframework.test.web.servlet.ResultActions;
 import static com.backend.arthere.fixture.EntireArtsFixtures.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -210,7 +211,7 @@ class DetailsControllerTest extends BaseControllerTest {
     public void 저장되어_있지_않은_작품으로_작품_전체_조회시_에러_발생() throws Exception {
         //given
         given(detailsService.findArt(2L))
-                .willThrow(new ArtsNotFoundException());
+                .willThrow(new DetailsNotFoundException());
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -232,8 +233,6 @@ class DetailsControllerTest extends BaseControllerTest {
     @WithMockUser
     public void 맵_화면에서_작품_정보_조회() throws Exception {
         //given
-        Arts arts = 작품();
-        Details details = 작품_세부정보(arts);
         ArtMapResponse artMapResponse = 작품_맵_조회_응답();
 
         given(detailsService.findArtOnMap(2L))
@@ -276,7 +275,7 @@ class DetailsControllerTest extends BaseControllerTest {
     public void 저장되어_있지_않은_작품으로_맵_화면_작품_조회시_에러_발생() throws Exception {
         //given
         given(detailsService.findArtOnMap(2L))
-                .willThrow(new ArtsNotFoundException());
+                .willThrow(new DetailsNotFoundException());
         //when
         ResultActions resultActions = mockMvc.perform(
                 get("/api/art/map")
@@ -289,6 +288,136 @@ class DetailsControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andDo(
                         document("api/art/map/notFound")
+                );
+    }
+
+    @Test
+    @DisplayName("관리자가 작품 정보를 수정한다.")
+    @WithMockUser(roles = "ADMIN")
+    public void 관리자가_작품_정보_수정() throws Exception {
+        //given
+        ArtRequest artRequest = 작품_이름_정보_수정_요청();
+        doNothing().when(detailsService).update(2L, artRequest);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                patch("/api/admin/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .param("id", "2")
+                        .content(objectMapper.writeValueAsString(artRequest))
+        );
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("api/admin/art/update",
+                                requestHeaders(
+                                        headerWithName("Authorization").description("액세스 토큰")
+                                ),
+                                requestParameters(
+                                        parameterWithName("id").description("작품 아이디")
+                                ),
+                                requestFields(
+                                        fieldWithPath("artName").type(JsonFieldType.STRING)
+                                                .description("작품명"),
+                                        fieldWithPath("imageURL").type(JsonFieldType.STRING)
+                                                .description("이미지 경로"),
+                                        fieldWithPath("latitude").type(JsonFieldType.NUMBER)
+                                                .description("위도"),
+                                        fieldWithPath("longitude").type(JsonFieldType.NUMBER)
+                                                .description("경도"),
+                                        fieldWithPath("roadAddress").type(JsonFieldType.STRING)
+                                                .description("도로명 주소"),
+                                        fieldWithPath("oldAddress").type(JsonFieldType.STRING)
+                                                .description("구 주소"),
+                                        fieldWithPath("category").type(JsonFieldType.STRING)
+                                                .description("카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)"),
+                                        fieldWithPath("authorName").type(JsonFieldType.STRING)
+                                                .description("작가 이름"),
+                                        fieldWithPath("agency").type(JsonFieldType.STRING)
+                                                .description("담당기관"),
+                                        fieldWithPath("info").type(JsonFieldType.STRING)
+                                                .description("상세 내용 (255자 이하)"),
+                                        fieldWithPath("startDate").type(JsonFieldType.STRING)
+                                                .description("시작일 (yyyy-MM-dd)"),
+                                        fieldWithPath("endDate").type(JsonFieldType.STRING)
+                                                .description("종료일 (종료일은 필수값이 아닙니다.) (yyyy-MM-dd)")
+                                )
+                        ));
+    }
+
+    @Test
+    @DisplayName("회원이 작품 정보를 수정하려고 할 때 403 에러가 발생한다.")
+    @WithMockUser(roles = "USER")
+    public void 회원이_작품_정보_수정_요청시_에러_발생() throws Exception {
+        //given
+        ArtRequest artRequest = 작품_이름_정보_수정_요청();
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                patch("/api/admin/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .param("id", "2")
+                        .content(objectMapper.writeValueAsString(artRequest))
+        );
+        //then
+        resultActions.andExpect(status().isForbidden())
+                .andDo(print())
+                .andDo(
+                        document("api/admin/art/update/forbidden")
+                );
+    }
+
+    @Test
+    @DisplayName("관리자가 작품 정보를 삭제한다.")
+    @WithMockUser(roles = "ADMIN")
+    public void 관리자가_작품_정보_삭제() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                delete("/api/admin/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .param("id", "2")
+        );
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("api/admin/art/delete",
+                                requestHeaders(
+                                        headerWithName("Authorization").description("액세스 토큰")
+                                ),
+                                requestParameters(
+                                        parameterWithName("id").description("작품 아이디")
+                                )
+                        )
+                );
+    }
+    
+    @Test
+    @DisplayName("관리자가 저장되어 있지 않은 작품 삭제 요청시 404 에러가 발생한다.")
+    @WithMockUser(roles = "ADMIN")
+    public void 저장되어_있지_않은_작품_삭제_요청시_에러_발생() throws Exception {
+        //given
+        doThrow(new DetailsNotFoundException()).when(detailsService).delete(2L);
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                delete("/api/admin/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .param("id", "2")
+        );
+        //then
+        resultActions.andExpect(status().isNotFound())
+                .andDo(print())
+                .andDo(
+                        document("api/admin/art/delete/notFound")
                 );
     }
 }

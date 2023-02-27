@@ -1,8 +1,6 @@
 package com.backend.arthere.details.application;
 
 import com.backend.arthere.arts.domain.Arts;
-import com.backend.arthere.arts.domain.ArtsRepository;
-import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.arts.exception.InvalidCategoryException;
 import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.domain.DetailsRepository;
@@ -25,16 +23,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class DetailsServiceTest {
     @Mock
     private DetailsRepository detailsRepository;
-
-    @Mock
-    private ArtsRepository artsRepository;
-
     @InjectMocks
     private DetailsService detailsService;
 
@@ -46,8 +43,6 @@ class DetailsServiceTest {
         Details details = 작품_세부정보(arts);
         ArtRequest artRequest = 작품_저장_요청();
 
-        given(artsRepository.save(any()))
-                .willReturn(arts);
         given(detailsRepository.save(any()))
                 .willReturn(details);
 
@@ -76,9 +71,7 @@ class DetailsServiceTest {
         Arts arts = 작품();
         Details details = 작품_세부정보(arts);
 
-        given(artsRepository.findById(any()))
-                .willReturn(Optional.of(arts));
-        given(detailsRepository.findByArts(arts))
+        given(detailsRepository.findByArtsId(anyLong()))
                 .willReturn(Optional.of(details));
 
         //when
@@ -96,12 +89,12 @@ class DetailsServiceTest {
     @DisplayName("저장되어 있지 않은 arts 아이디로 조회하려고 하면 예외가 발생한다.")
     public void 저장되어_있지_않은_아이디로_작품_전체_조회시_예외_발생() throws Exception {
         //given
-        given(artsRepository.findById(any()))
-                .willThrow(ArtsNotFoundException.class);
+        given(detailsRepository.findByArtsId(anyLong()))
+                .willThrow(DetailsNotFoundException.class);
 
         //when //then
         assertThatThrownBy(() -> detailsService.findArt(2L))
-                .isInstanceOf(ArtsNotFoundException.class);
+                .isInstanceOf(DetailsNotFoundException.class);
     }
 
     @Test
@@ -110,9 +103,7 @@ class DetailsServiceTest {
         //given
         Arts arts = 작품();
 
-        given(artsRepository.findById(any()))
-                .willReturn(Optional.of(arts));
-        given(detailsRepository.findByArts(arts))
+        given(detailsRepository.findByArtsId(anyLong()))
                 .willThrow(DetailsNotFoundException.class);
 
         //when //then
@@ -127,9 +118,7 @@ class DetailsServiceTest {
         Arts arts = 작품();
         Details details = 작품_세부정보(arts);
 
-        given(artsRepository.findById(any()))
-                .willReturn(Optional.of(arts));
-        given(detailsRepository.findByArts(arts))
+        given(detailsRepository.findByArtsId(anyLong()))
                 .willReturn(Optional.of(details));
 
         //when
@@ -148,10 +137,48 @@ class DetailsServiceTest {
     @DisplayName("저장되어 있지 않은 arts 아이디로 맵 화면 작품 조회시 예외가 발생한다.")
     public void 저장되어_있지_않은_아이디로_맵_화면_작품_조회시_예외_발생() throws Exception {
         //given
-        given(artsRepository.findById(any()))
-                .willThrow(ArtsNotFoundException.class);
+        given(detailsRepository.findByArtsId(anyLong()))
+                .willThrow(DetailsNotFoundException.class);
         //when //then
         assertThatThrownBy(() -> detailsService.findArtOnMap(2L))
-                .isInstanceOf(ArtsNotFoundException.class);
+                .isInstanceOf(DetailsNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("작품 정보를 수정한다.")
+    public void 작품_정보_수정() throws Exception {
+        //given
+        Arts arts = 작품();
+        Details details = 작품_세부정보(arts);
+        ArtRequest artRequest = 작품_이름_정보_수정_요청();
+
+        given(detailsRepository.findByArtsId(anyLong()))
+                .willReturn(Optional.of(details));
+
+        //when
+        detailsService.update(2L, artRequest);
+
+        //then
+        assertAll(
+                () -> assertThat(arts.getArtName()).isEqualTo(artRequest.getArtName()),
+                () -> assertThat(details.getInfo()).isEqualTo(artRequest.getInfo())
+        );
+    }
+
+    @Test
+    @DisplayName("작품 정보를 삭제한다.")
+    public void 작품_정보_삭제() throws Exception {
+        //given
+        Details details = 작품_세부정보(작품());
+        given(detailsRepository.findByArtsId(anyLong()))
+                .willReturn(Optional.of(details));
+        doNothing().when(detailsRepository).delete(details);
+        //when
+        detailsService.delete(2L);
+        //then
+        assertAll(
+                () -> verify(detailsRepository).delete(details),
+                () -> verify(detailsRepository).findByArtsId(anyLong())
+        );
     }
 }

@@ -66,6 +66,11 @@ public class EntireArtsFixtures {
                 CATEGORY_NAME, AUTHOR_NAME, AGENCY, INFO, START_DATE, END_DATE);
     }
 
+    public static ArtRequest 작품_이름_정보_수정_요청() {
+        return new ArtRequest("수정작품", IMAGE_URL, LATITUDE, LONGITUDE, ROAD_ADDRESS, OLD_ADDRESS,
+                CATEGORY_NAME, AUTHOR_NAME, AGENCY, "수정내용", START_DATE, END_DATE);
+    }
+
     public static ArtMapResponse 작품_맵_조회_응답() {
         return new ArtMapResponse(ARTS_ID, ART_NAME, ROAD_ADDRESS, AUTHOR_NAME, INFO, AGENCY);
     }
