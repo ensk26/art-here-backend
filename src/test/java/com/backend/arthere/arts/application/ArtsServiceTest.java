@@ -35,17 +35,17 @@ class ArtsServiceTest {
     private PresignedURLUtils presignedURLUtils;
 
     @Test
-    void 수정일_내림차순으로_id_작품이름_이미지URL_반환() {
+    void 수정일_내림차순으로_데이터_반환() {
 
         //given
-        ArtImageByRevisionDateRequest request = request("1", "2023-02-26T00:09:47.219594", "5");
+        ArtImageByRevisionDateRequest request = request("1", "2023-02-26T00:09:47.219594", "4");
         String preSignedURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
         LocalDateTime next = LocalDateTime.parse("2023-01-26T00:09:47.019594");
 
         given(artsRepository.findArtImageByRevisionDate(any()))
                 .willReturn(findArtImageByRevisionDateRepositoryResponse());
         given(artsRepository.findRevisionDateById(anyLong()))
-                .willReturn(Collections.singletonList(next));
+                .willReturn(List.of(next));
         given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
 
         //when
@@ -98,12 +98,9 @@ class ArtsServiceTest {
         //given
         ArtImageByRevisionDateRequest request = request(null, null, "6");
         String preSignedURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
-        LocalDateTime next = LocalDateTime.parse("2023-01-26T00:09:47.019594");
 
         given(artsRepository.findArtImageByRevisionDate(any()))
                 .willReturn(findArtImageByRevisionDateRepositoryResponse());
-        given(artsRepository.findRevisionDateById(anyLong()))
-                .willReturn(Collections.singletonList(next));
         given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
 
         //when
