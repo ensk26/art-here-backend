@@ -23,10 +23,10 @@ class ArtsRepositoryTest {
     private ArtsRepository artsRepository;
 
     @Test
-    void 수정일_내림차순으로_id_작품이름_이미지URL_반환() {
+    void 수정일_내림차순으로_데이터_반환() {
 
         //given
-        ArtImageByRevisionDateRequest request = request(null, null, "20");
+        ArtImageByRevisionDateRequest request = request(null, null, "5");
         artsSaveData();
 
         //when
@@ -62,7 +62,6 @@ class ArtsRepositoryTest {
 
         //given
         artsSaveData();
-        //artsSaveData();
         ArtImageByRevisionDateRequest request = request(null, null, "1");
 
         List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(request);
