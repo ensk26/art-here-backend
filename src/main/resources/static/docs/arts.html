@@ -783,13 +783,168 @@ Content-Length: 68
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_중심위치_지정_반경내_이미지_요청">중심위치 지정 반경내 이미지 요청</h3>
+<div class="paragraph">
+<p>요청한 중심위치 위도 (latitude), 경도 (longitude)로 id, 작품 이름, 이미지 URL, 위도, 경도 데이터 반환한다.</p>
+</div>
+<div class="sect3">
+<h4 id="_중심위치_지정_반경내_이미지_요청_request_parameters">Request parameters</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>latitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 위치 위도</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>longitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 위치 경도</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_중심위치_지정_반경내_이미지_요청_response_fields">Response fields</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].artName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작품 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].imageURL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지 URL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].latitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">위도</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].longitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">경도</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_중심위치_지정_반경내_이미지_요청_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/image/map?latitude=37.587241&amp;longitude=127.019941 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_성공_2">성공</h4>
+<div class="sect4">
+<h5 id="_성공_2_http_response">HTTP response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 1112
+
+[ {
+  "id" : 1,
+  "artName" : "모래작품1",
+  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand1.jpg?X-Amz-Algorithm",
+  "latitude" : 38.58724,
+  "longitude" : 128.01994000000002
+}, {
+  "id" : 2,
+  "artName" : "모래작품2",
+  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand2.jpg?X-Amz-Algorithm",
+  "latitude" : 39.58724,
+  "longitude" : 129.01994000000002
+}, {
+  "id" : 3,
+  "artName" : "모래작품3",
+  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand3.jpg?X-Amz-Algorithm",
+  "latitude" : 40.58724,
+  "longitude" : 130.01994000000002
+}, {
+  "id" : 4,
+  "artName" : "모래작품4",
+  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand4.jpg?X-Amz-Algorithm",
+  "latitude" : 41.58724,
+  "longitude" : 131.01994000000002
+}, {
+  "id" : 5,
+  "artName" : "모래작품5",
+  "imageURL" : "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand5.jpg?X-Amz-Algorithm",
+  "latitude" : 42.58724,
+  "longitude" : 132.01994000000002
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_실패_2">실패</h4>
+<div class="paragraph">
+<p>요청에 해당하는 데이터가 존재하지 않는다.</p>
+</div>
+<div class="sect4">
+<h5 id="_실패_2_http_response">HTTP response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 68
+
+{
+  "message" : "해당 데이터가 존재하지 않습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-02-28 01:27:45 +0900
+Last updated 2023-02-28 02:18:30 +0900
 </div>
 </div>
 </body>
