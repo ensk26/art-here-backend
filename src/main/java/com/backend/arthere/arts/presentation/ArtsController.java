@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Validated
@@ -31,8 +31,8 @@ public class ArtsController {
     }
 
     @GetMapping("/map")
-    public ResponseEntity<?> findArtImageByLocation(@RequestParam("latitude") @NotBlank Double latitude,
-                                                    @RequestParam("longitude") @NotBlank Double longitude) {
+    public ResponseEntity<?> findArtImageByLocation(@RequestParam("latitude") @NotNull Double latitude,
+                                                    @RequestParam("longitude") @NotNull Double longitude) {
 
         List<ArtImageByLocationResponse> artImageResponses = artsService.findArtImageByLocation(latitude, longitude);
         return ResponseEntity.ok(artImageResponses);
