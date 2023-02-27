@@ -23,6 +23,8 @@ public class ArtsService {
 
     public ArtImageByRevisionDateResponse findArtImageByRevisionDate(ArtImageByRevisionDateRequest request) {
 
+        Long id = null;
+        LocalDateTime next = null;
         List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(request);
 
         if (artImageResponses.isEmpty()) {
@@ -30,9 +32,10 @@ public class ArtsService {
         }
 
         Boolean hasNext = hasNext(artImageResponses, request.getLimit() + 1);
-
-        Long id = artImageResponses.get(artImageResponses.size() - 1).getId();
-        LocalDateTime next = artsRepository.findRevisionDateById(id).get(0);
+        if (hasNext) {
+            id = artImageResponses.get(artImageResponses.size() - 1).getId();
+            next = artsRepository.findRevisionDateById(id).get(0);
+        }
 
         createImageSharePresignedURLByImageURL(artImageResponses);
 
