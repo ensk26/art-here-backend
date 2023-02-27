@@ -26,8 +26,8 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
     public List<ArtImageResponse> findArtImageByRevisionDate(ArtImageByRevisionDateRequest request) {
         return jpaQueryFactory.select(Projections.constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
                 .from(arts)
+                .orderBy(arts.revisionDate.desc(), arts.id.desc())
                 .where(revisionDateIdx(request.getRevisionDateIdx(), request.getIdx()))
-                .orderBy(arts.id.desc())
                 .limit(request.getLimit() + 1)
                 .fetch();
     }
