@@ -41,7 +41,7 @@ class ArtsControllerTest extends BaseControllerTest {
         //given
         LocalDateTime next = LocalDateTime.parse("2023-01-26T00:09:47.019594");
         boolean hasNext = true;
-        ArtImageByRevisionDateResponse response = artsImageResponse(next, hasNext);
+        ArtImageByRevisionDateResponse response = artsImageResponse(1L, next, hasNext);
         given(artsService.findArtImageByRevisionDate(any())).willReturn(response);
 
         //when
@@ -82,7 +82,7 @@ class ArtsControllerTest extends BaseControllerTest {
         //given
         LocalDateTime next = LocalDateTime.parse("2023-02-26T00:09:47.219594");
         boolean hasNext = true;
-        ArtImageByRevisionDateResponse response = artsImageResponse(next, hasNext);
+        ArtImageByRevisionDateResponse response = artsImageResponse(1L, next, hasNext);
         given(artsService.findArtImageByRevisionDate(any())).willReturn(response);
 
         //when
@@ -140,6 +140,30 @@ class ArtsControllerTest extends BaseControllerTest {
                 );
     }
 
+    @Test
+    @WithMockUser
+    void 메인화면_이미지_수정일_내림차순_다음_데이터가_없는_경우() throws Exception {
+
+        //given
+        ArtImageByRevisionDateResponse response = artsImageResponse(null, null, false);
+        given(artsService.findArtImageByRevisionDate(any())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/media")
+                .param("revisionDateIdx", "2023-02-26T00:09:47.019594")
+                .param("idx", "5")
+                .param("limit", "5"));
+
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("image/media/false")
+
+                );
+    }
+
     //@Test
     //@WithMockUser
     void 메인화면_이미지_수정일_내림차순_요청_limit_1미만_예외_응답() throws Exception {
@@ -189,7 +213,7 @@ class ArtsControllerTest extends BaseControllerTest {
                 );
     }
 
-    private ArtImageByRevisionDateResponse artsImageResponse(LocalDateTime next, boolean hasNext) {
+    private ArtImageByRevisionDateResponse artsImageResponse(Long nextIdx, LocalDateTime next, boolean hasNext) {
 
         String artName = "모래작품";
         String imageURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand";
@@ -200,6 +224,6 @@ class ArtsControllerTest extends BaseControllerTest {
                     imageURL + i + ".jpg?X-Amz-Algorithm"));
         }
 
-        return new ArtImageByRevisionDateResponse(responseList, 1L, next, hasNext);
+        return new ArtImageByRevisionDateResponse(responseList, nextIdx, next, hasNext);
     }
 }
