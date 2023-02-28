@@ -1,15 +1,14 @@
 package com.backend.arthere.arts.application;
 
 import com.backend.arthere.arts.domain.ArtsRepository;
-import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
-import com.backend.arthere.arts.dto.ArtImageResponse;
-import com.backend.arthere.arts.dto.LocationRangeResponse;
+import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,17 +21,25 @@ public class ArtsService {
 
     private final LocationUtils locationUtils;
 
-    public List<ArtImageResponse> findArtImageByRevisionDate(Long offset, Long limit) {
+    public ArtImageByRevisionDateResponse findArtImageByRevisionDate(ArtImageByRevisionDateRequest request) {
 
-        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(offset, limit);
+        Long id = null;
+        LocalDateTime next = null;
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(request);
 
         if (artImageResponses.isEmpty()) {
             throw new ArtsNotFoundException();
         }
 
+        Boolean hasNext = hasNext(artImageResponses, request.getLimit() + 1);
+        if (hasNext) {
+            id = artImageResponses.get(artImageResponses.size() - 1).getId();
+            next = artsRepository.findRevisionDateById(id).get(0);
+        }
+
         createImageSharePresignedURLByImageURL(artImageResponses);
 
-        return artImageResponses;
+        return new ArtImageByRevisionDateResponse(artImageResponses, id, next, hasNext);
     }
 
     public List<ArtImageByLocationResponse> findArtImageByLocation(Double latitude, Double longitude) {
@@ -67,5 +74,13 @@ public class ArtsService {
             String presignedURL = presignedURLUtils.createImageShareURL(artImageRespons.getImageURL());
             artImageRespons.setImageURL(presignedURL);
         }
+    }
+
+    private Boolean hasNext(List<ArtImageResponse> artImageResponses, int size) {
+        if (artImageResponses.size() == size) {
+            artImageResponses.remove(size - 1);
+            return true;
+        }
+        return false;
     }
 }

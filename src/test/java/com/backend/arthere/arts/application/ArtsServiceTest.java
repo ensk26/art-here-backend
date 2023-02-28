@@ -2,6 +2,8 @@ package com.backend.arthere.arts.application;
 
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
+import com.backend.arthere.arts.dto.ArtImageByRevisionDateRequest;
+import com.backend.arthere.arts.dto.ArtImageByRevisionDateResponse;
 import com.backend.arthere.arts.dto.ArtImageResponse;
 import com.backend.arthere.arts.dto.LocationRangeResponse;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
@@ -14,7 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -37,38 +41,39 @@ class ArtsServiceTest {
     private LocationUtils locationUtils;
 
     @Test
-    void 수정일_내림차순으로_id_작품이름_이미지URL_반환() {
+    void 수정일_내림차순으로_데이터_반환() {
 
         //given
-        Long offset = 0L;
-        Long limit = 5L;
+        ArtImageByRevisionDateRequest request = request("1", "2023-02-26T00:09:47.219594", "4");
         String preSignedURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
+        LocalDateTime next = LocalDateTime.parse("2023-01-26T00:09:47.019594");
 
-        given(artsRepository.findArtImageByRevisionDate(anyLong(), anyLong()))
+        given(artsRepository.findArtImageByRevisionDate(any()))
                 .willReturn(findArtImageByRevisionDateRepositoryResponse());
+        given(artsRepository.findRevisionDateById(anyLong()))
+                .willReturn(List.of(next));
         given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
 
         //when
-        List<ArtImageResponse> artImageResponses = artsService.findArtImageByRevisionDate(offset, limit);
+        ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
 
         //then
-        Assertions.assertThat(artImageResponses).usingRecursiveFieldByFieldElementComparator()
+        Assertions.assertThat(responses.getArtImageResponses()).usingRecursiveFieldByFieldElementComparator()
                 .contains(findArtImageByRevisionDateServiceResponse());
     }
 
     @Test
-    void 수정일_내림차순으로_null_반환() {
+    void 수정일_내림차순으로_데이터가_없으면_오류_반환() {
 
         //given
-        Long offset = 0L;
-        Long limit = 5L;
+        ArtImageByRevisionDateRequest request = request(null, null, "5");
         List<ArtImageResponse> repositoryResponses = List.of();
 
-        given(artsRepository.findArtImageByRevisionDate(anyLong(), anyLong()))
+        given(artsRepository.findArtImageByRevisionDate(any()))
                 .willReturn(repositoryResponses);
 
         //when //then
-        assertThatThrownBy(() -> artsService.findArtImageByRevisionDate(offset, limit))
+        assertThatThrownBy(() -> artsService.findArtImageByRevisionDate(request))
                 .isInstanceOf(ArtsNotFoundException.class);
     }
 
@@ -110,6 +115,45 @@ class ArtsServiceTest {
         //when //then
         assertThatThrownBy(() -> artsService.findArtImageByLocation(latitude, longitude))
                 .isInstanceOf(ArtsNotFoundException.class);
+    }
+
+    @Test
+    void 수정일_내림차순_다음데이터_존재하면_True_반환() {
+
+        //given
+        ArtImageByRevisionDateRequest request = request(null, null, "4");
+        String preSignedURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
+        LocalDateTime next = LocalDateTime.parse("2023-01-26T00:09:47.019594");
+
+        given(artsRepository.findArtImageByRevisionDate(any()))
+                .willReturn(findArtImageByRevisionDateRepositoryResponse());
+        given(artsRepository.findRevisionDateById(anyLong()))
+                .willReturn(Collections.singletonList(next));
+        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+
+        //when
+        ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
+
+        //then
+        Assertions.assertThat(responses.getHasNext()).isEqualTo(true);
+    }
+
+    @Test
+    void 수정일_내림차순_다음데이터_존재하지_않으면_False_반환() {
+
+        //given
+        ArtImageByRevisionDateRequest request = request(null, null, "6");
+        String preSignedURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
+
+        given(artsRepository.findArtImageByRevisionDate(any()))
+                .willReturn(findArtImageByRevisionDateRepositoryResponse());
+        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+
+        //when
+        ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
+
+        //then
+        Assertions.assertThat(responses.getHasNext()).isEqualTo(false);
     }
 
     private ArtImageResponse findArtImageByRevisionDateServiceResponse() {
@@ -164,5 +208,18 @@ class ArtsServiceTest {
         double longitude = 127.01994;
 
         return new ArtImageByLocationResponse(1L, artName, imageURL, latitude, longitude);
+    }
+
+    private ArtImageByRevisionDateRequest request(String idx, String revisionDateIdx, String limit) {
+        ArtImageByRevisionDateRequest request = new ArtImageByRevisionDateRequest();
+        if (idx != null) {
+            request.setIdx(idx);
+        }
+        if (revisionDateIdx != null) {
+            request.setRevisionDateIdx(revisionDateIdx);
+        }
+        request.setLimit(limit);
+
+        return request;
     }
 }
