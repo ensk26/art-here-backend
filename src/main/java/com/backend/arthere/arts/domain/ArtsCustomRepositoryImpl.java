@@ -1,15 +1,13 @@
 package com.backend.arthere.arts.domain;
 
-import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateRequest;
-import com.backend.arthere.arts.dto.ArtImageResponse;
-import com.backend.arthere.arts.dto.LocationRangeResponse;
+import com.backend.arthere.arts.dto.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,6 +53,35 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
                 .orderBy(arts.location.latitude.asc())
                 .where(builder)
                 .fetch();
+    }
+
+    @Override
+    public List<ArtImageResponse> findArtImageByAddress(final ArtImageByAddressRequest request) {
+
+        return jpaQueryFactory.select(Projections.constructor
+                        (ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
+                .from(arts)
+                .where(
+                        ltArtsId(request.getIdx()),
+                        containsAddress(request.getQuery()))
+                .limit(request.getLimit()+1)
+                .orderBy(arts.id.desc())
+                .fetch();
+
+    }
+
+    private BooleanExpression containsAddress(final String query) {
+        if(!StringUtils.hasText(query)) {
+            return null;
+        }
+        return arts.address.roadAddress.contains(query);
+    }
+
+    private BooleanExpression ltArtsId(final Long idx) {
+        if(idx == null) {
+            return null;
+        }
+        return arts.id.lt(idx);
     }
 
     @Override
