@@ -87,6 +87,7 @@ public class SecurityConfig {
     private static final String[] AUTH_WHITELLIST = {
             "/api/image/share",
             "/api/image/media",
+            "/api/image/media/address",
             "/api/image/map",
             "/api/art",
             "/api/art/map"
