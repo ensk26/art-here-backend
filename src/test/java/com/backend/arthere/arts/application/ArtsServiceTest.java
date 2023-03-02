@@ -1,12 +1,9 @@
 package com.backend.arthere.arts.application;
 
 import com.backend.arthere.arts.domain.ArtsRepository;
-import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateRequest;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateResponse;
-import com.backend.arthere.arts.dto.ArtImageResponse;
-import com.backend.arthere.arts.dto.LocationRangeResponse;
+import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
+import com.backend.arthere.arts.exception.QueryNotInputException;
 import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import org.assertj.core.api.Assertions;
@@ -21,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.backend.arthere.fixture.EntireArtsFixtures.메인화면_주소_검색_요청;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -156,6 +155,69 @@ class ArtsServiceTest {
         Assertions.assertThat(responses.getHasNext()).isEqualTo(false);
     }
 
+    @Test
+    public void 주소_검색시_다음_데이터가_존재하면_True_반환() throws Exception {
+        //given
+        ArtImageByAddressRequest request = 메인화면_주소_검색_요청(null, "서울", "4");
+        String preSignedURL = "testPreSignedUrl";
+
+        given(artsRepository.findArtImageByAddress(request))
+                .willReturn(findArtImageByRevisionDateRepositoryResponse());
+        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+
+        //when
+        ArtImageByAddressResponse response = artsService.searchArtImageByAddress(request);
+
+        //then
+        assertThat(response.getHasNext()).isTrue();
+
+    }
+    
+    @Test
+    public void 주소_검색시_다음_데이터가_존재하지_않으면_False_반환() throws Exception {
+        //given
+        ArtImageByAddressRequest request = 메인화면_주소_검색_요청(null, "서울", "10");
+        String preSignedURL = "testPreSignedUrl";
+
+        given(artsRepository.findArtImageByAddress(request))
+                .willReturn(findArtImageByRevisionDateRepositoryResponse());
+        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+
+        //when
+        ArtImageByAddressResponse response = artsService.searchArtImageByAddress(request);
+
+        //then
+        assertThat(response.getHasNext()).isFalse();
+        assertThat(response.getNextIdx()).isNull();
+    }
+    
+    @Test
+    public void 주소_검색시_검색어에_해당하는_데이터가_존재하지_않으면_False_반환() throws Exception {
+        //given
+        ArtImageByAddressRequest request = 메인화면_주소_검색_요청(null, "서울", "10");
+
+        given(artsRepository.findArtImageByAddress(request))
+                .willReturn(List.of());
+
+        //when
+        ArtImageByAddressResponse response = artsService.searchArtImageByAddress(request);
+
+        //then
+        assertThat(response.getHasNext()).isFalse();
+        assertThat(response.getNextIdx()).isNull();
+        assertThat(response.getArtImageResponses()).hasSize(0);
+    }
+
+    @Test
+    public void 주소_검색시_검색어를_입력하지_않았을때_예외_발생() throws Exception {
+        //given
+        ArtImageByAddressRequest request = 메인화면_주소_검색_요청(null, null, "10");
+
+        //when //then
+        assertThatThrownBy(() -> artsService.searchArtImageByAddress(request))
+                .isInstanceOf(QueryNotInputException.class);
+    }
+    
     private ArtImageResponse findArtImageByRevisionDateServiceResponse() {
 
         String artName = "모래작품1";
@@ -222,4 +284,5 @@ class ArtsServiceTest {
 
         return request;
     }
+
 }
