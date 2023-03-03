@@ -4,6 +4,7 @@ import com.backend.arthere.arts.domain.Address;
 import com.backend.arthere.arts.domain.Arts;
 import com.backend.arthere.arts.domain.Category;
 import com.backend.arthere.arts.domain.Location;
+import com.backend.arthere.arts.dto.ArtImageByAddressRequest;
 import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.domain.ExhibitionPeriod;
 import com.backend.arthere.details.dto.request.ArtRequest;
@@ -71,6 +72,18 @@ public class EntireArtsFixtures {
                 CATEGORY_NAME, AUTHOR_NAME, AGENCY, "수정내용", START_DATE, END_DATE);
     }
 
+    public static ArtImageByAddressRequest 메인화면_주소_검색_요청(final String idx, final String query,
+                                                         final String limit) {
+        ArtImageByAddressRequest request = new ArtImageByAddressRequest();
+        if(idx != null) {
+            request.setIdx(idx);
+        }
+        if(query != null) {
+            request.setQuery(query);
+        }
+        request.setLimit(limit);
+        return request;
+    }
     public static ArtMapResponse 작품_맵_조회_응답() {
         return new ArtMapResponse(ARTS_ID, ART_NAME, ROAD_ADDRESS, AUTHOR_NAME, INFO, AGENCY);
     }

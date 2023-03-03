@@ -1,9 +1,6 @@
 package com.backend.arthere.arts.domain;
 
-import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateRequest;
-import com.backend.arthere.arts.dto.ArtImageResponse;
-import com.backend.arthere.arts.dto.LocationRangeResponse;
+import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.global.config.JpaConfig;
 import com.backend.arthere.global.config.QueryDslConfig;
 import org.assertj.core.api.Assertions;
@@ -14,7 +11,10 @@ import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import static com.backend.arthere.fixture.EntireArtsFixtures.메인화면_주소_검색_요청;
+import static com.backend.arthere.fixture.EntireArtsFixtures.작품;
 import static java.lang.Thread.sleep;
 
 @DataJpaTest
@@ -102,6 +102,51 @@ class ArtsRepositoryTest {
         Assertions.assertThat(responses.size()).isEqualTo(4);
     }
 
+    @Test
+    public void 검색어와_일치하는_도로명_주소가_있을_때_데이터_반환() throws Exception {
+        //given
+        artsSaveData();
+        String query = "load";
+        ArtImageByAddressRequest request = 메인화면_주소_검색_요청(null, query, "1");
+
+        //when
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByAddress(request);
+
+        Optional<Arts> arts = artsRepository.findById(artImageResponses.get(0).getId());
+
+        //then
+        Assertions.assertThat(arts.get().getAddress().getRoadAddress()).contains(query);
+    }
+
+    @Test
+    public void 검색어와_일치하는_도로명_주소가_없을_때_빈_리스트_반환() throws Exception {
+        //given
+        artsSaveData();
+        ArtImageByAddressRequest request = 메인화면_주소_검색_요청(null, "test", "5");
+
+        //when
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByAddress(request);
+
+        //then
+        Assertions.assertThat(artImageResponses.size()).isEqualTo(0);
+    }
+    
+    @Test
+    public void 입력한_아이디_미만이고_검색어와_일치하는_데이터_반환() throws Exception {
+        //given
+        Arts arts = 작품();
+        artsRepository.save(arts);
+        String idx= String.valueOf(arts.getId() + 1);
+
+        ArtImageByAddressRequest request = 메인화면_주소_검색_요청(idx, arts.getAddress().getRoadAddress(), "1");
+
+        //when
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByAddress(request);
+
+        //then
+        Assertions.assertThat(artImageResponses.get(0).getId()).isLessThan(Long.parseLong(idx));
+    }
+
     private void artsSaveData() {
 
         String artName = "모래작품";
@@ -135,4 +180,5 @@ class ArtsRepositoryTest {
 
         return request;
     }
+
 }

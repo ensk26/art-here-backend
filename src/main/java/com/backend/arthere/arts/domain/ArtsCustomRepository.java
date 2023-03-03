@@ -1,9 +1,6 @@
 package com.backend.arthere.arts.domain;
 
-import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateRequest;
-import com.backend.arthere.arts.dto.ArtImageResponse;
-import com.backend.arthere.arts.dto.LocationRangeResponse;
+import com.backend.arthere.arts.dto.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,4 +13,6 @@ public interface ArtsCustomRepository {
 
     List<LocalDateTime> findRevisionDateById(Long id);
 
+
+    List<ArtImageResponse> findArtImageByAddress(ArtImageByAddressRequest request);
 }

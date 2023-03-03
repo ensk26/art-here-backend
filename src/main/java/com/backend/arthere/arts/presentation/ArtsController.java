@@ -1,9 +1,7 @@
 package com.backend.arthere.arts.presentation;
 
 import com.backend.arthere.arts.application.ArtsService;
-import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateRequest;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateResponse;
+import com.backend.arthere.arts.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +28,12 @@ public class ArtsController {
         return ResponseEntity.ok(responses);
     }
 
+    @GetMapping("/media/address")
+    public ResponseEntity<ArtImageByAddressResponse> searchArtImageByAddress(final ArtImageByAddressRequest request) {
+
+        return ResponseEntity.ok(artsService.searchArtImageByAddress(request));
+    }
+
     @GetMapping("/map")
     public ResponseEntity<?> findArtImageByLocation(@RequestParam("latitude") @NotNull Double latitude,
                                                     @RequestParam("longitude") @NotNull Double longitude) {
@@ -37,4 +41,5 @@ public class ArtsController {
         List<ArtImageByLocationResponse> artImageResponses = artsService.findArtImageByLocation(latitude, longitude);
         return ResponseEntity.ok(artImageResponses);
     }
+
 }

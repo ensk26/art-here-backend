@@ -3,16 +3,19 @@ package com.backend.arthere.arts.application;
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
+import com.backend.arthere.arts.exception.QueryNotInputException;
 import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ArtsService {
 
     private final ArtsRepository artsRepository;
@@ -58,6 +61,23 @@ public class ArtsService {
         return artImageResponses;
     }
 
+    public ArtImageByAddressResponse searchArtImageByAddress(final ArtImageByAddressRequest request) {
+
+        if(request.getQuery() == null || request.getQuery().isEmpty()) {
+            throw new QueryNotInputException();
+        }
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByAddress(request);
+
+        Boolean hasNext = hasNext(artImageResponses, request.getLimit()+1);
+        Long nextIdx = null;
+        if(hasNext) {
+           nextIdx = artImageResponses.get(artImageResponses.size()-1).getId();
+        }
+        createImageSharePresignedURLByImageURL(artImageResponses);
+        return new ArtImageByAddressResponse(artImageResponses, hasNext, nextIdx);
+
+    }
+
     private void createImageSharePresignedURLByImageURL(List<ArtImageResponse> artImageResponses) {
 
         for (ArtImageResponse artImageRespons : artImageResponses) {
@@ -83,4 +103,5 @@ public class ArtsService {
         }
         return false;
     }
+
 }

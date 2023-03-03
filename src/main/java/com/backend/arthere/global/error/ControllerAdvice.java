@@ -2,6 +2,7 @@ package com.backend.arthere.global.error;
 
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.arts.exception.InvalidCategoryException;
+import com.backend.arthere.arts.exception.QueryNotInputException;
 import com.backend.arthere.auth.exception.FailedTokenAuthenticationException;
 import com.backend.arthere.auth.exception.InvalidRefreshTokenException;
 import com.backend.arthere.auth.exception.RefreshTokenNotFoundException;
@@ -33,7 +34,7 @@ public class ControllerAdvice {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler(InvalidCategoryException.class)
+    @ExceptionHandler({InvalidCategoryException.class, QueryNotInputException.class})
     public ResponseEntity<ErrorResponse> handleBadRequest(final RuntimeException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
