@@ -34,6 +34,12 @@ public class ArtsController {
         return ResponseEntity.ok(artsService.searchArtImageByAddress(request));
     }
 
+    @GetMapping("/media/name")
+    public ResponseEntity<?> searchArtImageByArtName(ArtImageByArtNameRequest request) {
+
+        return ResponseEntity.ok(artsService.searchArtImageByArtName(request));
+    }
+
     @GetMapping("/map")
     public ResponseEntity<?> findArtImageByLocation(@RequestParam("latitude") @NotNull Double latitude,
                                                     @RequestParam("longitude") @NotNull Double longitude) {
