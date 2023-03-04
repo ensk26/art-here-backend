@@ -76,7 +76,7 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
         return jpaQueryFactory.select(Projections
                         .constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
                 .from(arts)
-                .where(ltArtsId(request.getIdx()), containArtName(request.getArtName()))
+                .where(ltArtsId(request.getIdx()), containArtName(request.getName()))
                 .orderBy(arts.id.desc())
                 .limit(request.getLimit() + 1)
                 .fetch();
