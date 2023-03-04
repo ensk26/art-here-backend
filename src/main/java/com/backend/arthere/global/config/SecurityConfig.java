@@ -88,6 +88,7 @@ public class SecurityConfig {
             "/api/image/share",
             "/api/image/media",
             "/api/image/media/address",
+            "/api/image/media/name",
             "/api/image/map",
             "/api/art",
             "/api/art/map"
