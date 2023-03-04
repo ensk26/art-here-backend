@@ -64,21 +64,40 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
                 .where(
                         ltArtsId(request.getIdx()),
                         containsAddress(request.getQuery()))
-                .limit(request.getLimit()+1)
+                .limit(request.getLimit() + 1)
                 .orderBy(arts.id.desc())
                 .fetch();
 
     }
 
+    @Override
+    public List<ArtImageResponse> findArtImageByArtName(ArtImageByArtNameRequest request) {
+
+        return jpaQueryFactory.select(Projections
+                        .constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
+                .from(arts)
+                .where(ltArtsId(request.getIdx()), containArtName(request.getArtName()))
+                .orderBy(arts.id.desc())
+                .limit(request.getLimit() + 1)
+                .fetch();
+    }
+
     private BooleanExpression containsAddress(final String query) {
-        if(!StringUtils.hasText(query)) {
+        if (!StringUtils.hasText(query)) {
             return null;
         }
         return arts.address.roadAddress.contains(query);
     }
 
+    private BooleanExpression containArtName(String artName) {
+        if (!StringUtils.hasText(artName)) {
+            return null;
+        }
+        return arts.artName.contains(artName);
+    }
+
     private BooleanExpression ltArtsId(final Long idx) {
-        if(idx == null) {
+        if (idx == null) {
             return null;
         }
         return arts.id.lt(idx);
