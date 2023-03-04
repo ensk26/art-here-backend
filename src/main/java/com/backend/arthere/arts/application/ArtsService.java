@@ -63,19 +63,38 @@ public class ArtsService {
 
     public ArtImageByAddressResponse searchArtImageByAddress(final ArtImageByAddressRequest request) {
 
-        if(request.getQuery() == null || request.getQuery().isEmpty()) {
+        if (request.getQuery() == null || request.getQuery().isEmpty()) {
             throw new QueryNotInputException();
         }
         List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByAddress(request);
 
-        Boolean hasNext = hasNext(artImageResponses, request.getLimit()+1);
+        Boolean hasNext = hasNext(artImageResponses, request.getLimit() + 1);
         Long nextIdx = null;
-        if(hasNext) {
-           nextIdx = artImageResponses.get(artImageResponses.size()-1).getId();
+        if (hasNext) {
+            nextIdx = artImageResponses.get(artImageResponses.size() - 1).getId();
         }
         createImageSharePresignedURLByImageURL(artImageResponses);
         return new ArtImageByAddressResponse(artImageResponses, hasNext, nextIdx);
 
+    }
+
+    public ArtImageByArtNameResponse searchArtImageByArtName(ArtImageByArtNameRequest request) {
+
+        Long nextId = null;
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByArtName(request);
+
+        if (artImageResponses.isEmpty()) {
+            throw new ArtsNotFoundException();
+        }
+
+        Boolean hasNext = hasNext(artImageResponses, request.getLimit() + 1);
+        if (hasNext) {
+            nextId = artImageResponses.get(artImageResponses.size() - 1).getId();
+        }
+
+        createImageSharePresignedURLByImageURL(artImageResponses);
+
+        return new ArtImageByArtNameResponse(artImageResponses, nextId, hasNext);
     }
 
     private void createImageSharePresignedURLByImageURL(List<ArtImageResponse> artImageResponses) {
