@@ -1,10 +1,9 @@
 package com.backend.arthere.arts.presentation;
 
 import com.backend.arthere.arts.application.ArtsService;
-import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateResponse;
-import com.backend.arthere.arts.dto.ArtImageResponse;
+import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
+import com.backend.arthere.arts.exception.QueryNotInputException;
 import com.backend.arthere.global.BaseControllerTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -272,6 +270,154 @@ class ArtsControllerTest extends BaseControllerTest {
                 );
     }
 
+    @Test
+    @WithMockUser
+    public void 메인화면에서_주소_검색시_처음_응답() throws Exception {
+        //given
+        ArtImageByAddressResponse response = artImageByAddressResponse(true, 3L);
+
+        given(artsService.searchArtImageByAddress(any()))
+                .willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/media/address")
+                .param("query", "test")
+                .param("limit", "5"));
+
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("image/media/address",
+                                requestParameters(
+                                        parameterWithName("query").description("검색어"),
+                                        parameterWithName("limit").description("요청하는 데이터 개수")
+                                ),
+                                responseFields(
+                                        fieldWithPath("artImageResponses.[].id").type(JsonFieldType.NUMBER)
+                                                .description("id"),
+                                        fieldWithPath("artImageResponses.[].artName").type(JsonFieldType.STRING)
+                                                .description("작품 이름"),
+                                        fieldWithPath("artImageResponses.[].imageURL").type(JsonFieldType.STRING)
+                                                .description("이미지 URL"),
+                                        fieldWithPath("nextIdx").type(JsonFieldType.NUMBER)
+                                                .description("다음 페이지 idx"),
+                                        fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
+                                                .description("다음 페이지 유무")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    @WithMockUser
+    public void 메인화면에서_주소_검색시_다음_응답() throws Exception {
+        //given
+        ArtImageByAddressResponse response = artImageByAddressResponse(false, null);
+
+        given(artsService.searchArtImageByAddress(any()))
+                .willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/media/address")
+                .param("idx", "3")
+                .param("query", "test")
+                .param("limit", "5"));
+
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("image/media/address/next",
+                                requestParameters(
+                                        parameterWithName("idx").description("요청을 시작하는 id 위치"),
+                                        parameterWithName("query").description("검색어"),
+                                        parameterWithName("limit").description("요청하는 데이터 개수")
+                                ),
+                                responseFields(
+                                        fieldWithPath("artImageResponses.[].id").type(JsonFieldType.NUMBER)
+                                                .description("id"),
+                                        fieldWithPath("artImageResponses.[].artName").type(JsonFieldType.STRING)
+                                                .description("작품 이름"),
+                                        fieldWithPath("artImageResponses.[].imageURL").type(JsonFieldType.STRING)
+                                                .description("이미지 URL"),
+                                        fieldWithPath("nextIdx").type(JsonFieldType.NULL)
+                                                .description("다음 페이지 idx"),
+                                        fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
+                                                .description("다음 페이지 유무")
+                                )
+                        )
+                );
+
+    }
+
+    @Test
+    @WithMockUser
+    public void 메인화면에서_주소_검색시_검색어와_일치하는_데이터가_없는_경우_응답() throws Exception {
+        //given
+        ArtImageByAddressResponse response = new ArtImageByAddressResponse(List.of(), false, null);
+        given(artsService.searchArtImageByAddress(any()))
+                .willReturn(response);
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/media/address")
+                .param("idx", "3")
+                .param("query", "not Found")
+                .param("limit", "5"));
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("image/media/address/empty",
+                                requestParameters(
+                                        parameterWithName("idx").description("요청을 시작하는 id 위치"),
+                                        parameterWithName("query").description("검색어"),
+                                        parameterWithName("limit").description("요청하는 데이터 개수")
+                                ),
+                                responseFields(
+                                        fieldWithPath("artImageResponses").type(JsonFieldType.ARRAY)
+                                                .description("데이터가 없는 경우 리스트는 비어있음"),
+                                        fieldWithPath("nextIdx").type(JsonFieldType.NULL)
+                                                .description("다음 페이지 idx"),
+                                        fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
+                                                .description("다음 페이지 유무")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    @WithMockUser
+    public void 메인화면에서_주소_검색시_검색어를_입력하지_않은_경우_에러_발생() throws Exception {
+        //given
+        given(artsService.searchArtImageByAddress(any()))
+                .willThrow(new QueryNotInputException());
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/media/address")
+                .param("limit", "5"));
+
+        //then
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(
+                        document("image/media/address/notFound")
+                );
+    }
+
+    private ArtImageByAddressResponse artImageByAddressResponse(boolean hasNext, Long nextIdx) {
+        String artName = "모래작품";
+        String imageURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand";
+        List<ArtImageResponse> responses = new ArrayList<>();
+
+        for (int i = 1; i < 6; i++) {
+            responses.add(new ArtImageResponse((long) i, artName + i,
+                    imageURL + i + ".jpg?X-Amz-Algorithm"));
+        }
+        return new ArtImageByAddressResponse(responses, hasNext, nextIdx);
+    }
     private ArtImageByRevisionDateResponse artsImageResponse(Long nextIdx, LocalDateTime next, boolean hasNext) {
 
         String artName = "모래작품";
@@ -283,7 +429,7 @@ class ArtsControllerTest extends BaseControllerTest {
                     imageURL + i + ".jpg?X-Amz-Algorithm"));
         }
 
-            return new ArtImageByRevisionDateResponse(responseList, nextIdx, next, hasNext);
+        return new ArtImageByRevisionDateResponse(responseList, nextIdx, next, hasNext);
     }
 
     private List<ArtImageByLocationResponse> artsImageByLocationResponse() {
