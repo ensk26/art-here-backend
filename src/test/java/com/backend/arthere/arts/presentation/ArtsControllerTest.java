@@ -3,7 +3,6 @@ package com.backend.arthere.arts.presentation;
 import com.backend.arthere.arts.application.ArtsService;
 import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
-import com.backend.arthere.arts.exception.QueryNotInputException;
 import com.backend.arthere.global.BaseControllerTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -392,8 +391,6 @@ class ArtsControllerTest extends BaseControllerTest {
     @WithMockUser
     public void 메인화면에서_주소_검색시_검색어를_입력하지_않은_경우_에러_발생() throws Exception {
         //given
-        given(artsService.searchArtImageByAddress(any()))
-                .willThrow(new QueryNotInputException());
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/image/media/address")
@@ -404,6 +401,24 @@ class ArtsControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andDo(
                         document("image/media/address/notFound")
+                );
+    }
+
+    @Test
+    @WithMockUser
+    public void 메인화면에서_주소_검색시_limit가_1_미만_10_초과시_에러_발생() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/media/address")
+                .param("query", "test")
+                .param("limit", "12"));
+
+        //then
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(
+                        document("image/media/address/invalid")
                 );
     }
 
