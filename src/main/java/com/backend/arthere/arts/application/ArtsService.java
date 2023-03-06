@@ -3,7 +3,6 @@ package com.backend.arthere.arts.application;
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
-import com.backend.arthere.arts.exception.QueryNotInputException;
 import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import lombok.RequiredArgsConstructor;
@@ -63,9 +62,6 @@ public class ArtsService {
 
     public ArtImageByAddressResponse searchArtImageByAddress(final ArtImageByAddressRequest request) {
 
-        if(request.getQuery() == null || request.getQuery().isEmpty()) {
-            throw new QueryNotInputException();
-        }
         List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByAddress(request);
 
         Boolean hasNext = hasNext(artImageResponses, request.getLimit()+1);

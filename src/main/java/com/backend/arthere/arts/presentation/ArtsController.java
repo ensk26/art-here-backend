@@ -5,11 +5,9 @@ import com.backend.arthere.arts.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -22,14 +20,15 @@ public class ArtsController {
     private final ArtsService artsService;
 
     @GetMapping("/media")
-    public ResponseEntity<?> findArtImageByRevisionDate(ArtImageByRevisionDateRequest request) {
+    public ResponseEntity<?> findArtImageByRevisionDate(@Valid ArtImageByRevisionDateRequest request) {
 
         ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/media/address")
-    public ResponseEntity<ArtImageByAddressResponse> searchArtImageByAddress(final ArtImageByAddressRequest request) {
+    public ResponseEntity<?> searchArtImageByAddress(
+            @Valid final ArtImageByAddressRequest request)  {
 
         return ResponseEntity.ok(artsService.searchArtImageByAddress(request));
     }

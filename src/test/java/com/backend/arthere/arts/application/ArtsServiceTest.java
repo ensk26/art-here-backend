@@ -3,7 +3,6 @@ package com.backend.arthere.arts.application;
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
-import com.backend.arthere.arts.exception.QueryNotInputException;
 import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import org.assertj.core.api.Assertions;
@@ -172,7 +171,7 @@ class ArtsServiceTest {
         assertThat(response.getHasNext()).isTrue();
 
     }
-    
+
     @Test
     public void 주소_검색시_다음_데이터가_존재하지_않으면_False_반환() throws Exception {
         //given
@@ -190,7 +189,7 @@ class ArtsServiceTest {
         assertThat(response.getHasNext()).isFalse();
         assertThat(response.getNextIdx()).isNull();
     }
-    
+
     @Test
     public void 주소_검색시_검색어에_해당하는_데이터가_존재하지_않으면_False_반환() throws Exception {
         //given
@@ -208,16 +207,7 @@ class ArtsServiceTest {
         assertThat(response.getArtImageResponses()).hasSize(0);
     }
 
-    @Test
-    public void 주소_검색시_검색어를_입력하지_않았을때_예외_발생() throws Exception {
-        //given
-        ArtImageByAddressRequest request = 메인화면_주소_검색_요청(null, null, "10");
 
-        //when //then
-        assertThatThrownBy(() -> artsService.searchArtImageByAddress(request))
-                .isInstanceOf(QueryNotInputException.class);
-    }
-    
     private ArtImageResponse findArtImageByRevisionDateServiceResponse() {
 
         String artName = "모래작품1";
@@ -284,5 +274,4 @@ class ArtsServiceTest {
 
         return request;
     }
-
 }
