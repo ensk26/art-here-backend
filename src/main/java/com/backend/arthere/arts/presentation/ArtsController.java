@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class ArtsController {
     }
 
     @GetMapping("/media/name")
-    public ResponseEntity<?> searchArtImageByArtName(ArtImageByArtNameRequest request) {
+    public ResponseEntity<?> searchArtImageByArtName(@Valid ArtImageByArtNameRequest request) {
 
         return ResponseEntity.ok(artsService.searchArtImageByArtName(request));
     }
