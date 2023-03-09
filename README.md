@@ -5,8 +5,8 @@
 |번호|내용|상태|
 |------|---|---|
 |:one:| 정적 팩토리 메서드 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:two:| 디렉토리 구조 변경 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:three:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
+|:two:| 메소드 파라미터에 final 키워드를 추가하자 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
+|:three:| 디렉토리 구조 변경 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:four:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:five:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:six:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
@@ -27,3 +27,10 @@
   -  정적 팩토리 메소드를 작성하는 시점에는 해당 객체의 클래스가 존재하지 않아도 된다.
 - 출처
   - [이펙티브 자바](https://velog.io/@ljinsk3/%EC%A0%95%EC%A0%81-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C%EB%8A%94-%EC%99%9C-%EC%82%AC%EC%9A%A9%ED%95%A0%EA%B9%8C#%EC%A0%95%EC%A0%81-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C-%EB%84%A4%EC%9D%B4%EB%B0%8D-%EC%BB%A8%EB%B2%A4%EC%85%98)
+
+
+### :two: 메소드 파라미터에 final 키워드를 추가하자
+- 사용 이유
+  - 메소드 파라미터에 final 키워드를 붙여 메소드 내에서 변경하지 못하도록 한다. 변수의 재할당을 막을 수 있다.
+- 출처 
+  - [메소드 파라미터 final](https://hudi.blog/intellij-final-keyword/)
