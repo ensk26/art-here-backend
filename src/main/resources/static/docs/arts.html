@@ -1320,10 +1320,42 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 51
+Content-Length: 55
 
 {
-  "message" : "검색어를 입력하세요."
+  "message" : "검색어를 입력하세요.\r\n"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_실패_4">실패</h4>
+<div class="paragraph">
+<p>limit가 1 미만, 10 초과시 400 에러가 발생한다.</p>
+</div>
+<div class="sect4">
+<h5 id="_실패_4_http_request">HTTP request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/image/media/address?query=test&amp;limit=12 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_실패_4_http_response">HTTP response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 63
+
+{
+  "message" : "limit은 1 이상 10 이하입니다.\r\n"
 }</code></pre>
 </div>
 </div>
@@ -1616,12 +1648,12 @@ Content-Length: 68
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_4">실패</h4>
+<h4 id="_실패_5">실패</h4>
 <div class="paragraph">
 <p>검색어를 입력하지 않은 경우 400 에러가 발생한다.</p>
 </div>
 <div class="sect4">
-<h5 id="_실패_4_http_request">HTTP request</h5>
+<h5 id="_실패_5_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/image/media/name?name=&amp;limit=5 HTTP/1.1
@@ -1630,13 +1662,19 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_실패_4_http_response">HTTP response</h5>
+<h5 id="_실패_5_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
 Vary: Origin
 Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 55
+
+{
+  "message" : "검색어를 입력하세요.\r\n"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -1644,7 +1682,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <p>limit가 1 미만일 경우</p>
 </div>
 <div class="sect4">
-<h5 id="_실패_4_http_request">HTTP request</h5>
+<h5 id="_실패_5_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/image/media/name?name=name&amp;limit=0 HTTP/1.1
@@ -1653,13 +1691,19 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_실패_4_http_response">HTTP response</h5>
+<h5 id="_실패_5_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
 Vary: Origin
 Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 63
+
+{
+  "message" : "limit은 1 이상 10 이하입니다.\r\n"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -1667,7 +1711,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <p>limit가 10 초과일 경우</p>
 </div>
 <div class="sect4">
-<h5 id="_실패_4_http_request">HTTP request</h5>
+<h5 id="_실패_5_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/image/media/name?name=name&amp;limit=11 HTTP/1.1
@@ -1676,13 +1720,19 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_실패_4_http_response">HTTP response</h5>
+<h5 id="_실패_5_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
 Vary: Origin
 Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers</code></pre>
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 63
+
+{
+  "message" : "limit은 1 이상 10 이하입니다.\r\n"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -1694,7 +1744,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-03-11 01:44:47 +0900
+Last updated 2023-03-11 02:17:12 +0900
 </div>
 </div>
 </body>
