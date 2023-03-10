@@ -180,14 +180,18 @@ class ArtsRepositoryTest {
     public void 입력한_아이디_미만이고_작품명과_일치하는_데이터_반환() throws Exception {
         //given
         artsSaveData();
-        String idx = "4";
-        ArtImageByArtNameRequest request = artNameRequest(idx, "모래", "5");
+
+        ArtImageByArtNameRequest request = artNameRequest(null, "모래", "1");
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByArtName(request);
+        Long preId = artImageResponses.get(0).getId();
+
+        ArtImageByArtNameRequest nextRequest = artNameRequest(preId.toString(), "모래", "1");
 
         //when
-        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByArtName(request);
+        List<ArtImageResponse> nextResponses = artsRepository.findArtImageByArtName(nextRequest);
 
         //then
-        Assertions.assertThat(artImageResponses.get(0).getId()).isLessThan(Long.parseLong(idx));
+        Assertions.assertThat(nextResponses.get(0).getId()).isLessThan(preId);
     }
 
     private void artsSaveData() {
