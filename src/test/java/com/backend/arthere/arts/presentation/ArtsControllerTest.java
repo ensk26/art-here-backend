@@ -498,10 +498,7 @@ class ArtsControllerTest extends BaseControllerTest {
     public void 메인화면에서_작품명_검색시_검색어와_일치하는_데이터가_없는_경우_응답() throws Exception {
 
         //given
-        ArtImageByArtNameResponse response = artImageByArtNameResponse(false, null);
-
-        given(artsService.searchArtImageByArtName(any()))
-                .willReturn(response);
+        given(artsService.searchArtImageByArtName(any())).willThrow(new ArtsNotFoundException());
 
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
@@ -510,10 +507,10 @@ class ArtsControllerTest extends BaseControllerTest {
                 .param("name", "name")
                 .param("limit", "5"));
         //then
-        resultActions.andExpect(status().isOk())
+        resultActions.andExpect(status().isNotFound())
                 .andDo(print())
                 .andDo(
-                        document("image/media/name/empty")
+                        document("image/media/name/notfound")
                 );
     }
 
