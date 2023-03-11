@@ -9,7 +9,7 @@
 |:three:| 디렉토리 구조 변경 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:four:| 테스트 코드 리팩토링 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:five:| 성능 테스트 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:six:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
+|:six:| e.printstacktrace() 제거 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:seven:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:eight:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:nine:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
@@ -44,3 +44,9 @@
   - 테스트 데이터 대량으로 생성해주는 사이트
 - 툴
   - nGrinder, Jmeter ...
+
+### :six: e.printstacktrace()는 취약하다!
+- 해당 메소드를 사용하면 패키지, 클래스 및 오류의 종류까지 전부 log에 출력을 하게 된다.  그러므로 해커가 만약 침투에 성공하였다면 해당 로그를 탈취하여 각종 클래스 및 정보를 획득 할 수 있기에 취약점 도구를 사용하면 "제거필요" 한 메소드로 자주 검출 된다.
+- 출처
+  - [취약한 printStackTrace 메소드](https://lts0606.tistory.com/570) 
+  - [e.printstacktrace() 사용하지 말아야 하는 이유](https://tgyun615.com/59)
