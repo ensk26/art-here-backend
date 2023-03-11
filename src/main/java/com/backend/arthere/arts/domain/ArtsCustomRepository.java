@@ -13,6 +13,7 @@ public interface ArtsCustomRepository {
 
     List<LocalDateTime> findRevisionDateById(Long id);
 
-
     List<ArtImageResponse> findArtImageByAddress(ArtImageByAddressRequest request);
+
+    List<ArtImageResponse> findArtImageByArtName(ArtImageByArtNameRequest request);
 }
