@@ -10,8 +10,8 @@
 |:four:| 테스트 코드 리팩토링 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:five:| 성능 테스트 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:six:| e.printstacktrace() 제거 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:seven:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:eight:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
+|:seven:| 역할 분리 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
+|:eight:| 예외 정리 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 |:nine:| |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
 
 <br/>
@@ -37,6 +37,8 @@
 
 ### :four: 테스트 코드 리팩토링
 - 중복 제거
+- 테스트를 위해 데이터를 생성하는 메소드 재사용할 수 있도록 리팩토링
+- assertThat, Assertions.asserthat 와 같은 사용할 코드 형식 정하기
 
 ### :five: 성능 테스트
 - 더미 데이터 생성
@@ -50,3 +52,19 @@
 - 출처
   - [취약한 printStackTrace 메소드](https://lts0606.tistory.com/570) 
   - [e.printstacktrace() 사용하지 말아야 하는 이유](https://tgyun615.com/59)
+
+### :seven: 역할이 한눈에 보이도록 작성
+- 클래스나 메소드의 역할을 단위테스트가 쉬울 정도로 나누기
+- 재사용성을 높이기 위해 함수 이름에 기능만 포함되도록 구현
+- 모든 코드에 단위 테스트를 구현 후 코드를 다듬고 분리, 중복 제거를 진행하면서 리팩토링 진행
+- 코드 커버리지를 이용해 단위 테스트가 얼마나 충족됐는지 확인
+
+- 출처
+  - [[Clean Code] 3. 함수](https://velog.io/@leeyoungwoozz/Clean-Code-3.-%ED%95%A8%EC%88%98#1-%EC%9E%91%EA%B2%8C-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%9D%BC)
+  - [코드 커버리지(Code Coverage)가 뭔가요?](https://tecoble.techcourse.co.kr/post/2020-10-24-code-coverage/)
+
+### :eight: 예외 정리
+- 잘못된 URL을 입력할 때 401 Http 상태코드가 발생한다.
+- 클라이언트에서 잘못된 데이터로 요청 시 클라이언트 오류가 아닌 서버 오류가 발생한다.
+- 다른 사람 코드에 기능 추가 시 예외 메시지가 부족하면 어려움이 있을 수 있다. 
+
