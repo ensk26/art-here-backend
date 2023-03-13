@@ -1,9 +1,12 @@
 package com.backend.arthere.auth.presentation;
 
 
+import com.backend.arthere.auth.dto.request.TokenIssueRequest;
 import com.backend.arthere.auth.dto.request.TokenRequest;
+import com.backend.arthere.auth.dto.response.TokenIssueResponse;
 import com.backend.arthere.auth.dto.response.TokenResponse;
 import com.backend.arthere.auth.exception.InvalidRefreshTokenException;
+import com.backend.arthere.auth.exception.InvalidTokenException;
 import com.backend.arthere.auth.exception.RefreshTokenNotFoundException;
 import com.backend.arthere.global.ControllerTest;
 import com.google.gson.Gson;
@@ -72,13 +75,13 @@ class AuthControllerTest extends ControllerTest {
     }
 
     @Test
-    @DisplayName("저장되어 있지 않은 리프레시 토큰으로 재발급을 요청할 경우 401 에러가 발생한다.")
+    @DisplayName("저장되어 있지 않은 리프레시 토큰으로 재발급을 요청할 경우 404 에러가 발생한다.")
     public void 유효하지_않은_리프레시_토큰으로_재발급_요청시_에러_발생 () throws Exception {
         //given
         TokenRequest tokenRequest = 토큰_요청();
 
         given(authService.reissue(any()))
-                .willThrow(new InvalidRefreshTokenException());
+                .willThrow(new RefreshTokenNotFoundException());
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -89,7 +92,7 @@ class AuthControllerTest extends ControllerTest {
         );
 
         //then
-        resultActions.andExpect(status().isUnauthorized())
+        resultActions.andExpect(status().isNotFound())
                 .andDo(print());
 
     }
@@ -139,6 +142,94 @@ class AuthControllerTest extends ControllerTest {
                 .andDo(print())
                 .andDo(
                         document("auth/reissue/expired")
+                );
+    }
+    
+    @Test
+    @DisplayName("로그인 후 토큰 발급 요청시 성공한다.")
+    public void 토큰_발급_요청_성공() throws Exception {
+        //given
+        TokenIssueRequest tokenIssueRequest = 토큰_발급_요청();
+        TokenIssueResponse tokenIssueResponse = 토큰_발급_응답();
+
+        given(authService.issue(any()))
+                .willReturn(tokenIssueResponse);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                post("/api/auth/token/issue")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(tokenIssueRequest))
+                        .with(csrf().asHeader())
+        );
+        
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("auth/issue",
+                                requestFields(
+                                        fieldWithPath("id")
+                                                .type(JsonFieldType.NUMBER)
+                                                .description("아이디"),
+                                        fieldWithPath("token")
+                                                .type(JsonFieldType.STRING)
+                                                .description("토큰")
+                                ),
+                                responseFields(
+                                        fieldWithPath("accessToken")
+                                                .type(JsonFieldType.STRING)
+                                                .description("액세스 토큰"),
+                                        fieldWithPath("refreshToken")
+                                                .type(JsonFieldType.STRING)
+                                                .description("리프레시 토큰")
+                                )
+                        )
+                );
+    }
+    
+    @Test
+    @DisplayName("기간이 만료된 토큰 혹은 올바르지 않은 사용자가 발급 요청시 401 에러가 발생한다.")
+    public void 기간이_만료된_토큰으로_발급_요청시_에러_발생() throws Exception {
+        //given
+        TokenIssueRequest tokenIssueRequest = 토큰_발급_요청();
+
+        given(authService.issue(any()))
+                .willThrow(new InvalidTokenException());
+
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                post("/api/auth/token/issue")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(tokenIssueRequest))
+                        .with(csrf().asHeader())
+        );
+        
+        //then
+        resultActions.andExpect(status().isUnauthorized())
+                .andDo(print())
+                .andDo(
+                        document("auth/issue/expired")
+                );
+    }
+    
+    @Test
+    @DisplayName("토큰을 입력하지 않고 토큰 발급 요청시 400 에러가 발생한다.")
+    public void 토큰을_입력하지_않고_토큰_발급_요청시_에러_발생() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                post("/api/auth/token/issue")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(new TokenIssueRequest()))
+                        .with(csrf().asHeader())
+        );
+
+        //then
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(
+                        document("auth/issue/invalid")
                 );
     }
 
