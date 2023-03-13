@@ -70,3 +70,44 @@ operation::image/media/address/empty[snippets='request-parameters,response-field
 검색어를 입력하지 않은 경우 400 에러가 발생한다.
 
 operation::image/media/address/notFound[snippets='http-request,http-response']
+
+==== 실패
+
+limit가 1 미만, 10 초과시 400 에러가 발생한다.
+
+operation::image/media/address/invalid[snippets='http-request,http-response']
+
+=== 메인 화면에서 작품명 검색
+
+- 검색어와 일치하는 id, 작품 이름, 이미지 URL 데이터 반환한다.
+- name, idx, limit를 parameter 값으로 요청한다.
+- nextIdx로 다음 데이터 위치를 알려준다.
+- hasNext는 다음 데이터 유무를 알려준다.
+
+==== 성공
+
+===== 처음 요청
+
+operation::image/media/name[snippets='request-parameters,response-fields,http-request,http-response']
+
+===== 다음 요청
+
+operation::image/media/name/next[snippets='request-parameters,response-fields,http-request,http-response']
+
+===== 검색어와 일치하는 데이터가 없는 경우
+
+operation::image/media/name/notfound[snippets='http-response']
+
+==== 실패
+
+검색어를 입력하지 않은 경우 400 에러가 발생한다.
+
+operation::image/media/name/null[snippets='http-request,http-response']
+
+limit가 1 미만일 경우
+
+operation::image/media/name/min[snippets='http-request,http-response']
+
+limit가 10 초과일 경우
+
+operation::image/media/name/max[snippets='http-request,http-response']

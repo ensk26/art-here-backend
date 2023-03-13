@@ -130,13 +130,13 @@ class ArtsRepositoryTest {
         //then
         Assertions.assertThat(artImageResponses.size()).isEqualTo(0);
     }
-    
+
     @Test
     public void 입력한_아이디_미만이고_검색어와_일치하는_데이터_반환() throws Exception {
         //given
         Arts arts = 작품();
         artsRepository.save(arts);
-        String idx= String.valueOf(arts.getId() + 1);
+        String idx = String.valueOf(arts.getId() + 1);
 
         ArtImageByAddressRequest request = 메인화면_주소_검색_요청(idx, arts.getAddress().getRoadAddress(), "1");
 
@@ -145,6 +145,53 @@ class ArtsRepositoryTest {
 
         //then
         Assertions.assertThat(artImageResponses.get(0).getId()).isLessThan(Long.parseLong(idx));
+    }
+
+    @Test
+    public void 검색어와_일치하는_작품명이_있을_때_데이터_반환() throws Exception {
+        //given
+        artsSaveData();
+        String name = "모래";
+        ArtImageByArtNameRequest request = artNameRequest(null, name, "1");
+
+        //when
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByArtName(request);
+
+        Optional<Arts> arts = artsRepository.findById(artImageResponses.get(0).getId());
+
+        //then
+        Assertions.assertThat(arts.get().getArtName()).contains(name);
+    }
+
+    @Test
+    public void 검색어와_일치하는_작품명이_없을_때_빈_리스트_반환() throws Exception {
+        //given
+        artsSaveData();
+        ArtImageByArtNameRequest request = artNameRequest(null, "name", "5");
+
+        //when
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByArtName(request);
+
+        //then
+        Assertions.assertThat(artImageResponses.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void 입력한_아이디_미만이고_작품명과_일치하는_데이터_반환() throws Exception {
+        //given
+        artsSaveData();
+
+        ArtImageByArtNameRequest request = artNameRequest(null, "모래", "1");
+        List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByArtName(request);
+        Long preId = artImageResponses.get(0).getId();
+
+        ArtImageByArtNameRequest nextRequest = artNameRequest(preId.toString(), "모래", "1");
+
+        //when
+        List<ArtImageResponse> nextResponses = artsRepository.findArtImageByArtName(nextRequest);
+
+        //then
+        Assertions.assertThat(nextResponses.get(0).getId()).isLessThan(preId);
     }
 
     private void artsSaveData() {
@@ -181,4 +228,14 @@ class ArtsRepositoryTest {
         return request;
     }
 
+    private ArtImageByArtNameRequest artNameRequest(String idx, String name, String limit) {
+        ArtImageByArtNameRequest request = new ArtImageByArtNameRequest();
+        if (idx != null) {
+            request.setIdx(idx);
+        }
+        request.setName(name);
+        request.setLimit(limit);
+
+        return request;
+    }
 }
