@@ -1,7 +1,9 @@
 package com.backend.arthere.auth.presentation;
 
 import com.backend.arthere.auth.application.AuthService;
+import com.backend.arthere.auth.dto.request.TokenIssueRequest;
 import com.backend.arthere.auth.dto.request.TokenRequest;
+import com.backend.arthere.auth.dto.response.TokenIssueResponse;
 import com.backend.arthere.auth.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,15 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/token/reissue")
-    public ResponseEntity<?> reissue(@RequestBody @Valid final TokenRequest tokenRequest) {
+    public ResponseEntity<TokenResponse> reissue(@RequestBody @Valid final TokenRequest tokenRequest) {
         TokenResponse tokenResponse = authService.reissue(tokenRequest);
         return ResponseEntity.ok(tokenResponse);
+    }
+
+    @PostMapping("/token/issue")
+    public ResponseEntity<TokenIssueResponse> issue(@RequestBody @Valid final TokenIssueRequest tokenIssueRequest) {
+        TokenIssueResponse tokenIssueResponse = authService.issue(tokenIssueRequest);
+        return ResponseEntity.ok(tokenIssueResponse);
     }
 
     @PostMapping("/logout")
