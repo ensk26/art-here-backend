@@ -11,6 +11,8 @@ spring:
             scope:
               - profile
               - email
+oauth:
+  redirect-uri: https://art-here.site/oauth/success
 
 security:
   jwt:
