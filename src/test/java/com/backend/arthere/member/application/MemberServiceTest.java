@@ -33,7 +33,7 @@ class MemberServiceTest {
     @DisplayName("아이디로 회원을 조회한다.")
     public void 아이디로_회원_조회() throws Exception {
         //given
-        Member member = 회원();
+        Member member = 회원(회원_아이디);
 
         given(memberRepository.findById((member.getId())))
                 .willReturn(Optional.of(member));
@@ -65,7 +65,7 @@ class MemberServiceTest {
     @DisplayName("회원의 이름을 변경한다.")
     public void 회원_이름_변경() throws Exception {
         //given
-        Member member = 회원();
+        Member member = 회원(회원_아이디);
 
         given(memberRepository.findById(member.getId()))
                 .willReturn(Optional.of(member));
