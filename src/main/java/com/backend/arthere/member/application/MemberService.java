@@ -17,7 +17,7 @@ public class MemberService {
     public MemberResponse findMember(final Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
-        return new MemberResponse(member);
+        return MemberResponse.from(member);
     }
 
     @Transactional
