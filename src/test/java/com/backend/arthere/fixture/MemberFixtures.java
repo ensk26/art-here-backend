@@ -27,7 +27,15 @@ public class MemberFixtures {
     }
 
     public static  Member 회원() {
-        return new Member(회원_아이디, 회원_이메일, 회원_이름, 회원_프로필, Role.USER, 소셜타입);
+        return Member.builder()
+                .email(회원_이메일).name(회원_이름)
+                .profile(회원_프로필).role(Role.USER)
+                .socialType(소셜타입).build();
+    }
+
+    public static Member 회원(final long id) {
+        return new Member(id, 회원_이메일, 회원_이름, 회원_프로필, Role.USER, 소셜타입);
+
     }
 
 }
