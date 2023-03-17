@@ -31,24 +31,26 @@ public class ArtResponse {
 
     private String category;
 
-    public ArtResponse(final Details details, final Arts arts) {
-        fromDetails(details);
-        fromArts(arts);
-    }
-    private void fromDetails(final Details details) {
-        this.id = details.getId();
-        this.authorName = details.getAuthorName();
-        this.agency = details.getAgency();
-        this.info = details.getInfo();
-        this.state = details.isState();
-        this.startDate = details.getPeriod().getStartDate();
-        this.endDate = details.getPeriod().getEndDate();
+    private ArtResponse(final Long id, final String authorName, final String agency, final String info,
+                       final boolean state, final LocalDate startDate, final LocalDate endDate,
+                       final String roadAddress, final String oldAddress, final String category) {
+        this.id = id;
+        this.authorName = authorName;
+        this.agency = agency;
+        this.info = info;
+        this.state = state;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.roadAddress = roadAddress;
+        this.oldAddress = oldAddress;
+        this.category = category;
     }
 
-    private void fromArts(final Arts arts) {
-        this.roadAddress = arts.getAddress().getRoadAddress();
-        this.oldAddress = arts.getAddress().getOldAddress();
-        this.category = arts.getCategory().getCategoryName();
+    public static ArtResponse of(final Details details, final Arts arts) {
+        return new ArtResponse(details.getId(), details.getAuthorName(), details.getAgency(),
+                details.getInfo(), details.isState(), details.getPeriod().getStartDate(),
+                details.getPeriod().getEndDate(), arts.getAddress().getRoadAddress(),
+                arts.getAddress().getOldAddress(), arts.getCategory().getCategoryName());
     }
 
 }
