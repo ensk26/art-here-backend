@@ -7,10 +7,7 @@ import com.backend.arthere.auth.dto.response.TokenIssueResponse;
 import com.backend.arthere.auth.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,8 +24,9 @@ public class AuthController {
     }
 
     @PostMapping("/token/issue")
-    public ResponseEntity<TokenIssueResponse> issue(@RequestBody @Valid final TokenIssueRequest tokenIssueRequest) {
-        TokenIssueResponse tokenIssueResponse = authService.issue(tokenIssueRequest);
+    public ResponseEntity<TokenIssueResponse> issue(@RequestHeader("Token") String token,
+                                                    @RequestBody @Valid TokenIssueRequest tokenIssueRequest) {
+        TokenIssueResponse tokenIssueResponse = authService.issue(tokenIssueRequest.getId(), token);
         return ResponseEntity.ok(tokenIssueResponse);
     }
 
