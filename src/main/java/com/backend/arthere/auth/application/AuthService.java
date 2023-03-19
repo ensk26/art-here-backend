@@ -2,7 +2,6 @@ package com.backend.arthere.auth.application;
 
 import com.backend.arthere.auth.domain.Token;
 import com.backend.arthere.auth.domain.TokenRepository;
-import com.backend.arthere.auth.dto.request.TokenIssueRequest;
 import com.backend.arthere.auth.dto.request.TokenRequest;
 import com.backend.arthere.auth.dto.response.TokenIssueResponse;
 import com.backend.arthere.auth.dto.response.TokenResponse;
@@ -43,17 +42,18 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenIssueResponse issue(final TokenIssueRequest tokenIssueRequest) {
-        matchById(tokenIssueRequest.getId(), tokenIssueRequest.getToken());
-        validateToken(tokenIssueRequest.getToken());
+    public TokenIssueResponse issue(final Long id, final String token) {
+
+        validateToken(token);
+        matchById(id, token);
 
         String accessToken = jwtTokenProvider
-                .createAccessToken(String.valueOf(tokenIssueRequest.getId()));
+                .createAccessToken(String.valueOf(id));
         String refreshToken = jwtTokenProvider
-                .createRefreshToken(String.valueOf(tokenIssueRequest.getId()));
+                .createRefreshToken(String.valueOf(id));
 
-        Token token = getToken(tokenIssueRequest.getId(), refreshToken);
-        token.changeRefreshToken(refreshToken);
+        Token findToken = getToken(id, refreshToken);
+        findToken.changeRefreshToken(refreshToken);
 
         return new TokenIssueResponse(accessToken, refreshToken);
     }
