@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.backend.arthere.fixture.EntireArtsFixtures.메인화면_주소_검색_요청;
-import static com.backend.arthere.fixture.EntireArtsFixtures.작품;
+import static com.backend.arthere.fixture.ArtsFixtures.메인화면_주소_검색_요청;
+import static com.backend.arthere.fixture.ArtsFixtures.작품;
 import static java.lang.Thread.sleep;
 
 @DataJpaTest
@@ -134,8 +134,7 @@ class ArtsRepositoryTest {
     @Test
     public void 입력한_아이디_미만이고_검색어와_일치하는_데이터_반환() throws Exception {
         //given
-        Arts arts = 작품();
-        artsRepository.save(arts);
+        Arts arts = artsRepository.save(작품());
         String idx = String.valueOf(arts.getId() + 1);
 
         ArtImageByAddressRequest request = 메인화면_주소_검색_요청(idx, arts.getAddress().getRoadAddress(), "1");
@@ -201,9 +200,13 @@ class ArtsRepositoryTest {
         Address address = new Address("loadAddress", "oldAddress");
 
         for (int i = 1; i < 6; i++) {
-            artsRepository.save(new Arts(artName + i, imageURL + i,
-                    new Location(37.564878339197044 + (0.0002 * i), 126.9758637182802 + (0.0002 * i)),
-                    address, Category.PICTURE));
+            artsRepository.save(
+                    Arts.builder()
+                    .artName(artName + i)
+                    .imageURL(imageURL + i)
+                    .location(new Location(37.564878339197044 + (0.0002 * i), 126.9758637182802 + (0.0002 * i)))
+                    .address(address)
+                    .category(Category.PICTURE).build());
         }
     }
 

@@ -30,8 +30,7 @@ class TokenRepositoryTest {
     @DisplayName("회원 아이디로 토큰 조회에 성공한다.")
     public void 회원_아이디로_토큰_조회_성공() throws Exception {
         //given
-        Member member = 회원();
-        memberRepository.save(member);
+        Member member = memberRepository.save(회원());
         Token token = 토큰(member);
         tokenRepository.save(token);
 
@@ -57,8 +56,7 @@ class TokenRepositoryTest {
     @DisplayName("회원 아이디의 토큰 정보가 존재하는 경우 true 를 반환한다.")
     public void 회원_아이디의_토큰이_존재할_경우_TRUE_반환() throws Exception {
         //given
-        Member member = 회원();
-        memberRepository.save(member);
+        Member member = memberRepository.save(회원());
         Token token = 토큰(member);
         tokenRepository.save(token);
 
@@ -83,8 +81,7 @@ class TokenRepositoryTest {
     @DisplayName("리프레시 토큰의 토큰 정보가 존재하는 경우 true 를 반환한다.")
     public void 리프레시_토큰의_토큰_정보가_존재할_경우_TRUE_반환() throws Exception {
         //given
-        Member member = 회원();
-        memberRepository.save(member);
+        Member member = memberRepository.save(회원());
         Token token = 토큰(member);
         tokenRepository.save(token);
 
@@ -110,8 +107,7 @@ class TokenRepositoryTest {
     @DisplayName("리프레시 토큰으로 토큰 정보를 삭제한다.")
     public void 리프레시_토큰으로_토큰_삭제_성공() throws Exception {
         //given
-        Member member = 회원();
-        memberRepository.save(member);
+        Member member = memberRepository.save(회원());
         Token token = 토큰(member);
         tokenRepository.save(token);
         //when

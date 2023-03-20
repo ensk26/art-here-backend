@@ -21,7 +21,7 @@ public class ArtMapResponse {
 
     private String agency;
 
-    public ArtMapResponse(final Long id, final String artName, final String roadAddress,
+    private ArtMapResponse(final Long id, final String artName, final String roadAddress,
                           final String authorName, final String info, final String agency) {
         this.id = id;
         this.artName = artName;
@@ -31,20 +31,9 @@ public class ArtMapResponse {
         this.agency = agency;
     }
 
-    public ArtMapResponse(final Details details, final Arts arts) {
-        fromDetails(details);
-        fromArts(arts);
+    public static ArtMapResponse of(final Details details, final Arts arts) {
+        return new ArtMapResponse(arts.getId(), arts.getArtName(), arts.getAddress().getRoadAddress(),
+                details.getAuthorName(), details.getInfo(), details.getAgency());
     }
 
-    private void fromDetails(final Details details) {
-        this.authorName = details.getAuthorName();
-        this.info = details.getInfo();
-        this.agency = details.getAgency();
-    }
-
-    private void fromArts(final Arts arts) {
-        this.id = arts.getId();
-        this.artName = arts.getArtName();
-        this.roadAddress = arts.getAddress().getRoadAddress();
-    }
 }

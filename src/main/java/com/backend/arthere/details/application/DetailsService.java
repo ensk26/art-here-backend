@@ -24,51 +24,49 @@ public class DetailsService {
     public ArtSaveResponse save(final ArtRequest artRequest) {
         Arts arts = artRequest.toArts();
 
-        boolean state = saveState(artRequest.getEndDate());
+        boolean state = getState(artRequest.getEndDate());
         Details details = artRequest.toDetails(arts, state);
         detailsRepository.save(details);
         return new ArtSaveResponse(arts.getId(), arts.getArtName());
     }
 
-    private boolean saveState(final LocalDate endDate) {
-        if(endDate == null || endDate.isAfter(LocalDate.now())) {
-            return true;
-        }
-        return false;
-    }
-
     @Transactional
     public void update(final Long artsId, final ArtRequest artRequest) {
-        Details details = detailsRepository.findByArtsId(artsId)
-                .orElseThrow(DetailsNotFoundException::new);
+        Details details = findDetails(artsId);
 
         details.getArts().update(artRequest.toArts());
-        boolean state = saveState(artRequest.getEndDate());
+        boolean state = getState(artRequest.getEndDate());
         details.update(artRequest.toDetails(details.getArts(), state));
     }
 
     @Transactional
     public void delete(final Long artsId) {
-        Details details = detailsRepository.findByArtsId(artsId)
-                .orElseThrow(DetailsNotFoundException::new);
+        Details details = findDetails(artsId);
         detailsRepository.delete(details);
     }
 
     @Transactional
     public ArtResponse findArt(final Long artsId) {
-        Details details = detailsRepository.findByArtsId(artsId)
-                .orElseThrow(DetailsNotFoundException::new);
-
+        Details details = findDetails(artsId);
         details.changeState();
-        return new ArtResponse(details, details.getArts());
+        return ArtResponse.of(details, details.getArts());
     }
 
     @Transactional(readOnly = true)
     public ArtMapResponse findArtOnMap(final Long artsId) {
-        Details details = detailsRepository.findByArtsId(artsId)
-                .orElseThrow(DetailsNotFoundException::new);
-
-        return new ArtMapResponse(details, details.getArts());
+        Details details = findDetails(artsId);
+        return ArtMapResponse.of(details, details.getArts());
     }
 
+    private Details findDetails(final Long artsId) {
+        return detailsRepository.findByArtsId(artsId)
+                .orElseThrow(DetailsNotFoundException::new);
+    }
+
+    private boolean getState(final LocalDate endDate) {
+        if(endDate == null || endDate.isAfter(LocalDate.now())) {
+            return true;
+        }
+        return false;
+    }
 }

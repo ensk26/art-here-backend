@@ -14,20 +14,17 @@ public class MemberResponse {
     private String profile;
     private SocialType socialType;
 
-    public MemberResponse(Member member) {
-        this.id = member.getId();
-        this.email = member.getEmail();
-        this.name = member.getName();
-        this.profile = member.getProfile();
-        this.socialType = member.getSocialType();
-    }
-
-    public MemberResponse(Long id, String email, String name,
+    private MemberResponse(Long id, String email, String name,
                           String profile, SocialType socialType) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.profile = profile;
         this.socialType = socialType;
+    }
+
+    public static MemberResponse from(final Member member) {
+        return new MemberResponse(member.getId(), member.getEmail(), member.getName(),
+                member.getProfile(), member.getSocialType());
     }
 }

@@ -1,8 +1,6 @@
 package com.backend.arthere.details.presentation;
 
-import com.backend.arthere.arts.domain.Arts;
 import com.backend.arthere.details.application.DetailsService;
-import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.dto.request.ArtRequest;
 import com.backend.arthere.details.dto.response.ArtMapResponse;
 import com.backend.arthere.details.dto.response.ArtResponse;
@@ -22,7 +20,9 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static com.backend.arthere.fixture.EntireArtsFixtures.*;
+import static com.backend.arthere.fixture.ArtsFixtures.작품;
+import static com.backend.arthere.fixture.ArtsFixtures.작품_아이디;
+import static com.backend.arthere.fixture.DetailsFixtures.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -53,7 +53,7 @@ class DetailsControllerTest extends BaseControllerTest {
     public void 관리자가_작품_정보_저장() throws Exception {
         //given
         ArtRequest artRequest = 작품_저장_요청();
-        ArtSaveResponse artSaveResponse = new ArtSaveResponse(2L, artRequest.getArtName());
+        ArtSaveResponse artSaveResponse = new ArtSaveResponse(작품_아이디, artRequest.getArtName());
 
         given(detailsService.save(any()))
                 .willReturn(artSaveResponse);
@@ -159,9 +159,7 @@ class DetailsControllerTest extends BaseControllerTest {
     @WithMockUser
     public void 작품_전체_정보_조회() throws Exception {
         //given
-        Arts arts = 작품();
-        Details details = 작품_세부정보(arts);
-        ArtResponse artResponse = new ArtResponse(details, arts);
+        ArtResponse artResponse = ArtResponse.of(작품_세부정보(), 작품());
 
         given(detailsService.findArt(2L))
                 .willReturn(artResponse);
@@ -233,7 +231,7 @@ class DetailsControllerTest extends BaseControllerTest {
     @WithMockUser
     public void 맵_화면에서_작품_정보_조회() throws Exception {
         //given
-        ArtMapResponse artMapResponse = 작품_맵_조회_응답();
+        ArtMapResponse artMapResponse = ArtMapResponse.of(작품_세부정보(), 작품());
 
         given(detailsService.findArtOnMap(2L))
                 .willReturn(artMapResponse);
@@ -296,7 +294,7 @@ class DetailsControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "ADMIN")
     public void 관리자가_작품_정보_수정() throws Exception {
         //given
-        ArtRequest artRequest = 작품_이름_정보_수정_요청();
+        ArtRequest artRequest = 작품_수정_요청();
         doNothing().when(detailsService).update(2L, artRequest);
 
         //when
@@ -353,7 +351,7 @@ class DetailsControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "USER")
     public void 회원이_작품_정보_수정_요청시_에러_발생() throws Exception {
         //given
-        ArtRequest artRequest = 작품_이름_정보_수정_요청();
+        ArtRequest artRequest = 작품_수정_요청();
         //when
         ResultActions resultActions = mockMvc.perform(
                 patch("/api/admin/art")

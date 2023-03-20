@@ -18,7 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.backend.arthere.fixture.EntireArtsFixtures.*;
+import static com.backend.arthere.fixture.ArtsFixtures.작품;
+import static com.backend.arthere.fixture.ArtsFixtures.작품_아이디;
+import static com.backend.arthere.fixture.DetailsFixtures.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -75,7 +77,7 @@ class DetailsServiceTest {
                 .willReturn(Optional.of(details));
 
         //when
-        ArtResponse artResponse = detailsService.findArt(2L);
+        ArtResponse artResponse = detailsService.findArt(arts.getId());
 
         //then
         assertAll(
@@ -93,7 +95,7 @@ class DetailsServiceTest {
                 .willThrow(DetailsNotFoundException.class);
 
         //when //then
-        assertThatThrownBy(() -> detailsService.findArt(2L))
+        assertThatThrownBy(() -> detailsService.findArt(작품_아이디))
                 .isInstanceOf(DetailsNotFoundException.class);
     }
 
@@ -101,13 +103,11 @@ class DetailsServiceTest {
     @DisplayName("details에 저장되어 있지 않은 arts로 조회하려고 하면 예외가 발생한다.")
     public void 저장되어_있지_않은_작품으로_작품_전체_조회시_예외_발생() throws Exception {
         //given
-        Arts arts = 작품();
-
         given(detailsRepository.findByArtsId(anyLong()))
                 .willThrow(DetailsNotFoundException.class);
 
         //when //then
-        assertThatThrownBy(() -> detailsService.findArt(2L))
+        assertThatThrownBy(() -> detailsService.findArt(작품_아이디))
                 .isInstanceOf(DetailsNotFoundException.class);
     }
 
@@ -122,7 +122,7 @@ class DetailsServiceTest {
                 .willReturn(Optional.of(details));
 
         //when
-        ArtMapResponse artMapResponse = detailsService.findArtOnMap(2L);
+        ArtMapResponse artMapResponse = detailsService.findArtOnMap(arts.getId());
 
         //then
         assertAll(
@@ -140,7 +140,7 @@ class DetailsServiceTest {
         given(detailsRepository.findByArtsId(anyLong()))
                 .willThrow(DetailsNotFoundException.class);
         //when //then
-        assertThatThrownBy(() -> detailsService.findArtOnMap(2L))
+        assertThatThrownBy(() -> detailsService.findArtOnMap(작품_아이디))
                 .isInstanceOf(DetailsNotFoundException.class);
     }
 
@@ -150,13 +150,13 @@ class DetailsServiceTest {
         //given
         Arts arts = 작품();
         Details details = 작품_세부정보(arts);
-        ArtRequest artRequest = 작품_이름_정보_수정_요청();
+        ArtRequest artRequest = 작품_수정_요청();
 
         given(detailsRepository.findByArtsId(anyLong()))
                 .willReturn(Optional.of(details));
 
         //when
-        detailsService.update(2L, artRequest);
+        detailsService.update(arts.getId(), artRequest);
 
         //then
         assertAll(
@@ -174,7 +174,7 @@ class DetailsServiceTest {
                 .willReturn(Optional.of(details));
         doNothing().when(detailsRepository).delete(details);
         //when
-        detailsService.delete(2L);
+        detailsService.delete(작품_아이디);
         //then
         assertAll(
                 () -> verify(detailsRepository).delete(details),

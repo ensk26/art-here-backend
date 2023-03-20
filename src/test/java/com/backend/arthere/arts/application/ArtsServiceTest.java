@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.backend.arthere.fixture.EntireArtsFixtures.메인화면_주소_검색_요청;
+import static com.backend.arthere.fixture.ArtsFixtures.메인화면_주소_검색_요청;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;

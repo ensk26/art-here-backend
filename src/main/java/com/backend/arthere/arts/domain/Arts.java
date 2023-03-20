@@ -38,7 +38,8 @@ public class Arts extends BaseEntity {
     private Category category;
 
     @Builder
-    public Arts(String artName, String imageURL, Location location, Address address, Category category) {
+    public Arts(Long id, String artName, String imageURL, Location location, Address address, Category category) {
+        this.id = id;
         this.artName = artName;
         this.imageURL = imageURL;
         this.location = location;

@@ -1,0 +1,62 @@
+package com.backend.arthere.fixture;
+
+import com.backend.arthere.arts.domain.Arts;
+import com.backend.arthere.details.domain.Details;
+import com.backend.arthere.details.domain.ExhibitionPeriod;
+import com.backend.arthere.details.dto.request.ArtRequest;
+
+import java.time.LocalDate;
+
+import static com.backend.arthere.fixture.ArtsFixtures.*;
+
+public class DetailsFixtures {
+
+    public static final Long 작품_세부_아이디 = 1L;
+    public static final String 작가 = "홍길동";
+    public static final String  담당_기관= "서울";
+    public static final String 상세_내용 = "작품 설명";
+    public static final String 상세_내용_수정 = "작품 설명 수정";
+    public static final boolean 전시중_상태 = true;
+    public static final LocalDate 시작_날짜 = LocalDate.of(2022,2,1);
+    public static final LocalDate 종료_날짜 = LocalDate.of(2024,2,1);
+    public static final LocalDate 지난_종료_날짜 = LocalDate.of(2022,8,1);
+
+    public static Details 작품_세부정보() {
+        ExhibitionPeriod period = new ExhibitionPeriod(시작_날짜, 종료_날짜);
+        return Details.builder()
+                .id(작품_세부_아이디).authorName(작가)
+                .agency(담당_기관).info(상세_내용)
+                .state(전시중_상태)
+                .period(period).build();
+    }
+
+    public static Details 작품_세부정보(final Arts arts) {
+        ExhibitionPeriod period = new ExhibitionPeriod(시작_날짜, 종료_날짜);
+        return new Details(작품_세부_아이디, 작가, 담당_기관, 상세_내용, 전시중_상태, period, arts);
+    }
+
+    public static Details 종료_날짜_지난_작품_세부정보() {
+        ExhibitionPeriod period = new ExhibitionPeriod(시작_날짜, 지난_종료_날짜);
+        return Details.builder()
+                .id(작품_세부_아이디).authorName(작가)
+                .agency(담당_기관).info(상세_내용)
+                .state(전시중_상태)
+                .period(period).build();
+    }
+
+    public static ArtRequest 작품_저장_요청() {
+        return new ArtRequest(작품명, 사진, 위도, 경도, 도로명_주소, 구_주소, 카테고리_명,
+                작가, 담당_기관, 상세_내용, 시작_날짜, 종료_날짜);
+    }
+
+    public static ArtRequest 작품_저장_요청(final String categoryName) {
+        return new ArtRequest(작품명, 사진, 위도, 경도, 도로명_주소, 구_주소, categoryName,
+                작가, 담당_기관, 상세_내용, 시작_날짜, 종료_날짜);
+    }
+
+    public static ArtRequest 작품_수정_요청() {
+        return new ArtRequest(작품명_수정, 사진, 위도, 경도, 도로명_주소, 구_주소, 카테고리_명,
+                작가, 담당_기관, 상세_내용_수정, 시작_날짜, 종료_날짜);
+    }
+
+}
