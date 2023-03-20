@@ -2,10 +2,10 @@ package com.backend.arthere.auth.jwt;
 
 import com.backend.arthere.auth.application.CustomUserDetailsService;
 import com.backend.arthere.auth.domain.TokenRepository;
-import com.backend.arthere.auth.exception.FailedTokenAuthenticationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -27,8 +27,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtTokenProvider.resolveToken(request);
         try {
+            String token = jwtTokenProvider.resolveToken(request);
             if(StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
                 Long id = jwtTokenProvider.getIdFromToken(token);
                 if(tokenRepository.existsByMemberId(id)) {
@@ -40,9 +40,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                     log.info("인증 요청된 사용자 {}", authentication.getName());
                 }
             }
-        } catch (Exception e) {
-            SecurityContextHolder.clearContext();
-            throw new FailedTokenAuthenticationException();
+        } catch (AuthenticationException e) {
+            log.info(e.getMessage());
         }
         filterChain.doFilter(request, response);
     }

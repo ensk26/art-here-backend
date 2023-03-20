@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ErrorResponse {
     private String message;
-    ErrorResponse(final String message) {
+    public ErrorResponse(final String message) {
         this.message = message;
     }
 }

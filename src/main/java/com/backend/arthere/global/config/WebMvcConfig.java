@@ -21,6 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:5173", "https://art-here.site")
                 .allowedMethods("*")
                 .allowedHeaders("*")
+                .exposedHeaders("Token")
                 .allowCredentials(true);
     }
     @Override
