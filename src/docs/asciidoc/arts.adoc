@@ -4,7 +4,7 @@
 === 수정일 순으로 이미지 요청
 
 - 수정일 내림차순으로 id, 작품 이름, 이미지 URL 데이터 반환한다.
-- revisionDateIdx, idx, limit를 parameter 값으로 요청한다.
+- date, idx, limit를 parameter 값으로 요청한다.
 - nextIdx, nextRevisionDateIdx로 다음 데이터 위치를 알려준다.
 - hasNext는 다음 데이터 유무를 알려준다.
 
@@ -27,6 +27,14 @@ operation::image/media/false[snippets='http-response']
 limit에 해당하는 데이터가 존재하지 않는다.
 
 operation::image/media/notfound[snippets='http-response']
+
+limit가 1 미만일 경우
+
+operation::image/media/min[snippets='http-request,http-response']
+
+limit가 10 초과일 경우
+
+operation::image/media/max[snippets='http-request,http-response']
 
 === 중심위치 지정 반경내 이미지 요청
 
