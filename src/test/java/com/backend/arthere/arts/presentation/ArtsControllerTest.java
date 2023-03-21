@@ -88,7 +88,7 @@ class ArtsControllerTest extends BaseControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/image/media")
-                .param("revisionDateIdx", "2023-02-26T00:09:47.019594")
+                .param("date", "2023-02-26T00:09:47.019594")
                 .param("idx", "5")
                 .param("limit", "5"));
 
@@ -98,7 +98,7 @@ class ArtsControllerTest extends BaseControllerTest {
                 .andDo(
                         document("image/media/next",
                                 requestParameters(
-                                        parameterWithName("revisionDateIdx").description("요청을 시작하는 수정일 위치"),
+                                        parameterWithName("date").description("요청을 시작하는 수정일 위치"),
                                         parameterWithName("idx").description("요청을 시작하는 id 위치"),
                                         parameterWithName("limit").description("요청하는 데이터 개수")
                                 ),
@@ -207,7 +207,7 @@ class ArtsControllerTest extends BaseControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/image/media")
-                .param("revisionDateIdx", "2023-02-26T00:09:47.019594")
+                .param("date", "2023-02-26T00:09:47.019594")
                 .param("idx", "5")
                 .param("limit", "5"));
 
@@ -220,36 +220,38 @@ class ArtsControllerTest extends BaseControllerTest {
                 );
     }
 
-    //@Test
-    //@WithMockUser
+    @Test
+    @WithMockUser
     void 메인화면_이미지_수정일_내림차순_요청_limit_1미만_예외_응답() throws Exception {
 
-        //when //then
-        Assertions.assertThatThrownBy(() ->
-                mockMvc.perform(MockMvcRequestBuilders
-                                .get("/api/image/media")
-                                .param("limit", "0"))
-                        .andExpect(status().isBadRequest())
-                        .andDo(print())
-                        .andDo(
-                                document("image/media/min")
-                        )).isInstanceOf(Exception.class);
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/media")
+                .param("limit", "0"));
+
+        //then
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(
+                        document("image/media/min")
+                );
     }
 
-    //@Test
-    //@WithMockUser
+    @Test
+    @WithMockUser
     void 메인화면_이미지_수정일_내림차순_요청_limit_10초과_예외_응답() throws Exception {
 
-        //when //then
-        Assertions.assertThatThrownBy(() ->
-                mockMvc.perform(MockMvcRequestBuilders
-                                .get("/api/image/media")
-                                .param("limit", "11"))
-                        .andExpect(status().isBadRequest())
-                        .andDo(print())
-                        .andDo(
-                                document("image/media/max")
-                        )).isInstanceOf(Exception.class);
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/image/media")
+                .param("limit", "11"));
+
+        //then
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(
+                        document("image/media/max")
+                );
     }
 
     @Test
