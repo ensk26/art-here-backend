@@ -1,5 +1,8 @@
 package com.backend.arthere.auth.jwt;
 
+import com.backend.arthere.global.error.ErrorResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,13 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getLocalizedMessage());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ErrorResponse errorResponse = new ErrorResponse("토큰 인증에 실패하였습니다.");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter()
+                .write(objectMapper.writeValueAsString(errorResponse));
     }
 }

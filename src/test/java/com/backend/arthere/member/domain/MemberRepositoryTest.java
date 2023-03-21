@@ -24,8 +24,7 @@ class MemberRepositoryTest {
     @DisplayName("이메일로 회원을 조회한다.")
     public void 이메일로_회원_조회() throws Exception {
         //given
-        Member member = 회원();
-        memberRepository.save(member);
+        Member member = memberRepository.save(회원());
 
         //when
         Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
@@ -55,8 +54,7 @@ class MemberRepositoryTest {
     @DisplayName("소셜 타입과 이메일로 회원을 조회한다.")
     public void 소셜_타입과_이메일로_회원_조회() throws Exception {
         //given
-        Member member = 회원();
-        memberRepository.save(member);
+        Member member = memberRepository.save(회원());
 
         //when
         Optional<Member> findMember = memberRepository

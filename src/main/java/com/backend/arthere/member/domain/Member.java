@@ -49,8 +49,9 @@ public class Member {
     private SocialType socialType;
 
     @Builder
-    public Member(final String email, final String name, final String profile,
+    public Member(final Long id, final String email, final String name, final String profile,
                   final Role role, final SocialType socialType) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.profile = profile;

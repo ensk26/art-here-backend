@@ -1,6 +1,5 @@
 package com.backend.arthere.auth.jwt;
 
-import com.backend.arthere.auth.domain.TokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;

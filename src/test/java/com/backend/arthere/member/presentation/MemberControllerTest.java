@@ -1,6 +1,5 @@
 package com.backend.arthere.member.presentation;
 
-import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.global.ControllerTest;
 import com.backend.arthere.member.dto.request.MemberNameRequest;
 import com.backend.arthere.member.dto.response.MemberResponse;
@@ -12,7 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
-import static com.backend.arthere.fixture.MemberFixtures.회원_응답;
+
+import static com.backend.arthere.fixture.MemberFixtures.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -33,7 +33,7 @@ class MemberControllerTest extends ControllerTest {
     @DisplayName("회원 조회를 성공한다.")
     public void 회원_조회_성공() throws Exception {
         //given
-        MemberResponse memberResponse = 회원_응답();
+        MemberResponse memberResponse = MemberResponse.from(회원(회원_아이디));
         String accessToken = "Bearer testAccess";
 
         given(memberService.findMember(any()))
@@ -81,11 +81,6 @@ class MemberControllerTest extends ControllerTest {
     public void 저장되어_있지_않은_회원_조회시_에러_발생() throws Exception {
         //given
         String accessToken = "Bearer testAccess";
-        LoginMember loginMember = new LoginMember(1L);
-        given(authenticationArgumentResolver.supportsParameter(any()))
-                .willReturn(true);
-        given(authenticationArgumentResolver.resolveArgument(any(), any(), any(), any()))
-                .willReturn(loginMember);
 
         given(memberService.findMember(any()))
                 .willThrow(new MemberNotFoundException());
@@ -111,7 +106,7 @@ class MemberControllerTest extends ControllerTest {
     @DisplayName("회원 이름을 변경한다.")
     public void 회원_이름_변경() throws Exception {
         //given
-        MemberNameRequest memberNameRequest = new MemberNameRequest("이름변경");
+        MemberNameRequest memberNameRequest = new MemberNameRequest(회원_이름_수정);
         String accessToken = "Bearer testAccess";
 
         doNothing().when(memberService).updateName(1L, memberNameRequest.getName());

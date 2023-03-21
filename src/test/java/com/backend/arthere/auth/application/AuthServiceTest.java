@@ -2,7 +2,6 @@ package com.backend.arthere.auth.application;
 
 import com.backend.arthere.auth.domain.Token;
 import com.backend.arthere.auth.domain.TokenRepository;
-import com.backend.arthere.auth.dto.request.TokenIssueRequest;
 import com.backend.arthere.auth.dto.request.TokenRequest;
 import com.backend.arthere.auth.dto.response.TokenIssueResponse;
 import com.backend.arthere.auth.dto.response.TokenResponse;
@@ -47,7 +46,7 @@ class AuthServiceTest {
         //given
         TokenRequest tokenRequest = 토큰_요청();
         Token refreshToken = 토큰(회원());
-        TokenResponse tokenResponse = 토큰_응답();
+        TokenResponse tokenResponse = new TokenResponse(액세스_토큰);
 
         given(jwtTokenProvider.validateToken(tokenRequest.getRefreshToken()))
                 .willReturn(true);
@@ -116,27 +115,26 @@ class AuthServiceTest {
     @DisplayName("토큰 발급에 성공한다.")
     public void 토큰_발급_성공() throws Exception {
         //given
-        TokenIssueRequest tokenIssueRequest = 토큰_발급_요청();
         TokenIssueResponse tokenIssueResponse = 토큰_발급_응답();
 
-        given(jwtTokenProvider.validateToken(tokenIssueRequest.getToken()))
+        given(jwtTokenProvider.validateToken(임시_토큰))
                 .willReturn(true);
-        given(jwtTokenProvider.getIdFromToken(tokenIssueRequest.getToken()))
-                .willReturn(tokenIssueRequest.getId());
-        given(jwtTokenProvider.createAccessToken(String.valueOf(tokenIssueRequest.getId())))
+        given(jwtTokenProvider.getIdFromToken(임시_토큰))
+                .willReturn(토큰_아이디);
+        given(jwtTokenProvider.createAccessToken(String.valueOf(토큰_아이디)))
                 .willReturn(tokenIssueResponse.getAccessToken());
-        given(jwtTokenProvider.createRefreshToken(String.valueOf(tokenIssueRequest.getId())))
+        given(jwtTokenProvider.createRefreshToken(String.valueOf(토큰_아이디)))
                 .willReturn(tokenIssueResponse.getRefreshToken());
 
-        given(tokenRepository.findByMemberId(tokenIssueRequest.getId()))
+        given(tokenRepository.findByMemberId(토큰_아이디))
                 .willReturn(Optional.empty());
         given(tokenRepository.save(any()))
                 .willReturn(토큰(회원()));
-        given(memberRepository.findById(tokenIssueRequest.getId()))
+        given(memberRepository.findById(토큰_아이디))
                 .willReturn(Optional.of(회원()));
 
         //when
-        TokenIssueResponse issue = authService.issue(tokenIssueRequest);
+        TokenIssueResponse issue = authService.issue(토큰_아이디, 임시_토큰);
         //then
         assertAll(
                 () -> assertThat(issue.getAccessToken()).isEqualTo(tokenIssueResponse.getAccessToken()),
@@ -148,14 +146,10 @@ class AuthServiceTest {
     @DisplayName("기간이 만료된 토큰으로 발급 요청시 예외가 발생한다.")
     public void 기간이_만료된_토큰으로_발급_요청시_예외_발생() throws Exception {
         //given
-        TokenIssueRequest tokenIssueRequest = 토큰_발급_요청();
-
-        given(jwtTokenProvider.getIdFromToken(tokenIssueRequest.getToken()))
-                .willReturn(tokenIssueRequest.getId());
-        given(jwtTokenProvider.validateToken(tokenIssueRequest.getToken()))
+        given(jwtTokenProvider.validateToken(임시_토큰))
                 .willReturn(false);
         //when //then
-        assertThatThrownBy(() -> authService.issue(tokenIssueRequest))
+        assertThatThrownBy(() -> authService.issue(토큰_아이디, 임시_토큰))
                 .isInstanceOf(InvalidTokenException.class);
     }
     
@@ -163,12 +157,13 @@ class AuthServiceTest {
     @DisplayName("올바르지 않은 사용자가 토큰 발급 요청시 예외가 발생한다.")
     public void 유효하지_않은_사용자가_발급_요청시_예외_발생() throws Exception {
         //given
-        TokenIssueRequest tokenIssueRequest = 토큰_발급_요청();
-        given(jwtTokenProvider.getIdFromToken(tokenIssueRequest.getToken()))
+        given(jwtTokenProvider.validateToken(임시_토큰))
+                .willReturn(true);
+        given(jwtTokenProvider.getIdFromToken(임시_토큰))
                 .willThrow(new InvalidTokenException());
 
         //when //then
-        assertThatThrownBy(() -> authService.issue(tokenIssueRequest))
+        assertThatThrownBy(() -> authService.issue(토큰_아이디, 임시_토큰))
                 .isInstanceOf(InvalidTokenException.class);
     }
 
@@ -176,19 +171,17 @@ class AuthServiceTest {
     @DisplayName("리프레시 토큰으로 로그아웃에 성공한다.")
     public void 리프레시_토큰으로_로그아웃_성공() throws Exception {
         //given
-        String refreshToken = "testRefresh";
-
-        given(tokenRepository.existsByRefreshToken(refreshToken))
+        given(tokenRepository.existsByRefreshToken(리프레시_토큰))
                 .willReturn(true);
-        willDoNothing().given(tokenRepository).deleteByRefreshToken(refreshToken);
+        willDoNothing().given(tokenRepository).deleteByRefreshToken(리프레시_토큰);
 
         //when
-        authService.logout(refreshToken);
+        authService.logout(리프레시_토큰);
 
         // then
         assertAll(
-                () -> verify(tokenRepository).existsByRefreshToken(refreshToken),
-                () -> verify(tokenRepository).deleteByRefreshToken(refreshToken)
+                () -> verify(tokenRepository).existsByRefreshToken(리프레시_토큰),
+                () -> verify(tokenRepository).deleteByRefreshToken(리프레시_토큰)
         );
     }
 

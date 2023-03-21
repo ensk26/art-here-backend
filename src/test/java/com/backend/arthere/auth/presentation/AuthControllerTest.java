@@ -22,6 +22,8 @@ import static com.backend.arthere.fixture.TokenFixtures.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -39,7 +41,7 @@ class AuthControllerTest extends ControllerTest {
     public void 리프레시_토큰으로_재발급_요청_성공 () throws Exception {
         //given
         TokenRequest tokenRequest = 토큰_요청();
-        TokenResponse tokenResponse = 토큰_응답();
+        TokenResponse tokenResponse = new TokenResponse(액세스_토큰);
 
         given(authService.reissue(any()))
                 .willReturn(tokenResponse);
@@ -136,7 +138,7 @@ class AuthControllerTest extends ControllerTest {
                         .content(new Gson().toJson(tokenRequest))
                         .with(csrf().asHeader())
         );
-        
+
         //then
         resultActions.andExpect(status().isUnauthorized())
                 .andDo(print())
@@ -144,15 +146,15 @@ class AuthControllerTest extends ControllerTest {
                         document("auth/reissue/expired")
                 );
     }
-    
+
     @Test
     @DisplayName("로그인 후 토큰 발급 요청시 성공한다.")
     public void 토큰_발급_요청_성공() throws Exception {
         //given
-        TokenIssueRequest tokenIssueRequest = 토큰_발급_요청();
+        TokenIssueRequest tokenIssueRequest = new TokenIssueRequest(토큰_아이디);
         TokenIssueResponse tokenIssueResponse = 토큰_발급_응답();
 
-        given(authService.issue(any()))
+        given(authService.issue(any(), any()))
                 .willReturn(tokenIssueResponse);
 
         //when
@@ -160,9 +162,10 @@ class AuthControllerTest extends ControllerTest {
                 post("/api/auth/token/issue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(tokenIssueRequest))
+                        .header("Token", 임시_토큰)
                         .with(csrf().asHeader())
         );
-        
+
         //then
         resultActions.andExpect(status().isOk())
                 .andDo(print())
@@ -171,9 +174,10 @@ class AuthControllerTest extends ControllerTest {
                                 requestFields(
                                         fieldWithPath("id")
                                                 .type(JsonFieldType.NUMBER)
-                                                .description("아이디"),
-                                        fieldWithPath("token")
-                                                .type(JsonFieldType.STRING)
+                                                .description("아이디")
+                                ),
+                                requestHeaders(
+                                        headerWithName("Token")
                                                 .description("토큰")
                                 ),
                                 responseFields(
@@ -187,14 +191,14 @@ class AuthControllerTest extends ControllerTest {
                         )
                 );
     }
-    
+
     @Test
     @DisplayName("기간이 만료된 토큰 혹은 올바르지 않은 사용자가 발급 요청시 401 에러가 발생한다.")
     public void 기간이_만료된_토큰으로_발급_요청시_에러_발생() throws Exception {
         //given
-        TokenIssueRequest tokenIssueRequest = 토큰_발급_요청();
+        TokenIssueRequest tokenIssueRequest = new TokenIssueRequest(토큰_아이디);
 
-        given(authService.issue(any()))
+        given(authService.issue(anyLong(), any()))
                 .willThrow(new InvalidTokenException());
 
         //when
@@ -202,9 +206,10 @@ class AuthControllerTest extends ControllerTest {
                 post("/api/auth/token/issue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new Gson().toJson(tokenIssueRequest))
+                        .header("Token", 임시_토큰)
                         .with(csrf().asHeader())
         );
-        
+
         //then
         resultActions.andExpect(status().isUnauthorized())
                 .andDo(print())
@@ -212,16 +217,17 @@ class AuthControllerTest extends ControllerTest {
                         document("auth/issue/expired")
                 );
     }
-    
+
     @Test
     @DisplayName("토큰을 입력하지 않고 토큰 발급 요청시 400 에러가 발생한다.")
     public void 토큰을_입력하지_않고_토큰_발급_요청시_에러_발생() throws Exception {
         //given
+        TokenIssueRequest tokenIssueRequest = new TokenIssueRequest(토큰_아이디);
         //when
         ResultActions resultActions = mockMvc.perform(
                 post("/api/auth/token/issue")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(new TokenIssueRequest()))
+                        .content(new Gson().toJson(tokenIssueRequest))
                         .with(csrf().asHeader())
         );
 
@@ -248,7 +254,7 @@ class AuthControllerTest extends ControllerTest {
                         .content(new Gson().toJson(tokenRequest))
                         .with(csrf().asHeader())
         );
-        
+
         //then
         resultActions.andExpect(status().isOk())
                 .andDo(print())
@@ -279,7 +285,7 @@ class AuthControllerTest extends ControllerTest {
                         .content(new Gson().toJson(tokenRequest))
                         .with(csrf().asHeader())
         );
-        
+
         //then
         resultActions.andExpect(status().isBadRequest())
                 .andDo(print())
@@ -305,7 +311,7 @@ class AuthControllerTest extends ControllerTest {
                         .content(new Gson().toJson(tokenRequest))
                         .with(csrf().asHeader())
         );
-        
+
         //then
         resultActions.andExpect(status().isNotFound())
                 .andDo(print())

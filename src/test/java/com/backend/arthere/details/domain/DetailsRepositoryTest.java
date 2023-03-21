@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
-import static com.backend.arthere.fixture.EntireArtsFixtures.작품;
-import static com.backend.arthere.fixture.EntireArtsFixtures.작품_세부정보;
+import static com.backend.arthere.fixture.ArtsFixtures.작품;
+import static com.backend.arthere.fixture.DetailsFixtures.작품_세부정보;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
