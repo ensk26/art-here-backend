@@ -1,9 +1,11 @@
 package com.backend.arthere.arts.application;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.arts.util.LocationUtils;
+import com.backend.arthere.global.config.AdminS3Config;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -50,7 +53,7 @@ class ArtsServiceTest {
                 .willReturn(findArtImageResponse());
         given(artsRepository.findRevisionDateById(anyLong()))
                 .willReturn(List.of(next));
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
@@ -87,7 +90,7 @@ class ArtsServiceTest {
                 .willReturn(locationRangeResponse());
         given(artsRepository.findArtImageByLocation(any()))
                 .willReturn(findArtImageByLocationRepositoryResponse());
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         List<ArtImageByLocationResponse> responses = artsService.findArtImageByLocation(latitude, longitude);
@@ -127,7 +130,7 @@ class ArtsServiceTest {
                 .willReturn(findArtImageResponse());
         given(artsRepository.findRevisionDateById(anyLong()))
                 .willReturn(Collections.singletonList(next));
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
@@ -145,7 +148,7 @@ class ArtsServiceTest {
 
         given(artsRepository.findArtImageByRevisionDate(any()))
                 .willReturn(findArtImageResponse());
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
@@ -162,7 +165,7 @@ class ArtsServiceTest {
 
         given(artsRepository.findArtImageByAddress(request))
                 .willReturn(findArtImageResponse());
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByAddressResponse response = artsService.searchArtImageByAddress(request);
@@ -171,7 +174,7 @@ class ArtsServiceTest {
         assertThat(response.getHasNext()).isTrue();
 
     }
-    
+
     @Test
     public void 주소_검색시_다음_데이터가_존재하지_않으면_False_반환() throws Exception {
         //given
@@ -180,7 +183,7 @@ class ArtsServiceTest {
 
         given(artsRepository.findArtImageByAddress(request))
                 .willReturn(findArtImageResponse());
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByAddressResponse response = artsService.searchArtImageByAddress(request);
@@ -189,7 +192,7 @@ class ArtsServiceTest {
         assertThat(response.getHasNext()).isFalse();
         assertThat(response.getNextIdx()).isNull();
     }
-    
+
     @Test
     public void 주소_검색시_검색어에_해당하는_데이터가_존재하지_않으면_False_반환() throws Exception {
         //given
@@ -218,7 +221,7 @@ class ArtsServiceTest {
         given(artsRepository.findArtImageByArtName(any()))
                 .willReturn(findArtImageResponse());
 
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByArtNameResponse responses = artsService.searchArtImageByArtName(request);
