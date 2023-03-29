@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry
                 .addMapping("/**")
                 .allowedOrigins("http://localhost:5173", "https://art-here.site")
-                .allowedMethods("*")
+                .allowedMethods("GET", "POST", "HEAD" ,"PUT", "PATCH", "DELETE", "OPTIONS", "TRACE")
                 .allowedHeaders("*")
                 .exposedHeaders("Token")
                 .allowCredentials(true);
