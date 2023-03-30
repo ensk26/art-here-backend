@@ -57,10 +57,6 @@ public class ArtsService {
         List<ArtImageByLocationResponse> artImageResponses = artsRepository.findArtImageByLocation(locationRangeResponse);
         locationUtils.removeIncorrectLocation(latitude, longitude, radius, artImageResponses);
 
-        if (artImageResponses.isEmpty()) {
-            throw new ArtsNotFoundException();
-        }
-
         createImageBylocationSharePresignedURLByImageURL(artImageResponses);
 
         return artImageResponses;
