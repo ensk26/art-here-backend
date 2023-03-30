@@ -1,5 +1,6 @@
 package com.backend.arthere.arts.util;
 
+import com.backend.arthere.arts.dto.ArtImageByLocationRequest;
 import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
 import com.backend.arthere.arts.dto.LocationRangeResponse;
 import org.springframework.stereotype.Component;
@@ -11,29 +12,30 @@ public class LocationUtils {
 
     private final int EARTH_RADIUS = 6371;
 
-    public LocationRangeResponse getLocationRange(Double latitude, Double longitude, Integer radius) {
+    public LocationRangeResponse getLocationRange(ArtImageByLocationRequest request) {
 
         double mForLatitude = (1 / (EARTH_RADIUS * 1 * (Math.PI / 180))) / 1000;
-        double mForLongitude = (1 / (EARTH_RADIUS * 1 * (Math.PI / 180) * Math.cos(Math.toRadians(latitude)))) / 1000;
+        double mForLongitude = (1 / (EARTH_RADIUS * 1 * (Math.PI / 180)
+                * Math.cos(Math.toRadians(request.getLatitude())))) / 1000;
 
-        double maxLatitude = latitude + (mForLatitude * radius);
-        double minLatitude = latitude - (mForLatitude * radius);
-        double maxLongitude = longitude + (mForLongitude * radius);
-        double minLongitude = longitude - (mForLongitude * radius);
+        double maxLatitude = request.getLatitude() + (mForLatitude * request.getRadius());
+        double minLatitude = request.getLatitude() - (mForLatitude * request.getRadius());
+        double maxLongitude = request.getLongitude() + (mForLongitude * request.getRadius());
+        double minLongitude = request.getLongitude() - (mForLongitude * request.getRadius());
 
         return new LocationRangeResponse(maxLatitude, minLatitude, maxLongitude, minLongitude);
     }
 
-    public void removeIncorrectLocation(Double centerLatitude, Double centerLongitude, Integer radius,
-                                        List<ArtImageByLocationResponse>locationResponses) {
+    public void removeIncorrectLocation(ArtImageByLocationRequest request,
+                                        List<ArtImageByLocationResponse> locationResponses) {
 
         for (int i = locationResponses.size() - 1; i >= 0; i--) {
 
             Double latitude = locationResponses.get(i).getLatitude();
             Double longitude = locationResponses.get(i).getLongitude();
-            double distance = getDistanceLocation(centerLatitude, centerLongitude, latitude, longitude);
+            double distance = getDistanceLocation(request.getLatitude(), request.getLongitude(), latitude, longitude);
 
-            if (distance > radius) {
+            if (distance > request.getRadius()) {
                 locationResponses.remove(i);
             }
         }

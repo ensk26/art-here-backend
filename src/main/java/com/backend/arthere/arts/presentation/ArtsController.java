@@ -5,10 +5,11 @@ import com.backend.arthere.arts.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Validated
@@ -28,7 +29,7 @@ public class ArtsController {
 
     @GetMapping("/media/address")
     public ResponseEntity<?> searchArtImageByAddress(
-            @Valid final ArtImageByAddressRequest request)  {
+            @Valid final ArtImageByAddressRequest request) {
 
         return ResponseEntity.ok(artsService.searchArtImageByAddress(request));
     }
@@ -40,12 +41,10 @@ public class ArtsController {
     }
 
     @GetMapping("/map")
-    public ResponseEntity<?> findArtImageByLocation(@RequestParam("latitude") @NotNull Double latitude,
-                                                    @RequestParam("longitude") @NotNull Double longitude,
-                                                    @RequestParam("radius") @NotNull Integer radius) {
+    public ResponseEntity<?> findArtImageByLocation(@Valid ArtImageByLocationRequest request) {
 
         List<ArtImageByLocationResponse> artImageResponses = artsService
-                .findArtImageByLocation(latitude, longitude,radius);
+                .findArtImageByLocation(request);
         return ResponseEntity.ok(artImageResponses);
     }
 
