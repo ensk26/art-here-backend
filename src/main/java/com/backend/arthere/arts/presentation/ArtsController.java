@@ -41,9 +41,11 @@ public class ArtsController {
 
     @GetMapping("/map")
     public ResponseEntity<?> findArtImageByLocation(@RequestParam("latitude") @NotNull Double latitude,
-                                                    @RequestParam("longitude") @NotNull Double longitude) {
+                                                    @RequestParam("longitude") @NotNull Double longitude,
+                                                    @RequestParam("radius") @NotNull Integer radius) {
 
-        List<ArtImageByLocationResponse> artImageResponses = artsService.findArtImageByLocation(latitude, longitude);
+        List<ArtImageByLocationResponse> artImageResponses = artsService
+                .findArtImageByLocation(latitude, longitude,radius);
         return ResponseEntity.ok(artImageResponses);
     }
 

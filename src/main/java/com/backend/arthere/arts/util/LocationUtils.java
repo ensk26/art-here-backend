@@ -10,9 +10,8 @@ import java.util.List;
 public class LocationUtils {
 
     private final int EARTH_RADIUS = 6371;
-    private final int radius = 50;
 
-    public LocationRangeResponse getLocationRange(Double latitude, Double longitude) {
+    public LocationRangeResponse getLocationRange(Double latitude, Double longitude, Integer radius) {
 
         double mForLatitude = (1 / (EARTH_RADIUS * 1 * (Math.PI / 180))) / 1000;
         double mForLongitude = (1 / (EARTH_RADIUS * 1 * (Math.PI / 180) * Math.cos(Math.toRadians(latitude)))) / 1000;
@@ -25,8 +24,8 @@ public class LocationUtils {
         return new LocationRangeResponse(maxLatitude, minLatitude, maxLongitude, minLongitude);
     }
 
-    public void removeIncorrectLocation(Double centerLatitude, Double centerLongitude,
-                                        List<ArtImageByLocationResponse> locationResponses) {
+    public void removeIncorrectLocation(Double centerLatitude, Double centerLongitude, Integer radius,
+                                        List<ArtImageByLocationResponse>locationResponses) {
 
         for (int i = locationResponses.size() - 1; i >= 0; i--) {
 
