@@ -2,9 +2,7 @@ package com.backend.arthere.arts.presentation;
 
 import com.backend.arthere.arts.application.ArtsService;
 import com.backend.arthere.arts.dto.*;
-import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.global.BaseControllerTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -124,7 +122,9 @@ class ArtsControllerTest extends BaseControllerTest {
     void 메인화면_이미지_수정일_내림차순_데이터_없는_예외_응답() throws Exception {
 
         //given
-        given(artsService.findArtImageByRevisionDate(any())).willThrow(new ArtsNotFoundException());
+        ArtImageByRevisionDateResponse response =
+                new ArtImageByRevisionDateResponse(List.of(), null, null, false);
+        given(artsService.findArtImageByRevisionDate(any())).willReturn(response);
 
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
@@ -132,10 +132,21 @@ class ArtsControllerTest extends BaseControllerTest {
                 .param("limit", "5"));
 
         //then
-        resultActions.andExpect(status().isNotFound())
+        resultActions.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(
-                        document("image/media/notfound")
+                        document("image/media/empty",
+                                responseFields(
+                                        fieldWithPath("artImageResponses").type(JsonFieldType.ARRAY)
+                                                .description("데이터가 없는 경우 리스트는 비어있음"),
+                                        fieldWithPath("nextIdx").type(JsonFieldType.NULL)
+                                                .description("다음 페이지 idx"),
+                                        fieldWithPath("nextRevisionDateIdx").type(JsonFieldType.NULL)
+                                                .description("다음 수정일 idx"),
+                                        fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
+                                                .description("다음 페이지 유무")
+                                )
+                        )
                 );
     }
 
@@ -524,7 +535,9 @@ class ArtsControllerTest extends BaseControllerTest {
     public void 메인화면에서_작품명_검색시_검색어와_일치하는_데이터가_없는_경우_응답() throws Exception {
 
         //given
-        given(artsService.searchArtImageByArtName(any())).willThrow(new ArtsNotFoundException());
+        ArtImageByArtNameResponse response = new ArtImageByArtNameResponse(List.of(), null, false);
+        given(artsService.searchArtImageByArtName(any()))
+                .willReturn(response);
 
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
@@ -533,10 +546,19 @@ class ArtsControllerTest extends BaseControllerTest {
                 .param("name", "name")
                 .param("limit", "5"));
         //then
-        resultActions.andExpect(status().isNotFound())
+        resultActions.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(
-                        document("image/media/name/notfound")
+                        document("image/media/name/empty",
+                                responseFields(
+                                        fieldWithPath("artImageResponses").type(JsonFieldType.ARRAY)
+                                                .description("데이터가 없는 경우 리스트는 비어있음"),
+                                        fieldWithPath("nextIdx").type(JsonFieldType.NULL)
+                                                .description("다음 페이지 idx"),
+                                        fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
+                                                .description("다음 페이지 유무")
+                                )
+                        )
                 );
     }
 

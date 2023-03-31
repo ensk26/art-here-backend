@@ -2,7 +2,6 @@ package com.backend.arthere.arts.application;
 
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.*;
-import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import org.assertj.core.api.Assertions;
@@ -19,7 +18,6 @@ import java.util.List;
 
 import static com.backend.arthere.fixture.ArtsFixtures.메인화면_주소_검색_요청;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
@@ -70,9 +68,11 @@ class ArtsServiceTest {
         given(artsRepository.findArtImageByRevisionDate(any()))
                 .willReturn(repositoryResponses);
 
-        //when //then
-        assertThatThrownBy(() -> artsService.findArtImageByRevisionDate(request))
-                .isInstanceOf(ArtsNotFoundException.class);
+        //when
+        ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
+
+        // then
+        Assertions.assertThat(responses.getArtImageResponses()).isEqualTo(List.of());
     }
 
     @Test
@@ -238,9 +238,11 @@ class ArtsServiceTest {
         given(artsRepository.findArtImageByArtName(any()))
                 .willReturn(repositoryResponses);
 
-        //when //then
-        assertThatThrownBy(() -> artsService.searchArtImageByArtName(request))
-                .isInstanceOf(ArtsNotFoundException.class);
+        //when
+        ArtImageByArtNameResponse responses = artsService.searchArtImageByArtName(request);
+
+        // then
+        Assertions.assertThat(responses.getArtImageResponses()).isEqualTo(List.of());
     }
 
     private ArtImageResponse findArtImageByRevisionDateServiceResponse() {
