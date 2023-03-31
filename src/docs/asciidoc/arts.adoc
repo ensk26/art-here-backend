@@ -22,11 +22,11 @@ operation::image/media/next[snippets='request-parameters,response-fields,http-re
 
 operation::image/media/false[snippets='http-response']
 
-==== 실패
+===== 요청 데이터가 없는 경우
 
 limit에 해당하는 데이터가 존재하지 않는다.
 
-operation::image/media/notfound[snippets='http-response']
+operation::image/media/empty[snippets='http-response']
 
 limit가 1 미만일 경우
 
@@ -44,11 +44,11 @@ operation::image/map[snippets='request-parameters,response-fields,http-request']
 
 ==== 성공
 
-===== 요청 데이터 o
+===== 요청 데이터 있는 경우
 
 operation::image/map[snippets='http-response']
 
-===== 요청 데이터 x
+===== 요청 데이터 없는 경우
 
 요청에 해당하는 데이터가 존재하지 않는다.
 
@@ -104,9 +104,9 @@ operation::image/media/name[snippets='request-parameters,response-fields,http-re
 
 operation::image/media/name/next[snippets='request-parameters,response-fields,http-request,http-response']
 
-===== 검색어와 일치하는 데이터가 없는 경우
+===== 요청 데이터가 없는 경우
 
-operation::image/media/name/notfound[snippets='http-response']
+operation::image/media/name/empty[snippets='http-response']
 
 ==== 실패
 
