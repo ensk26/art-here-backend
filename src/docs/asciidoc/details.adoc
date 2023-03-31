@@ -4,52 +4,94 @@
 
 === 작품 저장 (ADMIN)
 
+- 관리자가 작품 데이터를 저장한다.
+
 ==== 성공
 operation::api/admin/art[snippets='request-headers,request-fields,response-fields,http-request,http-response']
 
-==== 실패 (권한 없는 사용자)
+==== 실패
+===== 권한 없는 사용자
+권한 없는 사용자가 요청할 경우 403 코드를 반환한다.
+
 operation::api/admin/art/forbidden[snippets='http-request,http-response']
 
-==== 실패 (데이터 입력하지 않은 경우)
+===== 데이터 미입력
+데이터를 입력하지 않고 요청할 경우 400 코드를 반환한다.
+
 operation::api/admin/art/invalid[snippets='http-request,http-response']
 
 ---
 
 === 작품 수정 (ADMIN)
+- 관리자가 저장된 작품 데이터를 수정한다.
 
 ==== 성공
 operation::api/admin/art/update[snippets='request-headers,request-parameters,request-fields,http-request,http-response']
 
-==== 실패 (권한 없는 사용자)
+==== 실패
+===== 권한 없는 사용자
+
 operation::api/admin/art/update/forbidden[snippets='http-request,http-response']
 
 ---
 
 === 작품 삭제 (ADMIN)
+- 관리자가 저장된 작품 데이터를 삭제한다.
 
 ==== 성공
 operation::api/admin/art/delete[snippets='request-headers,request-parameters,http-request,http-response']
 
-==== 실패 (잘못된 작품 아이디)
+==== 실패
+===== 잘못된 아이디
+
 operation::api/admin/art/delete/notFound[snippets='http-request,http-response']
 
 ---
+=== 작품 조회 (ADMIN)
+- id 내림차순으로 작품 데이터를 반환한다.
+- page, size를 parameter 값으로 요청한다.
 
-=== 작품 전체 조회
+==== 성공
+
+===== 데이터가 있는 경우
+
+operation::api/admin/art/find[snippets='request-headers,request-parameters,response-fields,http-request,http-response']
+
+===== 데이터가 없는 경우
+operation::api/admin/art/find/empty[snippets='response-fields,http-request,http-response']
+
+==== 실패
+===== 권한 없는 사용자
+
+operation::api/admin/art/find/forbidden[snippets='http-request,http-response']
+
+---
+
+=== 작품 세부 조회
+- 작품 아이디와 일치하는 세부 작품 데이터를 반환한다.
 
 ==== 성공
 operation::api/art[snippets='request-parameters,response-fields,http-request,http-response']
 
-==== 실패 (잘못된 작품 아이디)
+==== 실패
+===== 잘못된 아이디
+
 operation::api/art/notFound[snippets='http-request,http-response']
+
+===== 잘못된 형식
+
+operation::api/art/mismatch[snippets='http-request,http-response']
 
 ---
 
 === 맵 화면에서 작품 조회
+- 작품 아이디와 일치하는 작품 요약 데이터를 반환한다.
 
 ==== 성공
 operation::api/art/map[snippets='request-parameters,response-fields,http-request,http-response']
 
-==== 실패 (잘못된 작품 아이디)
+==== 실패
+===== 잘못된 아이디
+
 operation::api/art/map/notFound[snippets='http-request,http-response']
 
