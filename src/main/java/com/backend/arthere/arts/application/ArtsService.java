@@ -50,16 +50,12 @@ public class ArtsService {
         return new ArtImageByRevisionDateResponse(artImageResponses, id, next, hasNext);
     }
 
-    public List<ArtImageByLocationResponse> findArtImageByLocation(Double latitude, Double longitude) {
+    public List<ArtImageByLocationResponse> findArtImageByLocation(ArtImageByLocationRequest request) {
 
-        LocationRangeResponse locationRangeResponse = locationUtils.getLocationRange(latitude, longitude);
+        LocationRangeResponse locationRangeResponse = locationUtils.getLocationRange(request);
 
         List<ArtImageByLocationResponse> artImageResponses = artsRepository.findArtImageByLocation(locationRangeResponse);
-        locationUtils.removeIncorrectLocation(latitude, longitude, artImageResponses);
-
-        if (artImageResponses.isEmpty()) {
-            throw new ArtsNotFoundException();
-        }
+        locationUtils.removeIncorrectLocation(request, artImageResponses);
 
         createImageBylocationSharePresignedURLByImageURL(artImageResponses);
 

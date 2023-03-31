@@ -519,20 +519,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_중심위치_지정_반경내_이미지_요청_response_fields">4.2.2. Response fields</a></li>
 <li><a href="#_중심위치_지정_반경내_이미지_요청_http_request">4.2.3. HTTP request</a></li>
 <li><a href="#_성공_10">4.2.4. 성공</a></li>
-<li><a href="#_실패_3">4.2.5. 실패</a></li>
 </ul>
 </li>
 <li><a href="#_메인화면에서_주소_검색">4.3. 메인화면에서 주소 검색</a>
 <ul class="sectlevel3">
 <li><a href="#_성공_11">4.3.1. 성공</a></li>
-<li><a href="#_실패_4">4.3.2. 실패</a></li>
-<li><a href="#_실패_5">4.3.3. 실패</a></li>
+<li><a href="#_실패_3">4.3.2. 실패</a></li>
+<li><a href="#_실패_4">4.3.3. 실패</a></li>
 </ul>
 </li>
 <li><a href="#_메인_화면에서_작품명_검색">4.4. 메인 화면에서 작품명 검색</a>
 <ul class="sectlevel3">
 <li><a href="#_성공_12">4.4.1. 성공</a></li>
-<li><a href="#_실패_6">4.4.2. 실패</a></li>
+<li><a href="#_실패_5">4.4.2. 실패</a></li>
 </ul>
 </li>
 </ul>
@@ -1275,7 +1274,7 @@ Content-Length: 31
 Host: localhost:8080
 
 {
-  "name" : "이름변경"
+  "name" : "회원수정"
 }</code></pre>
 </div>
 </div>
@@ -1950,7 +1949,7 @@ Content-Length: 68
 <div class="sect2">
 <h3 id="_중심위치_지정_반경내_이미지_요청">4.2. 중심위치 지정 반경내 이미지 요청</h3>
 <div class="paragraph">
-<p>요청한 중심위치 위도 (latitude), 경도 (longitude)로 id, 작품 이름, 이미지 URL, 위도, 경도 데이터 반환한다.</p>
+<p>요청한 중심위치 위도 (latitude), 경도 (longitude), 반경으로 id, 작품 이름, 이미지 URL, 위도, 경도 데이터 반환한다.</p>
 </div>
 <div class="sect3">
 <h4 id="_중심위치_지정_반경내_이미지_요청_request_parameters">4.2.1. Request parameters</h4>
@@ -1973,6 +1972,10 @@ Content-Length: 68
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>longitude</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 위치 경도</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>radius</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반경</p></td>
 </tr>
 </tbody>
 </table>
@@ -2025,7 +2028,7 @@ Content-Length: 68
 <h4 id="_중심위치_지정_반경내_이미지_요청_http_request">4.2.3. HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/map?latitude=37.587241&amp;longitude=127.019941 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/map?latitude=37.587241&amp;longitude=127.019941&amp;radius=50 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2033,7 +2036,9 @@ Host: localhost:8080</code></pre>
 <div class="sect3">
 <h4 id="_성공_10">4.2.4. 성공</h4>
 <div class="sect4">
-<h5 id="_성공_10_http_response">HTTP response</h5>
+<h5 id="_요청_데이터_o">요청 데이터 o</h5>
+<div class="sect5">
+<h6 id="_요청_데이터_o_http_response">HTTP response</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -2078,25 +2083,24 @@ Content-Length: 1112
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_실패_3">4.2.5. 실패</h4>
+<div class="sect4">
+<h5 id="_요청_데이터_x">요청 데이터 x</h5>
 <div class="paragraph">
 <p>요청에 해당하는 데이터가 존재하지 않는다.</p>
 </div>
-<div class="sect4">
-<h5 id="_실패_3_http_response">HTTP response</h5>
+<div class="sect5">
+<h6 id="_요청_데이터_x_http_response">HTTP response</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 68
+Content-Length: 3
 
-{
-  "message" : "해당 데이터가 존재하지 않습니다."
-}</code></pre>
+[ ]</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -2462,12 +2466,12 @@ Content-Length: 76
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_4">4.3.2. 실패</h4>
+<h4 id="_실패_3">4.3.2. 실패</h4>
 <div class="paragraph">
 <p>검색어를 입력하지 않은 경우 400 에러가 발생한다.</p>
 </div>
 <div class="sect4">
-<h5 id="_실패_4_http_request">HTTP request</h5>
+<h5 id="_실패_3_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/media/address?limit=5 HTTP/1.1
@@ -2476,7 +2480,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_실패_4_http_response">HTTP response</h5>
+<h5 id="_실패_3_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
@@ -2494,12 +2498,12 @@ Content-Length: 55
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_5">4.3.3. 실패</h4>
+<h4 id="_실패_4">4.3.3. 실패</h4>
 <div class="paragraph">
 <p>limit가 1 미만, 10 초과시 400 에러가 발생한다.</p>
 </div>
 <div class="sect4">
-<h5 id="_실패_5_http_request">HTTP request</h5>
+<h5 id="_실패_4_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/media/address?query=test&amp;limit=12 HTTP/1.1
@@ -2508,7 +2512,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_실패_5_http_response">HTTP response</h5>
+<h5 id="_실패_4_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
@@ -2812,12 +2816,12 @@ Content-Length: 68
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_6">4.4.2. 실패</h4>
+<h4 id="_실패_5">4.4.2. 실패</h4>
 <div class="paragraph">
 <p>검색어를 입력하지 않은 경우 400 에러가 발생한다.</p>
 </div>
 <div class="sect4">
-<h5 id="_실패_6_http_request">HTTP request</h5>
+<h5 id="_실패_5_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/media/name?name=&amp;limit=5 HTTP/1.1
@@ -2826,7 +2830,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_실패_6_http_response">HTTP response</h5>
+<h5 id="_실패_5_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
@@ -2846,7 +2850,7 @@ Content-Length: 55
 <p>limit가 1 미만일 경우</p>
 </div>
 <div class="sect4">
-<h5 id="_실패_6_http_request">HTTP request</h5>
+<h5 id="_실패_5_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/media/name?name=name&amp;limit=0 HTTP/1.1
@@ -2855,7 +2859,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_실패_6_http_response">HTTP response</h5>
+<h5 id="_실패_5_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
@@ -2875,7 +2879,7 @@ Content-Length: 63
 <p>limit가 10 초과일 경우</p>
 </div>
 <div class="sect4">
-<h5 id="_실패_6_http_request">HTTP request</h5>
+<h5 id="_실패_5_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/image/media/name?name=name&amp;limit=11 HTTP/1.1
@@ -2884,7 +2888,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_실패_6_http_response">HTTP response</h5>
+<h5 id="_실패_5_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 400 Bad Request
@@ -3057,15 +3061,15 @@ Host: localhost:8080
 {
   "artName" : "작품",
   "imageURL" : "이미지경로",
-  "latitude" : 12.1,
-  "longitude" : 12.5,
+  "latitude" : 12.5,
+  "longitude" : 12.1,
   "roadAddress" : "서울시",
   "oldAddress" : "서울시 중구",
   "category" : "공예",
   "authorName" : "홍길동",
   "agency" : "서울",
   "info" : "작품 설명",
-  "startDate" : "2023-02-01",
+  "startDate" : "2022-02-01",
   "endDate" : "2024-02-01"
 }</code></pre>
 </div>
@@ -3106,15 +3110,15 @@ Host: localhost:8080
 {
   "artName" : "작품",
   "imageURL" : "이미지경로",
-  "latitude" : 12.1,
-  "longitude" : 12.5,
+  "latitude" : 12.5,
+  "longitude" : 12.1,
   "roadAddress" : "서울시",
   "oldAddress" : "서울시 중구",
   "category" : "공예",
   "authorName" : "홍길동",
   "agency" : "서울",
   "info" : "작품 설명",
-  "startDate" : "2023-02-01",
+  "startDate" : "2022-02-01",
   "endDate" : "2024-02-01"
 }</code></pre>
 </div>
@@ -3171,7 +3175,7 @@ Content-Type: application/json
 Content-Length: 374
 
 {
-  "message" : "카테고리를 입력하세요.\r\n담당기관을 입력하세요.\r\n경도를 입력하세요.\r\n작가 이름을 입력하세요.\r\n작품명을 입력하세요.\r\n상세 내용을 입력하세요.\r\n이미지 경로를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n구주소를 입력하세요.\r\n위도를 입력하세요.\r\n"
+  "message" : "카테고리를 입력하세요.\r\n담당기관을 입력하세요.\r\n위도를 입력하세요.\r\n상세 내용을 입력하세요.\r\n작품명을 입력하세요.\r\n구주소를 입력하세요.\r\n이미지 경로를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n경도를 입력하세요.\r\n작가 이름을 입력하세요.\r\n"
 }</code></pre>
 </div>
 </div>
@@ -3312,21 +3316,21 @@ Content-Length: 374
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
-Content-Length: 353
+Content-Length: 362
 Host: localhost:8080
 
 {
-  "artName" : "수정작품",
+  "artName" : "작품 수정",
   "imageURL" : "이미지경로",
-  "latitude" : 12.1,
-  "longitude" : 12.5,
+  "latitude" : 12.5,
+  "longitude" : 12.1,
   "roadAddress" : "서울시",
   "oldAddress" : "서울시 중구",
   "category" : "공예",
   "authorName" : "홍길동",
   "agency" : "서울",
-  "info" : "수정내용",
-  "startDate" : "2023-02-01",
+  "info" : "작품 설명 수정",
+  "startDate" : "2022-02-01",
   "endDate" : "2024-02-01"
 }</code></pre>
 </div>
@@ -3354,21 +3358,21 @@ Vary: Access-Control-Request-Headers</code></pre>
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
-Content-Length: 353
+Content-Length: 362
 Host: localhost:8080
 
 {
-  "artName" : "수정작품",
+  "artName" : "작품 수정",
   "imageURL" : "이미지경로",
-  "latitude" : 12.1,
-  "longitude" : 12.5,
+  "latitude" : 12.5,
+  "longitude" : 12.1,
   "roadAddress" : "서울시",
   "oldAddress" : "서울시 중구",
   "category" : "공예",
   "authorName" : "홍길동",
   "agency" : "서울",
-  "info" : "수정내용",
-  "startDate" : "2023-02-01",
+  "info" : "작품 설명 수정",
+  "startDate" : "2022-02-01",
   "endDate" : "2024-02-01"
 }</code></pre>
 </div>
@@ -3611,7 +3615,7 @@ Content-Length: 275
   "agency" : "서울",
   "info" : "작품 설명",
   "state" : true,
-  "startDate" : "2023-02-01",
+  "startDate" : "2022-02-01",
   "endDate" : "2024-02-01",
   "roadAddress" : "서울시",
   "oldAddress" : "서울시 중구",
@@ -3800,7 +3804,7 @@ Content-Length: 58
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-02-19 00:29:18 +0900
+Last updated 2023-02-28 02:11:19 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

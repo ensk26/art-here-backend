@@ -30,19 +30,21 @@ operation::image/media/notfound[snippets='http-response']
 
 === 중심위치 지정 반경내 이미지 요청
 
-요청한 중심위치 위도 (latitude), 경도 (longitude)로 id, 작품 이름, 이미지 URL, 위도, 경도 데이터 반환한다.
+요청한 중심위치 위도 (latitude), 경도 (longitude), 반경으로 id, 작품 이름, 이미지 URL, 위도, 경도 데이터 반환한다.
 
 operation::image/map[snippets='request-parameters,response-fields,http-request']
 
 ==== 성공
 
+===== 요청 데이터 o
+
 operation::image/map[snippets='http-response']
 
-==== 실패
+===== 요청 데이터 x
 
 요청에 해당하는 데이터가 존재하지 않는다.
 
-operation::image/map/notfound[snippets='http-response']
+operation::image/map/empty[snippets='http-response']
 
 === 메인화면에서 주소 검색
 
