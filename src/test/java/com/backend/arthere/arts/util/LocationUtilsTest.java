@@ -1,5 +1,6 @@
 package com.backend.arthere.arts.util;
 
+import com.backend.arthere.arts.dto.ArtImageByLocationRequest;
 import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
 import com.backend.arthere.arts.dto.LocationRangeResponse;
 import org.assertj.core.api.Assertions;
@@ -21,28 +22,29 @@ class LocationUtilsTest {
     void 지정_위치에서_최대_최소_위도_경도_반환() {
 
         //given
-        Double latitude = 37.565328;
-        Double longitude = 126.976431;
+        ArtImageByLocationRequest request = artLocationRequest("37.565328", "126.976431", "50");
         LocationRangeResponse response = new LocationRangeResponse(37.56577766080296,
                 37.564878339197044, 126.97699828171982, 126.9758637182802);
 
         //when
-        LocationRangeResponse locationRangeResponse = locationUtils.getLocationRange(latitude, longitude);
+        LocationRangeResponse locationRangeResponse = locationUtils.getLocationRange(request);
 
         //then
-        Assertions.assertThat(locationRangeResponse).usingRecursiveComparison().isEqualTo(response);
+        Assertions.assertThat(locationRangeResponse.getMaxLatitude()).isEqualTo(response.getMaxLatitude());
+        Assertions.assertThat(locationRangeResponse.getMaxLongitude()).isEqualTo(response.getMaxLongitude());
+        Assertions.assertThat(locationRangeResponse.getMinLatitude()).isEqualTo(response.getMinLatitude());
+        Assertions.assertThat(locationRangeResponse.getMinLongitude()).isEqualTo(response.getMinLongitude());
     }
 
     @Test
     void 두좌표_거리가_만족하는_좌표만_반환() {
 
         //given
-        Double centerlatitude = 37.565328;
-        Double centerlongitude = 126.976431;
+        ArtImageByLocationRequest request = artLocationRequest("37.565328", "126.976431", "50");
         List<ArtImageByLocationResponse> locationResponses = testPositionProvider();
 
         //when
-        locationUtils.removeIncorrectLocation(centerlatitude, centerlongitude, locationResponses);
+        locationUtils.removeIncorrectLocation(request, locationResponses);
 
         //then
         Assertions.assertThat(locationResponses).hasSize(4);
@@ -63,5 +65,15 @@ class LocationUtilsTest {
                 37.56577766080296, 126.9758637182802));
 
         return locationResponses;
+    }
+
+    private ArtImageByLocationRequest artLocationRequest(String latitued, String longitude, String radius) {
+
+        ArtImageByLocationRequest request = new ArtImageByLocationRequest();
+        request.setLatitude(latitued);
+        request.setLongitude(longitude);
+        request.setRadius(radius);
+
+        return request;
     }
 }
