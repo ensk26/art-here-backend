@@ -1,6 +1,7 @@
 package com.backend.arthere.details.presentation;
 
 import com.backend.arthere.details.application.DetailsService;
+import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.dto.request.ArtRequest;
 import com.backend.arthere.details.dto.response.ArtMapResponse;
 import com.backend.arthere.details.dto.response.ArtResponse;
@@ -15,10 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.List;
 
 import static com.backend.arthere.fixture.ArtsFixtures.작품;
 import static com.backend.arthere.fixture.ArtsFixtures.작품_아이디;
@@ -227,6 +234,26 @@ class DetailsControllerTest extends BaseControllerTest {
     }
 
     @Test
+    @DisplayName("올바르지 않은 arts 아이디 형식으로 작품 전체 조회시 400 에러가 발생한다.")
+    @WithMockUser
+    public void 올바르지_않은_아이디_형식으로_작품_전체_조회시_에러_발생() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("id", "haha")
+        );
+        //then
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(
+                        document("api/art/mismatch")
+                );
+    }
+
+    @Test
     @DisplayName("맵 화면에서 작품 정보를 조회한다.")
     @WithMockUser
     public void 맵_화면에서_작품_정보_조회() throws Exception {
@@ -416,6 +443,129 @@ class DetailsControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andDo(
                         document("api/admin/art/delete/notFound")
+                );
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void 관리자가_작품_정보_조회() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(0, 3);
+        List<Details> content = 관리자_작품_목록();
+        Page<Details> page = new PageImpl<>(content, pageable, content.size());
+
+        given(detailsService.find(pageable))
+                .willReturn(작품_목록_응답(page));
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/admin/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .param("page", "0")
+                        .param("size", "3")
+        );
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("api/admin/art/find",
+                                requestHeaders(
+                                        headerWithName("Authorization").description("액세스 토큰")
+                                ),
+                                requestParameters(
+                                        parameterWithName("page").description("페이지"),
+                                        parameterWithName("size").description("요청 데이터 개수")
+                                ),
+                                responseFields(
+                                        fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
+                                                .description("전체 데이터 개수"),
+                                        fieldWithPath("totalPages").type(JsonFieldType.NUMBER)
+                                                .description("전체 페이지 개수"),
+                                        fieldWithPath("artForAdminResponses.[].id").type(JsonFieldType.NUMBER)
+                                                .description("작품 아이디"),
+                                        fieldWithPath("artForAdminResponses.[].artName").type(JsonFieldType.STRING)
+                                                .description("작품명"),
+                                        fieldWithPath("artForAdminResponses.[].imageURL").type(JsonFieldType.STRING)
+                                                .description("이미지 경로"),
+                                        fieldWithPath("artForAdminResponses.[].latitude").type(JsonFieldType.NUMBER)
+                                                .description("위도"),
+                                        fieldWithPath("artForAdminResponses.[].longitude").type(JsonFieldType.NUMBER)
+                                                .description("경도"),
+                                        fieldWithPath("artForAdminResponses.[].roadAddress").type(JsonFieldType.STRING)
+                                                .description("도로명 주소"),
+                                        fieldWithPath("artForAdminResponses.[].category").type(JsonFieldType.STRING)
+                                                .description("카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)"),
+                                        fieldWithPath("artForAdminResponses.[].authorName").type(JsonFieldType.STRING)
+                                                .description("작가 이름"),
+                                        fieldWithPath("artForAdminResponses.[].agency").type(JsonFieldType.STRING)
+                                                .description("담당기관"),
+                                        fieldWithPath("artForAdminResponses.[].info").type(JsonFieldType.STRING)
+                                                .description("상세 내용 (255자 이하)"),
+                                        fieldWithPath("artForAdminResponses.[].startDate").type(JsonFieldType.STRING)
+                                                .description("시작일 (yyyy-MM-dd)"),
+                                        fieldWithPath("artForAdminResponses.[].endDate").type(JsonFieldType.STRING)
+                                                .description("종료일 (종료일은 필수값이 아닙니다.) (yyyy-MM-dd)"),
+                                        fieldWithPath("artForAdminResponses.[].createDate").type(JsonFieldType.STRING)
+                                                .description("생성일 (yyyy-MM-dd'T'HH:mm:ss.nnnnnn)"),
+                                        fieldWithPath("artForAdminResponses.[].revisionDate").type(JsonFieldType.STRING)
+                                                .description("수정일 (yyyy-MM-dd'T'HH:mm:ss.nnnnnn)")
+                                )
+                        ));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void 관리자가_작품_조회시_데이터가_없는_경우_응답() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Details> page = new PageImpl<>(List.of(), pageable, 0);
+
+        given(detailsService.find(pageable))
+                .willReturn(작품_목록_응답(page));
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/admin/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .param("page", "0")
+                        .param("size", "5")
+        );
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("api/admin/art/find/empty",
+                                responseFields(
+                                        fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
+                                                .description("전체 데이터 개수"),
+                                        fieldWithPath("totalPages").type(JsonFieldType.NUMBER)
+                                                .description("전체 페이지 개수"),
+                                        fieldWithPath("artForAdminResponses").type(JsonFieldType.ARRAY)
+                                                .description("데이터가 없는 경우 리스트는 비어있음")
+                                )
+                        ));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void 회원이_작품_정보_조회_요청시_에러_발생() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/admin/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .param("page", "0")
+                        .param("size", "5")
+        );
+        //then
+        resultActions.andExpect(status().isForbidden())
+                .andDo(print())
+                .andDo(
+                        document("api/admin/art/find/forbidden")
                 );
     }
 }
