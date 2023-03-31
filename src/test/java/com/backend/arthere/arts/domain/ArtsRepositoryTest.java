@@ -224,7 +224,7 @@ class ArtsRepositoryTest {
             request.setIdx(idx);
         }
         if (revisionDateIdx != null) {
-            request.setRevisionDateIdx(revisionDateIdx);
+            request.setDate(revisionDateIdx);
         }
         request.setLimit(limit);
 

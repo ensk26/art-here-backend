@@ -3,7 +3,6 @@ package com.backend.arthere.arts.application;
 import com.amazonaws.services.s3.AmazonS3;
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.*;
-import com.backend.arthere.arts.exception.ArtsNotFoundException;
 import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +33,6 @@ public class ArtsService {
         Long id = null;
         LocalDateTime next = null;
         List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByRevisionDate(request);
-
-        if (artImageResponses.isEmpty()) {
-            throw new ArtsNotFoundException();
-        }
 
         Boolean hasNext = hasNext(artImageResponses, request.getLimit() + 1);
         if (hasNext) {
@@ -80,10 +75,6 @@ public class ArtsService {
 
         Long nextId = null;
         List<ArtImageResponse> artImageResponses = artsRepository.findArtImageByArtName(request);
-
-        if (artImageResponses.isEmpty()) {
-            throw new ArtsNotFoundException();
-        }
 
         Boolean hasNext = hasNext(artImageResponses, request.getLimit() + 1);
         if (hasNext) {
