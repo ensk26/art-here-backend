@@ -4,8 +4,14 @@ import com.backend.arthere.arts.domain.Arts;
 import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.domain.ExhibitionPeriod;
 import com.backend.arthere.details.dto.request.ArtRequest;
+import com.backend.arthere.details.dto.response.ArtForAdminResponse;
+import com.backend.arthere.details.dto.response.ArtPageResponse;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.backend.arthere.fixture.ArtsFixtures.*;
 
@@ -31,8 +37,12 @@ public class DetailsFixtures {
     }
 
     public static Details 작품_세부정보(final Arts arts) {
+        return 작품_세부정보(arts, 작품_세부_아이디);
+    }
+
+    public static Details 작품_세부정보(final Arts arts, final Long id) {
         ExhibitionPeriod period = new ExhibitionPeriod(시작_날짜, 종료_날짜);
-        return new Details(작품_세부_아이디, 작가, 담당_기관, 상세_내용, 전시중_상태, period, arts);
+        return new Details(id, 작가, 담당_기관, 상세_내용, 전시중_상태, period, arts);
     }
 
     public static Details 종료_날짜_지난_작품_세부정보() {
@@ -59,4 +69,22 @@ public class DetailsFixtures {
                 작가, 담당_기관, 상세_내용_수정, 시작_날짜, 종료_날짜);
     }
 
+    public static List<Details> 관리자_작품_목록() {
+        List<Details> list = new ArrayList<>();
+        for (int i = 3; i > 0; i--) {
+            Arts arts = 작품(Long.valueOf(i));
+            list.add(작품_세부정보(arts, Long.valueOf(i)));
+        }
+        return list;
+    }
+
+    public static ArtPageResponse 작품_목록_응답(final Page<Details> page) {
+        List<ArtForAdminResponse> content = new ArrayList<>();
+        for(Details details: page.getContent()) {
+            ArtForAdminResponse response = ArtForAdminResponse.of(details, details.getArts(), details.getArts().getImageURL());
+            response.setDate(LocalDateTime.now(), LocalDateTime.now());
+            content.add(response);
+        }
+        return new ArtPageResponse(page.getTotalElements(), page.getTotalPages(), content);
+    }
 }

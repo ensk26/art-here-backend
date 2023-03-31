@@ -6,16 +6,23 @@ import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.domain.DetailsRepository;
 import com.backend.arthere.details.dto.request.ArtRequest;
 import com.backend.arthere.details.dto.response.ArtMapResponse;
+import com.backend.arthere.details.dto.response.ArtPageResponse;
 import com.backend.arthere.details.dto.response.ArtResponse;
 import com.backend.arthere.details.dto.response.ArtSaveResponse;
 import com.backend.arthere.details.exception.DetailsNotFoundException;
+import com.backend.arthere.image.util.PresignedURLUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.backend.arthere.fixture.ArtsFixtures.작품;
@@ -24,8 +31,7 @@ import static com.backend.arthere.fixture.DetailsFixtures.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -37,6 +43,8 @@ class DetailsServiceTest {
     @InjectMocks
     private DetailsService detailsService;
 
+    @Mock
+    private PresignedURLUtils presignedURLUtils;
     @Test
     @DisplayName("작품 정보를 저장한다.")
     public void 작품_저장() throws Exception {
@@ -179,6 +187,51 @@ class DetailsServiceTest {
         assertAll(
                 () -> verify(detailsRepository).delete(details),
                 () -> verify(detailsRepository).findByArtsId(anyLong())
+        );
+    }
+
+    @Test
+    @DisplayName("관리자가 작품 목록을 조회한다.")
+    public void 관리자가_작품_조회() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(0, 3);
+        List<Details> content = 관리자_작품_목록();
+        Page<Details> page = new PageImpl<>(content, pageable, content.size());
+
+        given(detailsRepository.findDetailsWithArts(any()))
+                .willReturn(page);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any()))
+                .willReturn(content.get(0).getArts().getImageURL());
+        //when
+        ArtPageResponse artPageResponse = detailsService.find(pageable);
+
+        //then
+        assertAll(
+                () -> assertThat(artPageResponse.getTotalPages()).isEqualTo(page.getTotalPages()),
+                () -> assertThat(artPageResponse.getTotalElements()).isEqualTo(page.getTotalElements()),
+                () -> assertThat(artPageResponse.getArtForAdminResponses().get(0).getId())
+                        .isGreaterThan(artPageResponse.getArtForAdminResponses().get(1).getId())
+        );
+    }
+
+    @Test
+    @DisplayName("관리자가 작품 조회시 데이터가 없는 경우 빈 리스트를 반환한다.")
+    public void 관리자가_작품_조회시_데이터_없는_경우_빈_리스트_반환() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(1, 3);
+        List<Details> content = 관리자_작품_목록();
+        Page<Details> page = new PageImpl<>(List.of(), pageable, content.size());
+
+        given(detailsRepository.findDetailsWithArts(any()))
+                .willReturn(page);
+        //when
+        ArtPageResponse artPageResponse = detailsService.find(pageable);
+
+        //then
+        assertAll(
+                () -> assertThat(artPageResponse.getTotalPages()).isEqualTo(page.getTotalPages()),
+                () -> assertThat(artPageResponse.getTotalElements()).isEqualTo(page.getTotalElements()),
+                () -> assertThat(artPageResponse.getArtForAdminResponses().size()).isEqualTo(0)
         );
     }
 }
