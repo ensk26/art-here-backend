@@ -370,11 +370,6 @@ class ArtsControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andDo(
                         document("image/media/address/empty",
-                                requestParameters(
-                                        parameterWithName("idx").description("요청을 시작하는 id 위치"),
-                                        parameterWithName("query").description("검색어"),
-                                        parameterWithName("limit").description("요청하는 데이터 개수")
-                                ),
                                 responseFields(
                                         fieldWithPath("artImageResponses").type(JsonFieldType.ARRAY)
                                                 .description("데이터가 없는 경우 리스트는 비어있음"),
