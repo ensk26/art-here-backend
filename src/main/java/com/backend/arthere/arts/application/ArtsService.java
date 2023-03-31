@@ -1,5 +1,6 @@
 package com.backend.arthere.arts.application;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.dto.*;
 import com.backend.arthere.arts.exception.ArtsNotFoundException;
@@ -23,6 +24,11 @@ public class ArtsService {
 
     private final LocationUtils locationUtils;
 
+    private final AmazonS3 adminS3Client;
+
+    private final String adminBucketName;
+
+
     public ArtImageByRevisionDateResponse findArtImageByRevisionDate(ArtImageByRevisionDateRequest request) {
 
         Long id = null;
@@ -44,16 +50,12 @@ public class ArtsService {
         return new ArtImageByRevisionDateResponse(artImageResponses, id, next, hasNext);
     }
 
-    public List<ArtImageByLocationResponse> findArtImageByLocation(Double latitude, Double longitude) {
+    public List<ArtImageByLocationResponse> findArtImageByLocation(ArtImageByLocationRequest request) {
 
-        LocationRangeResponse locationRangeResponse = locationUtils.getLocationRange(latitude, longitude);
+        LocationRangeResponse locationRangeResponse = locationUtils.getLocationRange(request);
 
         List<ArtImageByLocationResponse> artImageResponses = artsRepository.findArtImageByLocation(locationRangeResponse);
-        locationUtils.removeIncorrectLocation(latitude, longitude, artImageResponses);
-
-        if (artImageResponses.isEmpty()) {
-            throw new ArtsNotFoundException();
-        }
+        locationUtils.removeIncorrectLocation(request, artImageResponses);
 
         createImageBylocationSharePresignedURLByImageURL(artImageResponses);
 
@@ -97,7 +99,8 @@ public class ArtsService {
 
         for (ArtImageResponse artImageRespons : artImageResponses) {
 
-            String presignedURL = presignedURLUtils.createImageShareURL(artImageRespons.getImageURL());
+            String presignedURL = presignedURLUtils.createImageShareURL(artImageRespons.getImageURL(),
+                    adminS3Client, adminBucketName);
             artImageRespons.setImageURL(presignedURL);
         }
     }
@@ -106,7 +109,8 @@ public class ArtsService {
 
         for (ArtImageByLocationResponse artImageRespons : artImageResponses) {
 
-            String presignedURL = presignedURLUtils.createImageShareURL(artImageRespons.getImageURL());
+            String presignedURL = presignedURLUtils.createImageShareURL(artImageRespons.getImageURL(),
+                    adminS3Client, adminBucketName);
             artImageRespons.setImageURL(presignedURL);
         }
     }

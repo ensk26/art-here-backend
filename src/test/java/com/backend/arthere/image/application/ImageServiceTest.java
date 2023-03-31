@@ -1,5 +1,6 @@
 package com.backend.arthere.image.application;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.backend.arthere.image.dto.ImageResponse;
 import com.backend.arthere.image.dto.ImageUploadResponse;
 import com.backend.arthere.image.util.PresignedURLUtils;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -22,6 +24,9 @@ class ImageServiceTest {
     @Mock
     private PresignedURLUtils presignedURLUtils;
 
+
+
+
     @Test
     void 이미지_공유_URL_생성() {
 
@@ -29,7 +34,8 @@ class ImageServiceTest {
         String imageURL = "image/sand.jpg";
         String preSignedURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
 
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
+
 
         //when
         ImageResponse response = imageService.createImageSharePresignedURL(imageURL);
@@ -44,7 +50,7 @@ class ImageServiceTest {
         //given
         String preSignedURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
 
-        given(presignedURLUtils.createImageUploadURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageUploadURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ImageUploadResponse response = imageService.createAdminImageUploadPresignedURL();
@@ -61,7 +67,7 @@ class ImageServiceTest {
         String imageURL = "image/sand.jpg";
         String preSignedURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
 
-        given(presignedURLUtils.createImageDeleteURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageDeleteURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ImageResponse response = imageService.createAdminDeletePresignedURL(imageURL);

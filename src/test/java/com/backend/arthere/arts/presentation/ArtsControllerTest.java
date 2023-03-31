@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -146,13 +145,14 @@ class ArtsControllerTest extends BaseControllerTest {
 
         //given
         List<ArtImageByLocationResponse> response = artsImageByLocationResponse();
-        given(artsService.findArtImageByLocation(anyDouble(), anyDouble())).willReturn(response);
+        given(artsService.findArtImageByLocation(any())).willReturn(response);
 
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/image/map")
                 .param("latitude", "37.587241")
-                .param("longitude", "127.019941"));
+                .param("longitude", "127.019941")
+                .param("radius", "50"));
 
         //then
         resultActions.andExpect(status().isOk())
@@ -161,7 +161,8 @@ class ArtsControllerTest extends BaseControllerTest {
                         document("image/map",
                                 requestParameters(
                                         parameterWithName("latitude").description("사용자 위치 위도"),
-                                        parameterWithName("longitude").description("사용자 위치 경도")
+                                        parameterWithName("longitude").description("사용자 위치 경도"),
+                                        parameterWithName("radius").description("반경")
                                 ),
                                 responseFields(
                                         fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("id"),
@@ -176,22 +177,31 @@ class ArtsControllerTest extends BaseControllerTest {
 
     @Test
     @WithMockUser
-    void 지도화면_이미지_중심위치_지정반경_데이터_없는_예외_응답() throws Exception {
+    void 지도화면_이미지_중심위치_지정반경_데이터_없음() throws Exception {
 
         //given
-        given(artsService.findArtImageByLocation(anyDouble(), anyDouble())).willThrow(new ArtsNotFoundException());
+        given(artsService.findArtImageByLocation(any())).willReturn(List.of());
 
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/image/map")
                 .param("latitude", "37.587241")
-                .param("longitude", "127.019941"));
+                .param("longitude", "127.019941")
+                .param("radius", "50"));
 
         //then
-        resultActions.andExpect(status().isNotFound())
+        resultActions.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(
-                        document("image/map/notfound")
+                        document("image/map/empty",
+                                requestParameters(
+                                        parameterWithName("latitude").description("사용자 위치 위도"),
+                                        parameterWithName("longitude").description("사용자 위치 경도"),
+                                        parameterWithName("radius").description("반경")
+                                ),
+                                responseFields(
+                                )
+                        )
                 );
     }
 

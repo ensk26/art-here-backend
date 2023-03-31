@@ -50,7 +50,7 @@ class ArtsServiceTest {
                 .willReturn(findArtImageResponse());
         given(artsRepository.findRevisionDateById(anyLong()))
                 .willReturn(List.of(next));
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
@@ -79,18 +79,17 @@ class ArtsServiceTest {
     void 지도화면_이미지_중심위치_지정반경_데이터_반환() {
 
         //given
-        double latitude = 37.565328;
-        double longitude = 126.976431;
+        ArtImageByLocationRequest request = artLocationRequest("37.565328", "126.976431", "50");
         String preSignedURL = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
 
-        given(locationUtils.getLocationRange(anyDouble(), anyDouble()))
+        given(locationUtils.getLocationRange(any()))
                 .willReturn(locationRangeResponse());
         given(artsRepository.findArtImageByLocation(any()))
                 .willReturn(findArtImageByLocationRepositoryResponse());
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
-        List<ArtImageByLocationResponse> responses = artsService.findArtImageByLocation(latitude, longitude);
+        List<ArtImageByLocationResponse> responses = artsService.findArtImageByLocation(request);
 
         //then
         Assertions.assertThat(responses).usingRecursiveFieldByFieldElementComparator()
@@ -101,18 +100,19 @@ class ArtsServiceTest {
     void 지도화면_이미지_중심위치_지정반경_null_반환() {
 
         //given
-        double latitude = 37.565328;
-        double longitude = 126.976431;
+        ArtImageByLocationRequest request = artLocationRequest("37.565328", "126.976431", "50");
         List<ArtImageByLocationResponse> repositoryResponses = List.of();
 
-        given(locationUtils.getLocationRange(anyDouble(), anyDouble()))
+        given(locationUtils.getLocationRange(any()))
                 .willReturn(locationRangeResponse());
         given(artsRepository.findArtImageByLocation(any()))
                 .willReturn(repositoryResponses);
 
-        //when //then
-        assertThatThrownBy(() -> artsService.findArtImageByLocation(latitude, longitude))
-                .isInstanceOf(ArtsNotFoundException.class);
+        //when
+        List<ArtImageByLocationResponse> responses = artsService.findArtImageByLocation(any());
+
+        // then
+        Assertions.assertThat(responses).contains();
     }
 
     @Test
@@ -127,7 +127,7 @@ class ArtsServiceTest {
                 .willReturn(findArtImageResponse());
         given(artsRepository.findRevisionDateById(anyLong()))
                 .willReturn(Collections.singletonList(next));
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
@@ -145,7 +145,7 @@ class ArtsServiceTest {
 
         given(artsRepository.findArtImageByRevisionDate(any()))
                 .willReturn(findArtImageResponse());
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByRevisionDateResponse responses = artsService.findArtImageByRevisionDate(request);
@@ -162,7 +162,7 @@ class ArtsServiceTest {
 
         given(artsRepository.findArtImageByAddress(request))
                 .willReturn(findArtImageResponse());
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByAddressResponse response = artsService.searchArtImageByAddress(request);
@@ -171,7 +171,7 @@ class ArtsServiceTest {
         assertThat(response.getHasNext()).isTrue();
 
     }
-    
+
     @Test
     public void 주소_검색시_다음_데이터가_존재하지_않으면_False_반환() throws Exception {
         //given
@@ -180,7 +180,7 @@ class ArtsServiceTest {
 
         given(artsRepository.findArtImageByAddress(request))
                 .willReturn(findArtImageResponse());
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByAddressResponse response = artsService.searchArtImageByAddress(request);
@@ -189,7 +189,7 @@ class ArtsServiceTest {
         assertThat(response.getHasNext()).isFalse();
         assertThat(response.getNextIdx()).isNull();
     }
-    
+
     @Test
     public void 주소_검색시_검색어에_해당하는_데이터가_존재하지_않으면_False_반환() throws Exception {
         //given
@@ -218,7 +218,7 @@ class ArtsServiceTest {
         given(artsRepository.findArtImageByArtName(any()))
                 .willReturn(findArtImageResponse());
 
-        given(presignedURLUtils.createImageShareURL(anyString())).willReturn(preSignedURL);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any())).willReturn(preSignedURL);
 
         //when
         ArtImageByArtNameResponse responses = artsService.searchArtImageByArtName(request);
@@ -325,6 +325,16 @@ class ArtsServiceTest {
         }
         request.setName(name);
         request.setLimit(limit);
+
+        return request;
+    }
+
+    private ArtImageByLocationRequest artLocationRequest(String latitued, String longitude, String radius) {
+
+        ArtImageByLocationRequest request = new ArtImageByLocationRequest();
+        request.setLatitude(latitued);
+        request.setLongitude(longitude);
+        request.setRadius(radius);
 
         return request;
     }
