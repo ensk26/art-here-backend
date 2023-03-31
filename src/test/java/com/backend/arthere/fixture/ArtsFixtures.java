@@ -26,6 +26,13 @@ public class ArtsFixtures {
         return new Arts(작품_아이디, 작품명, 사진, location, address, 카테고리);
     }
 
+    public static Arts 작품(final Long id) {
+        Location location = new Location(경도, 위도);
+        Address address = new Address(도로명_주소, 구_주소);
+
+        return new Arts(id, 작품명, 사진, location, address, 카테고리);
+    }
+
     public static ArtImageByAddressRequest 메인화면_주소_검색_요청(final String idx, final String query,
                                                          final String limit) {
         ArtImageByAddressRequest request = new ArtImageByAddressRequest();

@@ -3,12 +3,10 @@ package com.backend.arthere.details.presentation;
 
 import com.backend.arthere.details.application.DetailsService;
 import com.backend.arthere.details.dto.request.ArtRequest;
-import com.backend.arthere.details.dto.response.ArtMapResponse;
-import com.backend.arthere.details.dto.response.ArtResponse;
-import com.backend.arthere.details.dto.response.ArtSaveResponse;
+import com.backend.arthere.details.dto.response.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,6 +35,12 @@ public class DetailsController {
     public ResponseEntity<Void> delete(@RequestParam("id") Long artsId) {
         detailsService.delete(artsId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/admin/art")
+    public ResponseEntity<ArtPageResponse> find(final Pageable pageable) {
+        ArtPageResponse artPageResponse = detailsService.find(pageable);
+        return ResponseEntity.ok(artPageResponse);
     }
 
     @GetMapping("/art")
