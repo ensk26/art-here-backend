@@ -20,12 +20,11 @@ public class Details {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "author_name")
+    @Column(name = "author_name", length = 50)
     private String authorName;
 
     @NotNull
-    @Column(name = "agency")
+    @Column(name = "agency", length = 50)
     private String agency;
 
     @NotNull
@@ -42,6 +41,14 @@ public class Details {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "arts_id")
     private Arts arts;
+
+    @NotNull
+    @Column(name = "post_total")
+    private Long postTotal = 0L;
+
+    @NotNull
+    @Column(name = "satisfaction")
+    private Long satisfaction = 0L;
 
     @Builder
     public Details(final Long id, final String authorName, final String agency, final String info,
