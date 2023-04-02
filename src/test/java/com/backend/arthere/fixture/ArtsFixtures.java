@@ -15,20 +15,19 @@ public class ArtsFixtures {
     public static final double 경도 = 12.1;
     public static final double 위도 = 12.5;
     public static final String 도로명_주소 = "서울시";
-    public static final String 구_주소 = "서울시 중구";
     public static final Category 카테고리 = Category.CRAFT;
     public static final String 카테고리_명 = Category.CRAFT.getCategoryName();
 
     public static Arts 작품() {
         Location location = new Location(경도, 위도);
-        Address address = new Address(도로명_주소, 구_주소);
+        Address address = new Address(도로명_주소);
 
         return new Arts(작품_아이디, 작품명, 사진, location, address, 카테고리);
     }
 
     public static Arts 작품(final Long id) {
         Location location = new Location(경도, 위도);
-        Address address = new Address(도로명_주소, 구_주소);
+        Address address = new Address(도로명_주소);
 
         return new Arts(id, 작품명, 사진, location, address, 카테고리);
     }
