@@ -37,9 +37,6 @@ public class ArtRequest {
     @NotBlank(message = "도로명 주소를 입력하세요.")
     private String roadAddress;
 
-    @NotBlank(message = "구주소를 입력하세요.")
-    private String oldAddress;
-
     @NotBlank(message = "카테고리를 입력하세요.")
     private String category;
 
@@ -73,7 +70,7 @@ public class ArtRequest {
 
     public Arts toArts() {
         Location location = new Location(latitude, longitude);
-        Address address = new Address(roadAddress, oldAddress);
+        Address address = new Address(roadAddress);
 
         return Arts.builder()
                 .artName(artName)
