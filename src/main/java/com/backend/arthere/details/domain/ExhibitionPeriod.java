@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Embeddable
 public class ExhibitionPeriod {
 
-
     @NotNull
     @Column(name = "start_date")
     private LocalDate startDate;

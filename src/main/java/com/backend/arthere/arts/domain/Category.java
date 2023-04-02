@@ -10,8 +10,8 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum Category {
     PICTURE("사진"), MURAL("벽화"), CRAFT("공예"), SCULPTURE("조각"),
-    CONVERSATION("회화"), CALLIGRAPHY("서예"), MEDIA("미디어"),
-    OTHER("기타");
+    PAINTING("그림"), INSTALLATION("설치미술"), KINETIC("키네틱아트"),
+    RESPONSIVE("반응형 미디어"), LIGHTING("조명예술"), OTHER("기타");
 
     private final String categoryName;
 

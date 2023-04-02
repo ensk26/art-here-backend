@@ -540,37 +540,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_작품_저장_admin">5.1. 작품 저장 (ADMIN)</a>
 <ul class="sectlevel3">
 <li><a href="#_성공_13">5.1.1. 성공</a></li>
-<li><a href="#_실패_7">5.1.2. 실패</a></li>
+<li><a href="#_실패_5">5.1.2. 실패</a></li>
 </ul>
 </li>
 <li><a href="#_작품_수정_admin">5.2. 작품 수정 (ADMIN)</a>
 <ul class="sectlevel3">
 <li><a href="#_성공_14">5.2.1. 성공</a></li>
-<li><a href="#_실패_8">5.2.2. 실패</a></li>
+<li><a href="#_실패_6">5.2.2. 실패</a></li>
 </ul>
 </li>
 <li><a href="#_작품_삭제_admin">5.3. 작품 삭제 (ADMIN)</a>
 <ul class="sectlevel3">
 <li><a href="#_성공_15">5.3.1. 성공</a></li>
-<li><a href="#_실패_9">5.3.2. 실패</a></li>
+<li><a href="#_실패_7">5.3.2. 실패</a></li>
 </ul>
 </li>
 <li><a href="#_작품_조회_admin">5.4. 작품 조회 (ADMIN)</a>
 <ul class="sectlevel3">
 <li><a href="#_성공_16">5.4.1. 성공</a></li>
-<li><a href="#_실패_10">5.4.2. 실패</a></li>
+<li><a href="#_실패_8">5.4.2. 실패</a></li>
 </ul>
 </li>
 <li><a href="#_작품_세부_조회">5.5. 작품 세부 조회</a>
 <ul class="sectlevel3">
 <li><a href="#_성공_17">5.5.1. 성공</a></li>
-<li><a href="#_실패_11">5.5.2. 실패</a></li>
+<li><a href="#_실패_9">5.5.2. 실패</a></li>
 </ul>
 </li>
 <li><a href="#_맵_화면에서_작품_조회">5.6. 맵 화면에서 작품 조회</a>
 <ul class="sectlevel3">
 <li><a href="#_성공_18">5.6.1. 성공</a></li>
-<li><a href="#_실패_12">5.6.2. 실패</a></li>
+<li><a href="#_실패_10">5.6.2. 실패</a></li>
 </ul>
 </li>
 </ul>
@@ -3032,7 +3032,7 @@ Content-Length: 63
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>artName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작품명</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작품명 (50자 이하)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>imageURL</code></p></td>
@@ -3055,24 +3055,19 @@ Content-Length: 63
 <td class="tableblock halign-left valign-top"><p class="tableblock">도로명 주소</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oldAddress</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구 주소</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>category</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 (사진, 벽화, 공예, 조각, 그림, 설치미술, 키네틱아트, 반응형 미디어, 조명예술, 기타)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>authorName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작가 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작가 이름 (50자 이하, 필수값 아님)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>agency</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">담당기관</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">담당기관 (50자 이하)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>info</code></p></td>
@@ -3129,7 +3124,7 @@ Content-Length: 63
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
-Content-Length: 348
+Content-Length: 310
 Host: localhost:8080
 
 {
@@ -3138,7 +3133,6 @@ Host: localhost:8080
   "latitude" : 12.5,
   "longitude" : 12.1,
   "roadAddress" : "서울시",
-  "oldAddress" : "서울시 중구",
   "category" : "공예",
   "authorName" : "홍길동",
   "agency" : "서울",
@@ -3169,7 +3163,7 @@ Content-Length: 41
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_7">5.1.2. 실패</h4>
+<h4 id="_실패_5">5.1.2. 실패</h4>
 <div class="sect4">
 <h5 id="_권한_없는_사용자">권한 없는 사용자</h5>
 <div class="paragraph">
@@ -3183,7 +3177,7 @@ Content-Length: 41
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
-Content-Length: 348
+Content-Length: 310
 Host: localhost:8080
 
 {
@@ -3192,7 +3186,6 @@ Host: localhost:8080
   "latitude" : 12.5,
   "longitude" : 12.1,
   "roadAddress" : "서울시",
-  "oldAddress" : "서울시 중구",
   "category" : "공예",
   "authorName" : "홍길동",
   "agency" : "서울",
@@ -3225,7 +3218,7 @@ Host: localhost:8080
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
-Content-Length: 268
+Content-Length: 244
 Host: localhost:8080
 
 {
@@ -3234,7 +3227,6 @@ Host: localhost:8080
   "latitude" : null,
   "longitude" : null,
   "roadAddress" : null,
-  "oldAddress" : null,
   "category" : null,
   "authorName" : null,
   "agency" : null,
@@ -3254,10 +3246,10 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 374
+Content-Length: 341
 
 {
-  "message" : "카테고리를 입력하세요.\r\n작가 이름을 입력하세요.\r\n경도를 입력하세요.\r\n위도를 입력하세요.\r\n담당기관을 입력하세요.\r\n구주소를 입력하세요.\r\n상세 내용을 입력하세요.\r\n작품명을 입력하세요.\r\n이미지 경로를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n"
+  "message" : "경도를 입력하세요.\r\n위도를 입력하세요.\r\n담당기관을 입력하세요.\r\n이미지 경로를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n작품명을 입력하세요.\r\n상세 내용을 입력하세요.\r\n작가 이름을 입력하세요.\r\n카테고리를 입력하세요.\r\n"
 }</code></pre>
 </div>
 </div>
@@ -3338,7 +3330,7 @@ Content-Length: 374
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>artName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작품명</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작품명 (50자 이하)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>imageURL</code></p></td>
@@ -3361,24 +3353,19 @@ Content-Length: 374
 <td class="tableblock halign-left valign-top"><p class="tableblock">도로명 주소</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oldAddress</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구 주소</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>category</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 (사진, 벽화, 공예, 조각, 그림, 설치미술, 키네틱아트, 반응형 미디어, 조명예술, 기타)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>authorName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작가 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작가 이름 (50자 이하, 필수값 아님)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>agency</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">담당기관</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">담당기관 (50자 이하)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>info</code></p></td>
@@ -3406,7 +3393,7 @@ Content-Length: 374
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
-Content-Length: 362
+Content-Length: 324
 Host: localhost:8080
 
 {
@@ -3415,7 +3402,6 @@ Host: localhost:8080
   "latitude" : 12.5,
   "longitude" : 12.1,
   "roadAddress" : "서울시",
-  "oldAddress" : "서울시 중구",
   "category" : "공예",
   "authorName" : "홍길동",
   "agency" : "서울",
@@ -3439,7 +3425,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_8">5.2.2. 실패</h4>
+<h4 id="_실패_6">5.2.2. 실패</h4>
 <div class="sect4">
 <h5 id="_권한_없는_사용자_2">권한 없는 사용자</h5>
 <div class="sect5">
@@ -3450,7 +3436,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer testAccess
-Content-Length: 362
+Content-Length: 324
 Host: localhost:8080
 
 {
@@ -3459,7 +3445,6 @@ Host: localhost:8080
   "latitude" : 12.5,
   "longitude" : 12.1,
   "roadAddress" : "서울시",
-  "oldAddress" : "서울시 중구",
   "category" : "공예",
   "authorName" : "홍길동",
   "agency" : "서울",
@@ -3560,7 +3545,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_9">5.3.2. 실패</h4>
+<h4 id="_실패_7">5.3.2. 실패</h4>
 <div class="sect4">
 <h5 id="_잘못된_아이디">잘못된 아이디</h5>
 <div class="sect5">
@@ -3717,7 +3702,7 @@ Content-Length: 58
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>artForAdminResponses.[].category</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 (사진, 벽화, 공예, 조각, 그림, 설치미술, 키네틱아트, 반응형 미디어, 조명예술, 기타)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>artForAdminResponses.[].authorName</code></p></td>
@@ -3732,7 +3717,7 @@ Content-Length: 58
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>artForAdminResponses.[].info</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상세 내용 (255자 이하)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상세 내용</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>artForAdminResponses.[].startDate</code></p></td>
@@ -3742,7 +3727,7 @@ Content-Length: 58
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>artForAdminResponses.[].endDate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">종료일 (종료일은 필수값이 아닙니다.) (yyyy-MM-dd)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">종료일 (yyyy-MM-dd)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>artForAdminResponses.[].createDate</code></p></td>
@@ -3796,8 +3781,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-03-31T20:01:50.4870996",
-    "revisionDate" : "2023-03-31T20:01:50.4870996"
+    "createDate" : "2023-04-02T19:31:16.3914012",
+    "revisionDate" : "2023-04-02T19:31:16.3914012"
   }, {
     "id" : 2,
     "artName" : "작품",
@@ -3811,8 +3796,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-03-31T20:01:50.4870996",
-    "revisionDate" : "2023-03-31T20:01:50.4870996"
+    "createDate" : "2023-04-02T19:31:16.3923981",
+    "revisionDate" : "2023-04-02T19:31:16.3923981"
   }, {
     "id" : 1,
     "artName" : "작품",
@@ -3826,8 +3811,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-03-31T20:01:50.4870996",
-    "revisionDate" : "2023-03-31T20:01:50.4870996"
+    "createDate" : "2023-04-02T19:31:16.3923981",
+    "revisionDate" : "2023-04-02T19:31:16.3923981"
   } ]
 }</code></pre>
 </div>
@@ -3904,7 +3889,7 @@ Content-Length: 81
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_10">5.4.2. 실패</h4>
+<h4 id="_실패_8">5.4.2. 실패</h4>
 <div class="sect4">
 <h5 id="_권한_없는_사용자_3">권한 없는 사용자</h5>
 <div class="sect5">
@@ -3990,14 +3975,9 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">도로명 주소</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>oldAddress</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구 주소</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>category</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리 (사진, 벽화, 공예, 조각, 그림, 설치미술, 키네틱아트, 반응형 미디어, 조명예술, 기타)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>authorName</code></p></td>
@@ -4052,7 +4032,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 275
+Content-Length: 237
 
 {
   "id" : 1,
@@ -4063,7 +4043,6 @@ Content-Length: 275
   "startDate" : "2022-02-01",
   "endDate" : "2024-02-01",
   "roadAddress" : "서울시",
-  "oldAddress" : "서울시 중구",
   "category" : "공예"
 }</code></pre>
 </div>
@@ -4071,7 +4050,7 @@ Content-Length: 275
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_11">5.5.2. 실패</h4>
+<h4 id="_실패_9">5.5.2. 실패</h4>
 <div class="sect4">
 <h5 id="_잘못된_아이디_2">잘못된 아이디</h5>
 <div class="sect5">
@@ -4253,7 +4232,7 @@ Content-Length: 157
 </div>
 </div>
 <div class="sect3">
-<h4 id="_실패_12">5.6.2. 실패</h4>
+<h4 id="_실패_10">5.6.2. 실패</h4>
 <div class="sect4">
 <h5 id="_잘못된_아이디_3">잘못된 아이디</h5>
 <div class="sect5">

@@ -18,7 +18,4 @@ public class Address {
     @Column(name = "road_address")
     private String roadAddress;
 
-    @NotNull
-    @Column(name = "old_address")
-    private String oldAddress;
 }

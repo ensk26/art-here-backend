@@ -27,13 +27,11 @@ public class ArtResponse {
 
     private String roadAddress;
 
-    private String oldAddress;
-
     private String category;
 
     private ArtResponse(final Long id, final String authorName, final String agency, final String info,
                        final boolean state, final LocalDate startDate, final LocalDate endDate,
-                       final String roadAddress, final String oldAddress, final String category) {
+                       final String roadAddress, final String category) {
         this.id = id;
         this.authorName = authorName;
         this.agency = agency;
@@ -42,7 +40,6 @@ public class ArtResponse {
         this.startDate = startDate;
         this.endDate = endDate;
         this.roadAddress = roadAddress;
-        this.oldAddress = oldAddress;
         this.category = category;
     }
 
@@ -50,7 +47,7 @@ public class ArtResponse {
         return new ArtResponse(details.getId(), details.getAuthorName(), details.getAgency(),
                 details.getInfo(), details.isState(), details.getPeriod().getStartDate(),
                 details.getPeriod().getEndDate(), arts.getAddress().getRoadAddress(),
-                arts.getAddress().getOldAddress(), arts.getCategory().getCategoryName());
+                arts.getCategory().getCategoryName());
     }
 
 }

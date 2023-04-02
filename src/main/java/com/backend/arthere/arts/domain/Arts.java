@@ -19,7 +19,7 @@ public class Arts extends BaseEntity {
     private Long id;
 
     @NotNull
-    @Column(name = "art_name")
+    @Column(name = "art_name", length = 50)
     private String artName;
 
     @NotNull

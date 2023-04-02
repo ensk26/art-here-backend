@@ -55,17 +55,17 @@ public class DetailsFixtures {
     }
 
     public static ArtRequest 작품_저장_요청() {
-        return new ArtRequest(작품명, 사진, 위도, 경도, 도로명_주소, 구_주소, 카테고리_명,
+        return new ArtRequest(작품명, 사진, 위도, 경도, 도로명_주소, 카테고리_명,
                 작가, 담당_기관, 상세_내용, 시작_날짜, 종료_날짜);
     }
 
     public static ArtRequest 작품_저장_요청(final String categoryName) {
-        return new ArtRequest(작품명, 사진, 위도, 경도, 도로명_주소, 구_주소, categoryName,
+        return new ArtRequest(작품명, 사진, 위도, 경도, 도로명_주소, categoryName,
                 작가, 담당_기관, 상세_내용, 시작_날짜, 종료_날짜);
     }
 
     public static ArtRequest 작품_수정_요청() {
-        return new ArtRequest(작품명_수정, 사진, 위도, 경도, 도로명_주소, 구_주소, 카테고리_명,
+        return new ArtRequest(작품명_수정, 사진, 위도, 경도, 도로명_주소, 카테고리_명,
                 작가, 담당_기관, 상세_내용_수정, 시작_날짜, 종료_날짜);
     }
 
