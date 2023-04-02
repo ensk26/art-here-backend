@@ -197,7 +197,7 @@ class ArtsRepositoryTest {
 
         String artName = "모래작품";
         String imageURL = "image/sand";
-        Address address = new Address("loadAddress", "oldAddress");
+        Address address = new Address("loadAddress");
 
         for (int i = 1; i < 6; i++) {
             artsRepository.save(

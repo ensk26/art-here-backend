@@ -82,7 +82,7 @@ class DetailsControllerTest extends BaseControllerTest {
                                 ),
                                 requestFields(
                                         fieldWithPath("artName").type(JsonFieldType.STRING)
-                                                .description("작품명"),
+                                                .description("작품명 (50자 이하)"),
                                         fieldWithPath("imageURL").type(JsonFieldType.STRING)
                                                 .description("이미지 경로"),
                                         fieldWithPath("latitude").type(JsonFieldType.NUMBER)
@@ -91,14 +91,13 @@ class DetailsControllerTest extends BaseControllerTest {
                                                 .description("경도"),
                                         fieldWithPath("roadAddress").type(JsonFieldType.STRING)
                                                 .description("도로명 주소"),
-                                        fieldWithPath("oldAddress").type(JsonFieldType.STRING)
-                                                .description("구 주소"),
                                         fieldWithPath("category").type(JsonFieldType.STRING)
-                                                .description("카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)"),
+                                                .description("카테고리 (사진, 벽화, 공예, 조각, 그림, 설치미술, 키네틱아트, " +
+                                                        "반응형 미디어, 조명예술, 기타)"),
                                         fieldWithPath("authorName").type(JsonFieldType.STRING)
-                                                .description("작가 이름"),
+                                                .description("작가 이름 (50자 이하, 필수값 아님)"),
                                         fieldWithPath("agency").type(JsonFieldType.STRING)
-                                                .description("담당기관"),
+                                                .description("담당기관 (50자 이하)"),
                                         fieldWithPath("info").type(JsonFieldType.STRING)
                                                 .description("상세 내용 (255자 이하)"),
                                         fieldWithPath("startDate").type(JsonFieldType.STRING)
@@ -190,10 +189,9 @@ class DetailsControllerTest extends BaseControllerTest {
                                                         .description("작품 세부 정보 아이디 (작품 아이디와 다름)"),
                                         fieldWithPath("roadAddress").type(JsonFieldType.STRING)
                                                 .description("도로명 주소"),
-                                        fieldWithPath("oldAddress").type(JsonFieldType.STRING)
-                                                .description("구 주소"),
                                         fieldWithPath("category").type(JsonFieldType.STRING)
-                                                .description("카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)"),
+                                                .description("카테고리 (사진, 벽화, 공예, 조각, 그림, 설치미술, 키네틱아트, " +
+                                                        "반응형 미디어, 조명예술, 기타)"),
                                         fieldWithPath("authorName").type(JsonFieldType.STRING)
                                                 .description("작가 이름"),
                                         fieldWithPath("agency").type(JsonFieldType.STRING)
@@ -346,7 +344,7 @@ class DetailsControllerTest extends BaseControllerTest {
                                 ),
                                 requestFields(
                                         fieldWithPath("artName").type(JsonFieldType.STRING)
-                                                .description("작품명"),
+                                                .description("작품명 (50자 이하)"),
                                         fieldWithPath("imageURL").type(JsonFieldType.STRING)
                                                 .description("이미지 경로"),
                                         fieldWithPath("latitude").type(JsonFieldType.NUMBER)
@@ -355,14 +353,13 @@ class DetailsControllerTest extends BaseControllerTest {
                                                 .description("경도"),
                                         fieldWithPath("roadAddress").type(JsonFieldType.STRING)
                                                 .description("도로명 주소"),
-                                        fieldWithPath("oldAddress").type(JsonFieldType.STRING)
-                                                .description("구 주소"),
                                         fieldWithPath("category").type(JsonFieldType.STRING)
-                                                .description("카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)"),
+                                                .description("카테고리 (사진, 벽화, 공예, 조각, 그림, 설치미술, 키네틱아트, " +
+                                                        "반응형 미디어, 조명예술, 기타)"),
                                         fieldWithPath("authorName").type(JsonFieldType.STRING)
-                                                .description("작가 이름"),
+                                                .description("작가 이름 (50자 이하, 필수값 아님)"),
                                         fieldWithPath("agency").type(JsonFieldType.STRING)
-                                                .description("담당기관"),
+                                                .description("담당기관 (50자 이하)"),
                                         fieldWithPath("info").type(JsonFieldType.STRING)
                                                 .description("상세 내용 (255자 이하)"),
                                         fieldWithPath("startDate").type(JsonFieldType.STRING)
@@ -495,17 +492,18 @@ class DetailsControllerTest extends BaseControllerTest {
                                         fieldWithPath("artForAdminResponses.[].roadAddress").type(JsonFieldType.STRING)
                                                 .description("도로명 주소"),
                                         fieldWithPath("artForAdminResponses.[].category").type(JsonFieldType.STRING)
-                                                .description("카테고리 (사진, 벽화, 공예, 조각, 회화, 서예, 미디어, 기타)"),
+                                                .description("카테고리 (사진, 벽화, 공예, 조각, 그림, 설치미술, 키네틱아트, " +
+                                                        "반응형 미디어, 조명예술, 기타)"),
                                         fieldWithPath("artForAdminResponses.[].authorName").type(JsonFieldType.STRING)
                                                 .description("작가 이름"),
                                         fieldWithPath("artForAdminResponses.[].agency").type(JsonFieldType.STRING)
                                                 .description("담당기관"),
                                         fieldWithPath("artForAdminResponses.[].info").type(JsonFieldType.STRING)
-                                                .description("상세 내용 (255자 이하)"),
+                                                .description("상세 내용"),
                                         fieldWithPath("artForAdminResponses.[].startDate").type(JsonFieldType.STRING)
                                                 .description("시작일 (yyyy-MM-dd)"),
                                         fieldWithPath("artForAdminResponses.[].endDate").type(JsonFieldType.STRING)
-                                                .description("종료일 (종료일은 필수값이 아닙니다.) (yyyy-MM-dd)"),
+                                                .description("종료일 (yyyy-MM-dd)"),
                                         fieldWithPath("artForAdminResponses.[].createDate").type(JsonFieldType.STRING)
                                                 .description("생성일 (yyyy-MM-dd'T'HH:mm:ss.nnnnnn)"),
                                         fieldWithPath("artForAdminResponses.[].revisionDate").type(JsonFieldType.STRING)
