@@ -49,11 +49,17 @@ operation::api/admin/art/delete/notFound[snippets='http-request,http-response']
 ---
 === 작품 조회 (ADMIN)
 - id 내림차순으로 작품 데이터를 반환한다.
-- page, size를 parameter 값으로 요청한다.
+- page, size, sort를 parameter 값으로 요청한다.
 
 ==== 성공
 
 ===== 데이터가 있는 경우
+정렬 조건
+
+- 최신순: sort=revisionDate,desc
+- 최신순, 아이디 내림차순 동시 적용: sort=revisionDate,desc&sort=id,desc (순서 중요)
+- 작품명순: sort=artName
+- 작품명순, 아이디 내림차순 동시 적용: sort=artName&sort=id,desc (순서 중요)
 
 operation::api/admin/art/find[snippets='request-headers,request-parameters,response-fields,http-request,http-response']
 
