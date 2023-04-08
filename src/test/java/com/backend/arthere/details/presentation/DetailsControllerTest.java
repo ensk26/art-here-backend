@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -445,9 +442,10 @@ class DetailsControllerTest extends BaseControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void 관리자가_작품_정보_조회() throws Exception {
+    public void 관리자가_최신순_아이디_내림차순으로_작품_정보_조회() throws Exception {
         //given
-        Pageable pageable = PageRequest.of(0, 3);
+        Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Order.desc("revisionDate"),
+                Sort.Order.desc("id")));
         List<Details> content = 관리자_작품_목록();
         Page<Details> page = new PageImpl<>(content, pageable, content.size());
 
@@ -461,6 +459,7 @@ class DetailsControllerTest extends BaseControllerTest {
                         .header("Authorization", accessToken)
                         .param("page", "0")
                         .param("size", "3")
+                        .param("sort", "revisionDate,desc", "id,desc")
         );
         //then
         resultActions.andExpect(status().isOk())
@@ -472,7 +471,8 @@ class DetailsControllerTest extends BaseControllerTest {
                                 ),
                                 requestParameters(
                                         parameterWithName("page").description("페이지"),
-                                        parameterWithName("size").description("요청 데이터 개수")
+                                        parameterWithName("size").description("요청 데이터 개수"),
+                                        parameterWithName("sort").description("정렬 기준")
                                 ),
                                 responseFields(
                                         fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
@@ -516,7 +516,7 @@ class DetailsControllerTest extends BaseControllerTest {
     @WithMockUser(roles = "ADMIN")
     public void 관리자가_작품_조회시_데이터가_없는_경우_응답() throws Exception {
         //given
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 3);
         Page<Details> page = new PageImpl<>(List.of(), pageable, 0);
 
         given(detailsService.find(pageable))
@@ -528,7 +528,7 @@ class DetailsControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", accessToken)
                         .param("page", "0")
-                        .param("size", "5")
+                        .param("size", "3")
         );
         //then
         resultActions.andExpect(status().isOk())
