@@ -12,7 +12,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.backend.arthere.fixture.ArtsFixtures.작품;
@@ -47,10 +50,10 @@ class DetailsRepositoryTest {
     }
 
     @Test
-    @DisplayName("작품 목록 데이터를 반환한다.")
-    public void 작품_목록_데이터_반환() throws Exception {
+    @DisplayName("최신순으로 작품 목록 데이터를 반환한다.")
+    public void 최신순으로_작품_목록_데이터_반환() throws Exception {
         //given
-        Pageable pageable = PageRequest.of(0, 2);
+        Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.desc("revisionDate")));
         Details details1 = detailsRepository.save(작품_세부정보(작품(null), null));
         Details details2 = detailsRepository.save(작품_세부정보(작품(null), null));
 
@@ -64,5 +67,24 @@ class DetailsRepositoryTest {
                 () -> assertThat(page.getContent().get(0).getId()).isEqualTo(details2.getId())
         );
 
+    }
+    
+    @Test
+    @DisplayName("수정일 내림차순으로 작품 목록 데이터를 반환한다.")
+    public void 수정일_내림차순으로_작품_목록_데이터_반환() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.desc("revisionDate")));
+        Details details1 = detailsRepository.save(작품_세부정보(작품(null), null));
+        Details details2 = detailsRepository.save(작품_세부정보(작품(null), null));
+
+        //when
+        Page<Details> page = detailsRepository.findDetailsWithArts(pageable);
+
+        //then
+        assertAll(
+                () -> assertThat(page.getSize()).isEqualTo(2),
+                () -> assertThat(page.getTotalElements()).isEqualTo(2),
+                () -> assertThat(page.getContent().get(0).getId()).isEqualTo(details2.getId())
+        );
     }
 }
