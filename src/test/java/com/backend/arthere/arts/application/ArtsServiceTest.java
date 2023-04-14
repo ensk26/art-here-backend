@@ -1,7 +1,11 @@
 package com.backend.arthere.arts.application;
 
 import com.backend.arthere.arts.domain.ArtsRepository;
-import com.backend.arthere.arts.dto.*;
+import com.backend.arthere.arts.dto.request.ArtImageByAddressRequest;
+import com.backend.arthere.arts.dto.request.ArtImageByArtNameRequest;
+import com.backend.arthere.arts.dto.request.ArtImageByLocationRequest;
+import com.backend.arthere.arts.dto.request.ArtImageByRevisionDateRequest;
+import com.backend.arthere.arts.dto.response.*;
 import com.backend.arthere.arts.util.LocationUtils;
 import com.backend.arthere.image.util.PresignedURLUtils;
 import org.assertj.core.api.Assertions;

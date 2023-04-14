@@ -1,4 +1,4 @@
-package com.backend.arthere.arts.dto;
+package com.backend.arthere.arts.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ public class ArtImageByLocationRequest {
     private Double longitude;
 
     @NotNull(message = "radius를 입력하세요.")
-    @Max(value = 5000, message = "radius는 5000m가 최대입니다.")
+    @Max(value = 50000, message = "radius는 50km가 최대입니다.")
     private Integer radius;
 
     public void setLatitude(final String latitude) {

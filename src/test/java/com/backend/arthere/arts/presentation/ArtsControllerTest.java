@@ -1,7 +1,7 @@
 package com.backend.arthere.arts.presentation;
 
 import com.backend.arthere.arts.application.ArtsService;
-import com.backend.arthere.arts.dto.*;
+import com.backend.arthere.arts.dto.response.*;
 import com.backend.arthere.global.BaseControllerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
