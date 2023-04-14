@@ -5,5 +5,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface DetailsCustomRepository {
 
-    Page<Details> findDetailsWithArts(Pageable pageable);
+    Page<Details> findDetailsWithArts(String artName, Pageable pageable);
 }

@@ -48,8 +48,10 @@ operation::api/admin/art/delete/notFound[snippets='http-request,http-response']
 
 ---
 === 작품 조회 (ADMIN)
-- id 내림차순으로 작품 데이터를 반환한다.
 - page, size, sort를 parameter 값으로 요청한다.
+- page는 입력하지 않았을 때 0으로 적용된다.
+- size는 입력하지 않았을 때 10으로 적용된다.
+- sort를 입력하지 않았을 때 id 내림차순 정렬이 적용된다.
 
 ==== 성공
 
@@ -63,6 +65,12 @@ operation::api/admin/art/delete/notFound[snippets='http-request,http-response']
 
 operation::api/admin/art/find[snippets='request-headers,request-parameters,response-fields,http-request,http-response']
 
+===== 작품명 검색
+- 작품명으로 검색을 요청한다.
+- page, size, sort, name을 parameter 값으로 요청한다.
+
+operation::api/admin/art/search[snippets='request-headers,request-parameters,response-fields,http-request,http-response']
+
 ===== 데이터가 없는 경우
 operation::api/admin/art/find/empty[snippets='response-fields,http-request,http-response']
 
@@ -70,6 +78,10 @@ operation::api/admin/art/find/empty[snippets='response-fields,http-request,http-
 ===== 권한 없는 사용자
 
 operation::api/admin/art/find/forbidden[snippets='http-request,http-response']
+
+===== page, size에 잘못된 값을 입력했을 때
+
+operation::api/admin/art/find/invalid[snippets='http-request,http-response']
 
 ---
 

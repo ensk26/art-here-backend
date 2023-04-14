@@ -55,9 +55,9 @@ public class DetailsService {
     }
 
     @Transactional
-    public ArtPageResponse find(final Pageable pageable) {
+    public ArtPageResponse find(final String artName, final Pageable pageable) {
 
-        Page<Details> page = detailsRepository.findDetailsWithArts(pageable);
+        Page<Details> page = detailsRepository.findDetailsWithArts(artName, pageable);
         return createImageSharePresignedURLByImageURL(page);
     }
 

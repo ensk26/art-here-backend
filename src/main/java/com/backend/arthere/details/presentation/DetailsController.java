@@ -38,8 +38,9 @@ public class DetailsController {
     }
 
     @GetMapping("/admin/art")
-    public ResponseEntity<ArtPageResponse> find(final Pageable pageable) {
-        ArtPageResponse artPageResponse = detailsService.find(pageable);
+    public ResponseEntity<ArtPageResponse> find(@RequestParam(value = "name", required = false) final String artName,
+                                                final Pageable pageable) {
+        ArtPageResponse artPageResponse = detailsService.find(artName, pageable);
         return ResponseEntity.ok(artPageResponse);
     }
 
