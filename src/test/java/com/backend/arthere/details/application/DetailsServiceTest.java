@@ -25,8 +25,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-import static com.backend.arthere.fixture.ArtsFixtures.작품;
-import static com.backend.arthere.fixture.ArtsFixtures.작품_아이디;
+import static com.backend.arthere.fixture.ArtsFixtures.*;
 import static com.backend.arthere.fixture.DetailsFixtures.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -198,12 +197,12 @@ class DetailsServiceTest {
         List<Details> content = 관리자_작품_목록();
         Page<Details> page = new PageImpl<>(content, pageable, content.size());
 
-        given(detailsRepository.findDetailsWithArts(any()))
+        given(detailsRepository.findDetailsWithArts(any(), any()))
                 .willReturn(page);
         given(presignedURLUtils.createImageShareURL(anyString(), any(), any()))
                 .willReturn(content.get(0).getArts().getImageURL());
         //when
-        ArtPageResponse artPageResponse = detailsService.find(pageable);
+        ArtPageResponse artPageResponse = detailsService.find(null, pageable);
 
         //then
         assertAll(
@@ -222,16 +221,40 @@ class DetailsServiceTest {
         List<Details> content = 관리자_작품_목록();
         Page<Details> page = new PageImpl<>(List.of(), pageable, content.size());
 
-        given(detailsRepository.findDetailsWithArts(any()))
+        given(detailsRepository.findDetailsWithArts(any(), any()))
                 .willReturn(page);
         //when
-        ArtPageResponse artPageResponse = detailsService.find(pageable);
+        ArtPageResponse artPageResponse = detailsService.find(null, pageable);
 
         //then
         assertAll(
                 () -> assertThat(artPageResponse.getTotalPages()).isEqualTo(page.getTotalPages()),
                 () -> assertThat(artPageResponse.getTotalElements()).isEqualTo(page.getTotalElements()),
                 () -> assertThat(artPageResponse.getArtForAdminResponses().size()).isEqualTo(0)
+        );
+    }
+
+    @Test
+    @DisplayName("관리자가 작품명으로 조회한다.")
+    public void 관리자_작품명_검색해서_조회() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(0, 3);
+        List<Details> content = 관리자_작품_목록();
+        Page<Details> page = new PageImpl<>(content, pageable, content.size());
+
+        given(detailsRepository.findDetailsWithArts(any(), any()))
+                .willReturn(page);
+        given(presignedURLUtils.createImageShareURL(anyString(), any(), any()))
+                .willReturn(content.get(0).getArts().getImageURL());
+        //when
+        ArtPageResponse artPageResponse = detailsService.find(작품명, pageable);
+
+        //then
+        assertAll(
+                () -> assertThat(artPageResponse.getTotalPages()).isEqualTo(page.getTotalPages()),
+                () -> assertThat(artPageResponse.getTotalElements()).isEqualTo(page.getTotalElements()),
+                () -> assertThat(artPageResponse.getArtForAdminResponses().get(0).getArtName())
+                        .isEqualTo(작품명)
         );
     }
 }
