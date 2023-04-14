@@ -15,10 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.backend.arthere.fixture.ArtsFixtures.작품;
+import static com.backend.arthere.fixture.ArtsFixtures.작품명;
 import static com.backend.arthere.fixture.DetailsFixtures.작품_세부정보;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -58,33 +58,72 @@ class DetailsRepositoryTest {
         Details details2 = detailsRepository.save(작품_세부정보(작품(null), null));
 
         //when
-        Page<Details> page = detailsRepository.findDetailsWithArts(pageable);
+        Page<Details> page = detailsRepository.findDetailsWithArts(null, pageable);
 
         //then
         assertAll(
-                () -> assertThat(page.getSize()).isEqualTo(2),
+                () -> assertThat(page.getContent().size()).isEqualTo(2),
                 () -> assertThat(page.getTotalElements()).isEqualTo(2),
                 () -> assertThat(page.getContent().get(0).getId()).isEqualTo(details2.getId())
         );
 
     }
-    
+
     @Test
-    @DisplayName("수정일 내림차순으로 작품 목록 데이터를 반환한다.")
-    public void 수정일_내림차순으로_작품_목록_데이터_반환() throws Exception {
+    @DisplayName("작품명순으로 작품 목록 데이터를 반환한다.")
+    public void 작품명순으로_작품_목록_데이터_반환() throws Exception {
         //given
-        Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.desc("revisionDate")));
-        Details details1 = detailsRepository.save(작품_세부정보(작품(null), null));
-        Details details2 = detailsRepository.save(작품_세부정보(작품(null), null));
+        Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.asc("artName")));
+        detailsRepository.save(작품_세부정보(작품(null), null));
+        detailsRepository.save(작품_세부정보(작품(null), null));
 
         //when
-        Page<Details> page = detailsRepository.findDetailsWithArts(pageable);
+        Page<Details> page = detailsRepository.findDetailsWithArts(null, pageable);
 
         //then
         assertAll(
-                () -> assertThat(page.getSize()).isEqualTo(2),
-                () -> assertThat(page.getTotalElements()).isEqualTo(2),
-                () -> assertThat(page.getContent().get(0).getId()).isEqualTo(details2.getId())
+                () -> assertThat(page.getContent().size()).isEqualTo(2),
+                () -> assertThat(page.getTotalElements()).isEqualTo(2)
         );
     }
+
+    @Test
+    @DisplayName("검색어와 일치하는 작품명이 있을 때 데이터를 작품명순으로 반환한다.")
+    public void 검색어와_일치하는_작품명_있을_때_데이터_작품명순_반환() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.asc("artName")));
+        detailsRepository.save(작품_세부정보(작품(null), null));
+        detailsRepository.save(작품_세부정보(작품(null), null));
+
+        //when
+        Page<Details> page = detailsRepository.findDetailsWithArts(작품명, pageable);
+
+        //then
+        assertAll(
+                () -> assertThat(page.getContent().size()).isEqualTo(2),
+                () -> assertThat(page.getTotalElements()).isEqualTo(2),
+                () -> assertThat(page.getContent().get(0).getArts().getArtName()).isEqualTo(작품명)
+        );
+    }
+
+    @Test
+    @DisplayName("검색어와 일치하는 작품명이 없을 때 빈 리스트 반환한다.")
+    public void 검색어와_일치하는_작품명_없을_때_빈_리스트_반환() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.asc("artName")));
+        Details details1 = detailsRepository.save(작품_세부정보(작품(null), null));
+        Details details2 = detailsRepository.save(작품_세부정보(작품(null), null));
+        String notFoundArtName = "없는이름";
+
+        //when
+        Page<Details> page = detailsRepository.findDetailsWithArts(notFoundArtName, pageable);
+
+        //then
+        assertAll(
+                () -> assertThat(page.getContent().size()).isEqualTo(0),
+                () -> assertThat(page.getTotalElements()).isEqualTo(0),
+                () -> assertThat(page.getTotalPages()).isEqualTo(0)
+        );
+    }
+
 }
