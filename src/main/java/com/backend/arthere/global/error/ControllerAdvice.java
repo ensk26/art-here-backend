@@ -6,6 +6,8 @@ import com.backend.arthere.auth.exception.InvalidRefreshTokenException;
 import com.backend.arthere.auth.exception.InvalidTokenException;
 import com.backend.arthere.auth.exception.RefreshTokenNotFoundException;
 import com.backend.arthere.details.exception.DetailsNotFoundException;
+import com.backend.arthere.details.exception.InvalidFormatException;
+import com.backend.arthere.details.exception.InvalidSizeException;
 import com.backend.arthere.member.exception.MemberNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +61,7 @@ public class ControllerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    @ExceptionHandler({InvalidCategoryException.class})
+    @ExceptionHandler({InvalidCategoryException.class, InvalidFormatException.class, InvalidSizeException.class})
     public ResponseEntity<ErrorResponse> handleInvalid(final RuntimeException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
