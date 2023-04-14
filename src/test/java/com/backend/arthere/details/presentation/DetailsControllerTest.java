@@ -4,6 +4,7 @@ import com.backend.arthere.details.application.DetailsService;
 import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.dto.request.ArtRequest;
 import com.backend.arthere.details.dto.response.ArtMapResponse;
+import com.backend.arthere.details.dto.response.ArtPageResponse;
 import com.backend.arthere.details.dto.response.ArtResponse;
 import com.backend.arthere.details.dto.response.ArtSaveResponse;
 import com.backend.arthere.details.exception.DetailsNotFoundException;
@@ -24,8 +25,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
-import static com.backend.arthere.fixture.ArtsFixtures.작품;
-import static com.backend.arthere.fixture.ArtsFixtures.작품_아이디;
+import static com.backend.arthere.fixture.ArtsFixtures.*;
 import static com.backend.arthere.fixture.DetailsFixtures.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -449,7 +449,7 @@ class DetailsControllerTest extends BaseControllerTest {
         List<Details> content = 관리자_작품_목록();
         Page<Details> page = new PageImpl<>(content, pageable, content.size());
 
-        given(detailsService.find(pageable))
+        given(detailsService.find(null, pageable))
                 .willReturn(작품_목록_응답(page));
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -514,12 +514,13 @@ class DetailsControllerTest extends BaseControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void 관리자가_작품_조회시_데이터가_없는_경우_응답() throws Exception {
+    public void 관리자가_검색어와_일치하는_작품명이_있을_때_작품명순_으로_작품_정보_조회() throws Exception {
         //given
-        Pageable pageable = PageRequest.of(0, 3);
-        Page<Details> page = new PageImpl<>(List.of(), pageable, 0);
+        Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Order.asc("artName")));
+        List<Details> content = 관리자_작품_목록();
+        Page<Details> page = new PageImpl<>(content, pageable, content.size());
 
-        given(detailsService.find(pageable))
+        given(detailsService.find(작품명, pageable))
                 .willReturn(작품_목록_응답(page));
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -529,7 +530,79 @@ class DetailsControllerTest extends BaseControllerTest {
                         .header("Authorization", accessToken)
                         .param("page", "0")
                         .param("size", "3")
+                        .param("sort", "artName")
+                        .param("name", 작품명)
         );
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("api/admin/art/search",
+                                requestHeaders(
+                                        headerWithName("Authorization").description("액세스 토큰")
+                                ),
+                                requestParameters(
+                                        parameterWithName("page").description("페이지"),
+                                        parameterWithName("size").description("요청 데이터 개수"),
+                                        parameterWithName("sort").description("정렬 기준"),
+                                        parameterWithName("name").description("검색어")
+                                ),
+                                responseFields(
+                                        fieldWithPath("totalElements").type(JsonFieldType.NUMBER)
+                                                .description("전체 데이터 개수"),
+                                        fieldWithPath("totalPages").type(JsonFieldType.NUMBER)
+                                                .description("전체 페이지 개수"),
+                                        fieldWithPath("artForAdminResponses.[].id").type(JsonFieldType.NUMBER)
+                                                .description("작품 아이디"),
+                                        fieldWithPath("artForAdminResponses.[].artName").type(JsonFieldType.STRING)
+                                                .description("작품명"),
+                                        fieldWithPath("artForAdminResponses.[].imageURL").type(JsonFieldType.STRING)
+                                                .description("이미지 경로"),
+                                        fieldWithPath("artForAdminResponses.[].latitude").type(JsonFieldType.NUMBER)
+                                                .description("위도"),
+                                        fieldWithPath("artForAdminResponses.[].longitude").type(JsonFieldType.NUMBER)
+                                                .description("경도"),
+                                        fieldWithPath("artForAdminResponses.[].roadAddress").type(JsonFieldType.STRING)
+                                                .description("도로명 주소"),
+                                        fieldWithPath("artForAdminResponses.[].category").type(JsonFieldType.STRING)
+                                                .description("카테고리 (사진, 벽화, 공예, 조각, 그림, 설치미술, 키네틱아트, " +
+                                                        "반응형 미디어, 조명예술, 기타)"),
+                                        fieldWithPath("artForAdminResponses.[].authorName").type(JsonFieldType.STRING)
+                                                .description("작가 이름"),
+                                        fieldWithPath("artForAdminResponses.[].agency").type(JsonFieldType.STRING)
+                                                .description("담당기관"),
+                                        fieldWithPath("artForAdminResponses.[].info").type(JsonFieldType.STRING)
+                                                .description("상세 내용"),
+                                        fieldWithPath("artForAdminResponses.[].startDate").type(JsonFieldType.STRING)
+                                                .description("시작일 (yyyy-MM-dd)"),
+                                        fieldWithPath("artForAdminResponses.[].endDate").type(JsonFieldType.STRING)
+                                                .description("종료일 (yyyy-MM-dd)"),
+                                        fieldWithPath("artForAdminResponses.[].createDate").type(JsonFieldType.STRING)
+                                                .description("생성일 (yyyy-MM-dd'T'HH:mm:ss.nnnnnn)"),
+                                        fieldWithPath("artForAdminResponses.[].revisionDate").type(JsonFieldType.STRING)
+                                                .description("수정일 (yyyy-MM-dd'T'HH:mm:ss.nnnnnn)")
+                                )
+                        ));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void 관리자가_작품_조회시_데이터가_없는_경우_응답() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Order.desc("id")));
+        ArtPageResponse artPageResponse = new ArtPageResponse(0L, 0, List.of());
+        given(detailsService.find(null, pageable))
+                .willReturn(artPageResponse);
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/admin/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .param("page", "0")
+                        .param("size", "3")
+        );
+
         //then
         resultActions.andExpect(status().isOk())
                 .andDo(print())
@@ -564,6 +637,27 @@ class DetailsControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andDo(
                         document("api/admin/art/find/forbidden")
+                );
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void 페이지_혹은_사이즈를_잘못_입력했을_때_에러_발생() throws Exception {
+        //given
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                get("/api/admin/art")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", accessToken)
+                        .param("page", "0")
+                        .param("size", "12")
+        );
+        //then
+        resultActions.andExpect(status().isBadRequest())
+                .andDo(print())
+                .andDo(
+                        document("api/admin/art/find/invalid")
                 );
     }
 }
