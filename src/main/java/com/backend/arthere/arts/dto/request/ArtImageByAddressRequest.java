@@ -1,5 +1,6 @@
 package com.backend.arthere.arts.dto.request;
 
+import com.backend.arthere.arts.domain.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,8 @@ public class ArtImageByAddressRequest implements Serializable {
     @Max(value = 10, message = "limit은 1 이상 10 이하입니다.")
     private int limit;
 
+    private Category category;
+
     public void setIdx(final String idx) {
         this.idx = Long.parseLong(idx);
     }
@@ -31,5 +34,9 @@ public class ArtImageByAddressRequest implements Serializable {
 
     public void setLimit(final String limit) {
         this.limit = Integer.parseInt(limit);
+    }
+
+    public void setCategory(final String category) {
+        this.category = Category.valueOfName(category);
     }
 }
