@@ -30,7 +30,10 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
         return jpaQueryFactory.select(Projections.constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
                 .from(arts)
                 .orderBy(arts.revisionDate.desc(), arts.id.desc())
-                .where(revisionDateIdx(request.getDate(), request.getIdx()))
+                .where(
+                        revisionDateIdx(request.getDate(), request.getIdx()),
+                        containCategory(request.getCategory())
+                )
                 .limit(request.getLimit() + 1)
                 .fetch();
     }
@@ -68,7 +71,9 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
                 .from(arts)
                 .where(
                         ltArtsId(request.getIdx()),
-                        containsAddress(request.getQuery()))
+                        containsAddress(request.getQuery()),
+                        containCategory(request.getCategory())
+                )
                 .limit(request.getLimit() + 1)
                 .orderBy(arts.id.desc())
                 .fetch();
@@ -81,7 +86,11 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
         return jpaQueryFactory.select(Projections
                         .constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
                 .from(arts)
-                .where(ltArtsId(request.getIdx()), containArtName(request.getName()))
+                .where(
+                        ltArtsId(request.getIdx()),
+                        containArtName(request.getName()),
+                        containCategory(request.getCategory())
+                )
                 .orderBy(arts.id.desc())
                 .limit(request.getLimit() + 1)
                 .fetch();
@@ -106,6 +115,13 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
             return null;
         }
         return arts.id.lt(idx);
+    }
+
+    private BooleanExpression containCategory(final Category category) {
+        if (category == null) {
+            return null;
+        }
+        return arts.category.eq(category);
     }
 
     @Override

@@ -18,6 +18,18 @@ operation::image/media[snippets='request-parameters,response-fields,http-request
 
 operation::image/media/next[snippets='request-parameters,response-fields,http-request,http-response']
 
+===== 카테고리 요청
+
+- 카테고리 조건이 있는 경우
+
+    " & category = 기타 " 추가
+
+- 카테고리 조건이 없는 경우
+
+    추가하지 않는다.
+
+operation::image/media/category[snippets='request-parameters,response-fields,http-request,http-response']
+
 ===== 다음에 요청할 데이터가 없는 경우
 
 operation::image/media/false[snippets='http-response']
@@ -71,6 +83,18 @@ operation::image/media/address[snippets='request-parameters,response-fields,http
 
 operation::image/media/address/next[snippets='request-parameters,response-fields,http-request,http-response']
 
+===== 카테고리 요청
+
+- 카테고리 조건이 있는 경우
+
+    " & category = 기타 " 추가
+
+- 카테고리 조건이 없는 경우
+
+    추가하지 않는다.
+
+operation::image/media/address/category[snippets='request-parameters,response-fields,http-request,http-response']
+
 ===== 검색어와 일치하는 데이터가 없는 경우
 
 operation::image/media/address/empty[snippets='request-parameters,response-fields,http-request,http-response']
@@ -103,6 +127,18 @@ operation::image/media/name[snippets='request-parameters,response-fields,http-re
 ===== 다음 요청
 
 operation::image/media/name/next[snippets='request-parameters,response-fields,http-request,http-response']
+
+===== 카테고리 요청
+
+- 카테고리 조건이 있는 경우
+
+    " & category = 기타 " 추가
+
+- 카테고리 조건이 없는 경우
+
+    추가하지 않는다.
+
+operation::image/media/name/category[snippets='request-parameters,response-fields,http-request,http-response']
 
 ===== 요청 데이터가 없는 경우
 
