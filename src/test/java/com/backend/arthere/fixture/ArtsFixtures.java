@@ -4,7 +4,7 @@ import com.backend.arthere.arts.domain.Address;
 import com.backend.arthere.arts.domain.Arts;
 import com.backend.arthere.arts.domain.Category;
 import com.backend.arthere.arts.domain.Location;
-import com.backend.arthere.arts.dto.ArtImageByAddressRequest;
+import com.backend.arthere.arts.dto.request.ArtImageByAddressRequest;
 
 public class ArtsFixtures {
 

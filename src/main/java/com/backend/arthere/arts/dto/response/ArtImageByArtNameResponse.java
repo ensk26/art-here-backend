@@ -1,4 +1,4 @@
-package com.backend.arthere.arts.dto;
+package com.backend.arthere.arts.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

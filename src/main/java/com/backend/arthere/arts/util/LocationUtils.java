@@ -1,8 +1,8 @@
 package com.backend.arthere.arts.util;
 
-import com.backend.arthere.arts.dto.ArtImageByLocationRequest;
-import com.backend.arthere.arts.dto.ArtImageByLocationResponse;
-import com.backend.arthere.arts.dto.LocationRangeResponse;
+import com.backend.arthere.arts.dto.request.ArtImageByLocationRequest;
+import com.backend.arthere.arts.dto.response.ArtImageByLocationResponse;
+import com.backend.arthere.arts.dto.response.LocationRangeResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
