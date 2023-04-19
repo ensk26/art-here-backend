@@ -1,15 +1,19 @@
 package com.backend.arthere.satisfactions.dto.response;
 
-import lombok.AllArgsConstructor;
+import com.backend.arthere.satisfactions.domain.SatisfactionType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class SatisfactionsResponse {
 
     private String satisfaction;
 
-    private int count;
+    private Long count;
+
+    public SatisfactionsResponse(SatisfactionType satisfaction, Long count) {
+        this.satisfaction = satisfaction.getSatisfactionName();
+        this.count = count;
+    }
 }
