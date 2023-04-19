@@ -20,8 +20,9 @@ public class SatisfactionsCustomRepositoryImpl implements SatisfactionsCustomRep
     public List<SatisfactionsResponse> findSatisfactions(Long id) {
 
         return jpaQueryFactory.select(Projections.constructor
-                (SatisfactionsResponse.class, satisfactions.satisfactionType, satisfactions.count()))
+                        (SatisfactionsResponse.class, satisfactions.satisfactionType, satisfactions.count()))
                 .from(satisfactions)
+                .where(satisfactions.arts.id.eq(id))
                 .groupBy(satisfactions.satisfactionType)
                 .fetch();
     }
