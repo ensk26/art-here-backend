@@ -1,7 +1,5 @@
 package com.backend.arthere.satisfactions.presentation;
 
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateRequest;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateResponse;
 import com.backend.arthere.satisfactions.application.SatisfactionsService;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -22,8 +19,7 @@ public class SatisfactionsController {
 
     private final SatisfactionsService satisfactionsService;
 
-    //만족도 공유
-    @GetMapping("/media")
+    @GetMapping("")
     public ResponseEntity<?> findSatisfactions(@Valid @Min(value = 1, message = "id는 1이상의 수 입니다.") Long id) {
 
         List<SatisfactionsResponse> responses = satisfactionsService.findSatisfactions(id);
