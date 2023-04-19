@@ -1,8 +1,6 @@
 package com.backend.arthere.satisfactions.domain;
 
 import com.backend.arthere.arts.domain.*;
-import com.backend.arthere.arts.dto.ArtImageByRevisionDateRequest;
-import com.backend.arthere.arts.dto.ArtImageResponse;
 import com.backend.arthere.global.config.JpaConfig;
 import com.backend.arthere.global.config.QueryDslConfig;
 import com.backend.arthere.member.domain.Member;
@@ -40,14 +38,11 @@ class SatisfactionsRepositoryTest {
         Long arts_id = 1L;
         SatisfactionType satisfactionType = SatisfactionType.valueOfName("멋져요");
 
-
         List<Satisfactions> satisfactions = new ArrayList<>();
 
         artsSaveData();
         memberSaveData();
         Arts arts = artsRepository.getReferenceById(arts_id);
-
-
 
         for (int i = 1; i <= 5; i++) {
             Member member = memberRepository.getReferenceById(Long.parseLong(String.valueOf(i)));
@@ -58,9 +53,9 @@ class SatisfactionsRepositoryTest {
 
         //when
         List<SatisfactionsResponse> result = satisfactionsRepository.findSatisfactions(arts_id);
-        System.out.println("result = " + result.get(0).getSatisfaction()+" "+result.get(0).getCount());
 
         ///then
+        Assertions.assertThat(result.get(0).getCount()).isEqualTo(5);
 
     }
 
@@ -83,7 +78,7 @@ class SatisfactionsRepositoryTest {
     private void memberSaveData() {
         for (int i = 1; i <= 5; i++) {
             memberRepository.save(
-                    new Member(Long.parseLong(String.valueOf(i)),"email","name","profile", Role.USER, SocialType.GOOGLE));
+                    new Member(Long.parseLong(String.valueOf(i)), "email", "name", "profile", Role.USER, SocialType.GOOGLE));
         }
     }
 
