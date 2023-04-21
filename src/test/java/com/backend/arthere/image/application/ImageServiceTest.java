@@ -24,9 +24,6 @@ class ImageServiceTest {
     @Mock
     private PresignedURLUtils presignedURLUtils;
 
-
-
-
     @Test
     void 이미지_공유_URL_생성() {
 
@@ -71,6 +68,36 @@ class ImageServiceTest {
 
         //when
         ImageResponse response = imageService.createAdminDeletePresignedURL(imageURL);
+
+        //then
+        assertThat(response.getPreSignedURL()).isEqualTo(preSignedURL);
+    }
+    
+    @Test
+    public void 게시물_이미지_업로드_URL_생성() throws Exception {
+        //given
+        String preSignedURL = "testURL";
+
+        given(presignedURLUtils.createImageUploadURL(anyString(), any(), any())).willReturn(preSignedURL);
+
+        //when
+        ImageUploadResponse response = imageService.createUserImageUploadPresignedURL();
+
+        //then
+        assertThat(response.getKey()).contains("image/", ".jpg");
+        assertThat(response.getPreSignedURL()).contains(preSignedURL);
+    }
+    
+    @Test
+    public void 게시물_이미지_삭제_URL_생성() throws Exception {
+        //given
+        String imageURL = "image/test.jpg";
+        String preSignedURL = "testURL";
+
+        given(presignedURLUtils.createImageDeleteURL(anyString(), any(), any())).willReturn(preSignedURL);
+
+        //when
+        ImageResponse response = imageService.createUsernDeletePresignedURL(imageURL);
 
         //then
         assertThat(response.getPreSignedURL()).isEqualTo(preSignedURL);

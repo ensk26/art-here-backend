@@ -19,6 +19,10 @@ public class ImageService {
 
     private final String adminBucketName;
 
+    private final AmazonS3 userS3Client;
+
+    private final String userBucketName;
+
     public ImageResponse createImageSharePresignedURL(String imageURL) {
 
         String preSignedURL = presignedURLUtils.createImageShareURL(imageURL, adminS3Client, adminBucketName);
@@ -36,6 +40,19 @@ public class ImageService {
     public ImageResponse createAdminDeletePresignedURL(String imageURL) {
 
         String preSignedURL = presignedURLUtils.createImageDeleteURL(imageURL, adminS3Client, adminBucketName);
+        return new ImageResponse(preSignedURL);
+    }
+
+    public ImageUploadResponse createUserImageUploadPresignedURL() {
+        String imageURL = "image/" + UUID.randomUUID().toString() + ".jpg";
+        String preSignedURL = presignedURLUtils.createImageUploadURL(imageURL, userS3Client, userBucketName);
+
+        return new ImageUploadResponse(preSignedURL, imageURL);
+    }
+
+    public ImageResponse createUsernDeletePresignedURL(String imageURL) {
+
+        String preSignedURL = presignedURLUtils.createImageDeleteURL(imageURL, userS3Client, userBucketName);
         return new ImageResponse(preSignedURL);
     }
 }

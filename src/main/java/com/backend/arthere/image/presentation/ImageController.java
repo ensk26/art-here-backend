@@ -37,4 +37,18 @@ public class ImageController {
         ImageResponse imageResponse = imageService.createAdminDeletePresignedURL(imageURL);
         return ResponseEntity.ok(imageResponse);
     }
+
+    @GetMapping("/user/image/upload")
+    public ResponseEntity<ImageUploadResponse> createUserImageUploadPresignedURL() {
+
+        ImageUploadResponse uploadResponse = imageService.createUserImageUploadPresignedURL();
+        return ResponseEntity.ok(uploadResponse);
+    }
+
+    @GetMapping("/user/image/delete")
+    public ResponseEntity<ImageResponse> createUserDeletePresignedURL(@RequestParam("image") String imageURL) {
+
+        ImageResponse imageResponse = imageService.createUsernDeletePresignedURL(imageURL);
+        return ResponseEntity.ok(imageResponse);
+    }
 }

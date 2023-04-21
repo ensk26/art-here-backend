@@ -11,21 +11,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AdminS3Config {
+public class UserS3Config {
 
-    @Value("${aws.s3.region}")
+    @Value("${aws.user.s3.region}")
     private Regions clientRegion;
 
-    @Value("${aws.s3.bucket}")
+    @Value("${aws.user.s3.bucket}")
     private String bucketName;
 
-    @Value("${aws.credentials.accessKey}")
+    @Value("${aws.user.credentials.accessKey}")
     private String accessKey;
 
-    @Value("${aws.credentials.secretKey}")
+    @Value("${aws.user.credentials.secretKey}")
     private String secretKey;
 
-    @Bean(name = "adminS3Client")
+
+    @Bean(name = "userS3Client")
     public AmazonS3 createS3Client() {
 
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
@@ -36,7 +37,7 @@ public class AdminS3Config {
                 .build();
     }
 
-    @Bean(name = "adminBucketName")
+    @Bean(name = "userBucketName")
     public String getBucketName() {
         return bucketName;
     }
