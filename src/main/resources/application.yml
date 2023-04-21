@@ -31,6 +31,14 @@ aws:
     accessKey: ENC(bPe+s6Qdfbp9babO9iB9BRv9ve2nzm3dZgYanNkM/Ok=)
     secretKey: ENC(IU/VVNYkDtjMxFC9NaJu0svRz127W7aHHHK9h8FsIY9qD5JCqZFewU1X2WfqqCNeUZ0qyzKWJBA=)
 
+  user:
+    s3:
+      bucket: ENC(vEGYXJ7McMBh9AqqRQP3xEt3B+ImWIGX)
+      region:  ENC(ovMoFG6VmdsVbj3GY6zLH4Ze0RDWLLfy)
+    credentials:
+      accessKey: ENC(qM29kkeFXsM0ua7lv7ynJ60K3n/RWK0A49dg6DM1tZM=)
+      secretKey: ENC(UIUJRDov66mdwlyXtCkiubG3JQYaT5pof2gXCe/QTQ1/5+fO/7KEnn886gZMo+LIhZeI0kP5Yrc=)
+
 ---
 spring:
   profiles:
