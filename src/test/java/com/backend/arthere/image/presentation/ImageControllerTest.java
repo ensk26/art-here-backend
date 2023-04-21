@@ -120,6 +120,65 @@ class ImageControllerTest extends BaseControllerTest {
                 );
     }
 
+    @Test
+    @WithMockUser(roles = "USER")
+    public void 게시물_이미지_업로드_URL_응답() throws Exception {
+        //given
+        ImageUploadResponse response = imageUploadResponse();
+        given(imageService.createUserImageUploadPresignedURL()).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/user/image/upload")
+                .header("authorization", "accessToken"));
+
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("user/image/upload",
+                                requestHeaders(
+                                        headerWithName("authorization").description("Bearer access token")
+                                ),
+                                responseFields(
+                                        fieldWithPath("preSignedURL").type(JsonFieldType.STRING).description("인증된 URL"),
+                                        fieldWithPath("key").type(JsonFieldType.STRING).description("저장할 파일 경로")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void 게시물_이미지_삭제_URL_응답() throws Exception {
+        //given
+        ImageResponse response = imageResponse();
+        given(imageService.createUsernDeletePresignedURL(anyString())).willReturn(response);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/user/image/delete")
+                .param("image", "image/sand.jpg")
+                .header("authorization", "accessToken"));
+
+        //then
+        resultActions.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(
+                        document("user/image/delete",
+                                requestHeaders(
+                                        headerWithName("authorization").description("Bearer access token")
+                                ),
+                                requestParameters(
+                                        parameterWithName("image").description("이미지 경로")
+                                ),
+                                responseFields(
+                                        fieldWithPath("preSignedURL").type(JsonFieldType.STRING).description("인증된 URL")
+                                )
+                        )
+                );
+    }
+
     private ImageResponse imageResponse() {
 
         String url = "https://art-here-frontend.s3.ap-northeast-2.amazonaws.com/image/sand.jpg?X-Amz-Algorithm";
