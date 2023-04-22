@@ -9,6 +9,7 @@ import com.backend.arthere.details.exception.DetailsNotFoundException;
 import com.backend.arthere.details.exception.InvalidFormatException;
 import com.backend.arthere.details.exception.InvalidSizeException;
 import com.backend.arthere.member.exception.MemberNotFoundException;
+import com.backend.arthere.post.exception.PostNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -68,7 +69,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({RefreshTokenNotFoundException.class, MemberNotFoundException.class,
-            ArtsNotFoundException.class, DetailsNotFoundException.class})
+            ArtsNotFoundException.class, DetailsNotFoundException.class, PostNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFound(final RuntimeException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
