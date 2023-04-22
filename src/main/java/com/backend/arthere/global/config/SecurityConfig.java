@@ -94,6 +94,7 @@ public class SecurityConfig {
             "/api/image/media/name",
             "/api/image/map",
             "/api/art",
-            "/api/art/map"
+            "/api/art/map",
+            "/api/posts"
     };
 }
