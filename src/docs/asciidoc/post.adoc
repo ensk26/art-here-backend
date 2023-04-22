@@ -1,0 +1,11 @@
+[[Post]]
+== Post
+
+=== 게시물 세부 조회
+
+==== 성공
+operation::posts/find[snippets='request-parameters,response-fields,http-request,http-response']
+
+==== 실패
+===== 존재하지 않는 게시물
+operation::posts/find/notFound[snippets='http-request,http-response']
