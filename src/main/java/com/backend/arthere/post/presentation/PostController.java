@@ -1,5 +1,7 @@
 package com.backend.arthere.post.presentation;
 
+import com.backend.arthere.auth.domain.CurrentUser;
+import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.post.application.PostService;
 import com.backend.arthere.post.dto.response.PostResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +19,9 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<PostResponse> find(@RequestParam("id") final Long id) {
+    public ResponseEntity<PostResponse> find(@RequestParam("id") final Long id,
+                                             @CurrentUser final LoginMember loginMember) {
 
-        return ResponseEntity.ok(postService.find(id));
+        return ResponseEntity.ok(postService.find(id, loginMember.getId()));
     }
 }
