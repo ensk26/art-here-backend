@@ -5,6 +5,8 @@ import com.backend.arthere.auth.application.AuthService;
 import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.auth.presentation.AuthController;
 import com.backend.arthere.auth.presentation.AuthenticationArgumentResolver;
+import com.backend.arthere.like.application.LikeService;
+import com.backend.arthere.like.presentation.LikeController;
 import com.backend.arthere.member.application.MemberService;
 import com.backend.arthere.member.presentation.MemberController;
 import com.backend.arthere.post.application.PostService;
@@ -24,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension.class)
 @Import(RestDocsConfig.class)
-@WebMvcTest({AuthController.class, MemberController.class, PostController.class})
+@WebMvcTest({AuthController.class, MemberController.class, PostController.class, LikeController.class})
 public class ControllerTest {
 
     @Autowired
@@ -38,6 +40,9 @@ public class ControllerTest {
 
     @MockBean
     protected PostService postService;
+
+    @MockBean
+    protected LikeService likeService;
 
     @MockBean
     protected AuthenticationArgumentResolver authenticationArgumentResolver;

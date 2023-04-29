@@ -41,12 +41,10 @@ public class Post extends BaseEntity {
     @Column(name = "unlike_count")
     private Long unlikeCount = 0L;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arts_id")
     private Arts arts;
@@ -63,4 +61,5 @@ public class Post extends BaseEntity {
         this.member = member;
         this.arts = arts;
     }
+
 }

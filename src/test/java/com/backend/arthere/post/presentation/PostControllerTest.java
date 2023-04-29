@@ -32,7 +32,7 @@ class PostControllerTest extends ControllerTest {
         //given
         PostResponse postResponse = 게시물_응답();
 
-        given(postService.find(게시물_아이디))
+        given(postService.find(any(), any()))
                 .willReturn(postResponse);
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -61,6 +61,8 @@ class PostControllerTest extends ControllerTest {
                                            .description("생성일"),
                                    fieldWithPath("revisionDate").type(JsonFieldType.STRING)
                                            .description("수정일"),
+                                   fieldWithPath("likeState").type(JsonFieldType.BOOLEAN)
+                                           .description("좋아요 눌렀는지 여부"),
                                    fieldWithPath("writer.id").type(JsonFieldType.NUMBER)
                                            .description("작성자 아이디"),
                                    fieldWithPath("writer.name").type(JsonFieldType.STRING)
@@ -79,7 +81,7 @@ class PostControllerTest extends ControllerTest {
     @WithMockUser
     public void 게시물이_존재하지_않을때_에러_발생() throws Exception {
         //given
-        given(postService.find(any()))
+        given(postService.find(any(), any()))
                 .willThrow(new PostNotFoundException());
         //when
         ResultActions resultActions = mockMvc.perform(

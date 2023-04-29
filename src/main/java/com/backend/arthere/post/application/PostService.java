@@ -2,6 +2,7 @@ package com.backend.arthere.post.application;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.backend.arthere.image.util.PresignedURLUtils;
+import com.backend.arthere.like.domain.LikeRepository;
 import com.backend.arthere.post.domain.Post;
 import com.backend.arthere.post.domain.PostRepository;
 import com.backend.arthere.post.dto.response.PostResponse;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
     private final PostRepository postRepository;
 
+    private final LikeRepository likeRepository;
+
     private final PresignedURLUtils presignedURLUtils;
 
     private final AmazonS3 userS3Client;
@@ -22,9 +25,13 @@ public class PostService {
     private final String userBucketName;
 
     @Transactional(readOnly = true)
-    public PostResponse find(final Long id) {
+    public PostResponse find(final Long id, final Long memberId) {
         Post post = findPost(id);
-        return PostResponse.from(post);
+        return PostResponse.of(post, isLike(id, memberId));
+    }
+
+    private boolean isLike(final Long id, final Long memberId) {
+        return likeRepository.existsByMemberIdAndPostId(memberId, id);
     }
 
     private Post findPost(final Long id) {

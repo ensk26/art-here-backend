@@ -45,7 +45,7 @@ public class PostFixtures {
     }
 
     public static PostResponse 게시물_응답() {
-        PostResponse postResponse = PostResponse.from(게시물(게시물_아이디, 회원(1L)));
+        PostResponse postResponse = PostResponse.of(게시물(게시물_아이디, 회원(1L)), false);
         postResponse.setDate(LocalDateTime.now(), LocalDateTime.now());
         return postResponse;
     }
