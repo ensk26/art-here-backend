@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 public class PostResponse {
 
-
     private String content;
 
     private Long likeCount;
@@ -20,24 +19,28 @@ public class PostResponse {
 
     private LocalDateTime revisionDate;
 
+    private boolean likeState;
+
     private WriterResponse writer;
 
     private PostResponse(final String content, final Long likeCount, final Long unlikeCount,
-                         final LocalDateTime createDate, final LocalDateTime revisionDate, final WriterResponse writer) {
+                         final LocalDateTime createDate, final LocalDateTime revisionDate,
+                         final boolean likeState, final WriterResponse writer) {
         this.content = content;
         this.likeCount = likeCount;
         this.unlikeCount = unlikeCount;
         this.createDate = createDate;
         this.revisionDate = revisionDate;
+        this.likeState = likeState;
         this.writer = writer;
     }
 
-    public static PostResponse from(final Post post) {
+    public static PostResponse of(final Post post, final boolean likeState) {
 
         final WriterResponse writer = WriterResponse.from(post.getMember());
 
         return new PostResponse(post.getContent(), post.getLikeCount(), post.getUnlikeCount(),
-                post.getCreateDate(), post.getRevisionDate(), writer);
+                post.getCreateDate(), post.getRevisionDate(), likeState, writer);
     }
 
     public void setDate(final LocalDateTime createDate, final LocalDateTime revisionDate) {
