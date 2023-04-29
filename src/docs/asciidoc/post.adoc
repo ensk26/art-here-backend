@@ -2,6 +2,9 @@
 == Post
 
 === 게시물 세부 조회
+게시물을 세부 정보를 조회한다.
+
+회원의 경우 액세스 토큰과 함께 요청한다.
 
 ==== 성공
 operation::posts/find[snippets='request-parameters,response-fields,http-request,http-response']
