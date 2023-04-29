@@ -1,5 +1,6 @@
 package com.backend.arthere.post.application;
 
+import com.backend.arthere.like.domain.LikeRepository;
 import com.backend.arthere.post.domain.Post;
 import com.backend.arthere.post.domain.PostRepository;
 import com.backend.arthere.post.dto.response.PostResponse;
@@ -28,6 +29,8 @@ import static org.mockito.BDDMockito.given;
 class PostServiceTest {
     @Mock
     private PostRepository postRepository;
+    @Mock
+    private LikeRepository likeRepository;
 
     @InjectMocks
     private PostService postService;
@@ -40,9 +43,10 @@ class PostServiceTest {
 
         given(postRepository.findPostWithMember(post.getId()))
                 .willReturn(Optional.of(post));
-        
+        given(likeRepository.existsByMemberIdAndPostId(null, 게시물_아이디))
+                .willReturn(false);
         //when
-        PostResponse postResponse = postService.find(post.getId());
+        PostResponse postResponse = postService.find(post.getId(), null);
 
         //then
         assertAll(
@@ -58,7 +62,7 @@ class PostServiceTest {
         given(postRepository.findPostWithMember(any()))
                 .willReturn(Optional.empty());
         //when //then
-        assertThatThrownBy(() -> postService.find(게시물_아이디))
+        assertThatThrownBy(() -> postService.find(게시물_아이디, null))
                 .isInstanceOf(PostNotFoundException.class);
     }
 }
