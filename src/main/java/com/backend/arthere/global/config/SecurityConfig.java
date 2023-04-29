@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .antMatchers("/actuator/health").permitAll()
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/api/auth/**", "/oauth2/**", "/login/**").permitAll()
+                .antMatchers("/api/auth/**", "/oauth2/**", "/login/**", "/api/posts").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -94,7 +94,6 @@ public class SecurityConfig {
             "/api/image/media/name",
             "/api/image/map",
             "/api/art",
-            "/api/art/map",
-            "/api/posts"
+            "/api/art/map"
     };
 }
