@@ -55,7 +55,7 @@ class PostControllerTest extends ControllerTest {
                                            .description("게시물 내용"),
                                    fieldWithPath("likeCount").type(JsonFieldType.NUMBER)
                                            .description("좋아요 개수"),
-                                   fieldWithPath("unlikeCount").type(JsonFieldType.NUMBER)
+                                   fieldWithPath("dislikeCount").type(JsonFieldType.NUMBER)
                                            .description("싫어요 개수"),
                                    fieldWithPath("createDate").type(JsonFieldType.STRING)
                                            .description("생성일"),
@@ -63,6 +63,8 @@ class PostControllerTest extends ControllerTest {
                                            .description("수정일"),
                                    fieldWithPath("likeState").type(JsonFieldType.BOOLEAN)
                                            .description("좋아요 눌렀는지 여부"),
+                                   fieldWithPath("dislikeState").type(JsonFieldType.BOOLEAN)
+                                           .description("싫어요 눌렀는지 여부"),
                                    fieldWithPath("writer.id").type(JsonFieldType.NUMBER)
                                            .description("작성자 아이디"),
                                    fieldWithPath("writer.name").type(JsonFieldType.STRING)

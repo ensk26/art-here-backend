@@ -1,5 +1,6 @@
 package com.backend.arthere.post.application;
 
+import com.backend.arthere.dislike.domain.DislikeRepository;
 import com.backend.arthere.like.domain.LikeRepository;
 import com.backend.arthere.post.domain.Post;
 import com.backend.arthere.post.domain.PostRepository;
@@ -32,6 +33,8 @@ class PostServiceTest {
     @Mock
     private LikeRepository likeRepository;
 
+    @Mock
+    private DislikeRepository dislikeRepository;
     @InjectMocks
     private PostService postService;
 
@@ -44,6 +47,8 @@ class PostServiceTest {
         given(postRepository.findPostWithMember(post.getId()))
                 .willReturn(Optional.of(post));
         given(likeRepository.existsByMemberIdAndPostId(null, 게시물_아이디))
+                .willReturn(false);
+        given(dislikeRepository.existsByMemberIdAndPostId(null, 게시물_아이디))
                 .willReturn(false);
         //when
         PostResponse postResponse = postService.find(post.getId(), null);

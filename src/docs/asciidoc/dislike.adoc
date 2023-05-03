@@ -1,0 +1,15 @@
+[[Dislike]]
+== Dislike
+
+=== 싫어요 증가
+회원은 게시물의 싫어요를 1 증가시킨다.
+
+==== 성공
+operation::dislike[snippets='path-parameters,request-headers,http-request,http-response']
+
+
+=== 싫어요 감소
+이전에 싫어요를 누른 적이 있는 회원은 게시물의 싫어요를 1 감소시킨다.
+
+==== 성공
+operation::dislike/subtract[snippets='path-parameters,request-headers,http-request,http-response']

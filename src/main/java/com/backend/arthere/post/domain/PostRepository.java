@@ -19,4 +19,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Modifying(clearAutomatically = true)
     @Query("update Post set likeCount = likeCount - 1 where id = :id")
     void decreaseLikeCount(@Param("id") Long id);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update Post set dislikeCount = dislikeCount + 1 where id = :id")
+    void increaseDislikeCount(@Param("id") Long id);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update Post set dislikeCount = dislikeCount - 1 where id = :id")
+    void decreaseDislikeCount(@Param("id") Long id);
+
 }

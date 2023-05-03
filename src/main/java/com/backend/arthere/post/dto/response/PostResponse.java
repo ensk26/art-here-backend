@@ -13,7 +13,7 @@ public class PostResponse {
 
     private Long likeCount;
 
-    private Long unlikeCount;
+    private Long dislikeCount;
 
     private LocalDateTime createDate;
 
@@ -21,26 +21,29 @@ public class PostResponse {
 
     private boolean likeState;
 
+    private boolean dislikeState;
+
     private WriterResponse writer;
 
-    private PostResponse(final String content, final Long likeCount, final Long unlikeCount,
+    private PostResponse(final String content, final Long likeCount, final Long dislikeCount,
                          final LocalDateTime createDate, final LocalDateTime revisionDate,
-                         final boolean likeState, final WriterResponse writer) {
+                         final boolean likeState, final boolean dislikeState, final WriterResponse writer) {
         this.content = content;
         this.likeCount = likeCount;
-        this.unlikeCount = unlikeCount;
+        this.dislikeCount = dislikeCount;
         this.createDate = createDate;
         this.revisionDate = revisionDate;
         this.likeState = likeState;
+        this.dislikeState = dislikeState;
         this.writer = writer;
     }
 
-    public static PostResponse of(final Post post, final boolean likeState) {
+    public static PostResponse of(final Post post, final boolean likeState, final boolean dislikeState) {
 
         final WriterResponse writer = WriterResponse.from(post.getMember());
 
-        return new PostResponse(post.getContent(), post.getLikeCount(), post.getUnlikeCount(),
-                post.getCreateDate(), post.getRevisionDate(), likeState, writer);
+        return new PostResponse(post.getContent(), post.getLikeCount(), post.getDislikeCount(),
+                post.getCreateDate(), post.getRevisionDate(), likeState, dislikeState, writer);
     }
 
     public void setDate(final LocalDateTime createDate, final LocalDateTime revisionDate) {
