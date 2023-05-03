@@ -45,7 +45,7 @@ class LikeServiceTest {
 
     @Test
     @DisplayName("게시물의 좋아요가 1 증가한다.")
-    public void 게시물_좋아요() throws Exception {
+    public void 게시물_좋아요_추가() throws Exception {
         //given
         Member member = 회원(회원_아이디);
         Post post = 게시물(게시물_아이디, member);
