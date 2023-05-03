@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @Table(indexes = {
-        @Index(name = "idx_revision_date", columnList = "revision_date, id"),
+        @Index(name = "idx_revision_date", columnList = "revision_date desc, id desc"),
         @Index(name = "idx_art_name", columnList = "art_name, id desc")
 })
 public class Arts extends BaseEntity {
