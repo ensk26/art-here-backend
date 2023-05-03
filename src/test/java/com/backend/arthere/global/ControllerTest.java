@@ -5,8 +5,14 @@ import com.backend.arthere.auth.application.AuthService;
 import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.auth.presentation.AuthController;
 import com.backend.arthere.auth.presentation.AuthenticationArgumentResolver;
+import com.backend.arthere.dislike.application.DislikeService;
+import com.backend.arthere.dislike.presentation.DislikeController;
+import com.backend.arthere.like.application.LikeService;
+import com.backend.arthere.like.presentation.LikeController;
 import com.backend.arthere.member.application.MemberService;
 import com.backend.arthere.member.presentation.MemberController;
+import com.backend.arthere.post.application.PostService;
+import com.backend.arthere.post.presentation.PostController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +28,8 @@ import static org.mockito.BDDMockito.given;
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension.class)
 @Import(RestDocsConfig.class)
-@WebMvcTest({AuthController.class, MemberController.class})
+@WebMvcTest({AuthController.class, MemberController.class, PostController.class,
+            LikeController.class, DislikeController.class})
 public class ControllerTest {
 
     @Autowired
@@ -33,6 +40,15 @@ public class ControllerTest {
 
     @MockBean
     protected MemberService memberService;
+
+    @MockBean
+    protected PostService postService;
+
+    @MockBean
+    protected LikeService likeService;
+
+    @MockBean
+    protected DislikeService dislikeService;
 
     @MockBean
     protected AuthenticationArgumentResolver authenticationArgumentResolver;

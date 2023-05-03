@@ -18,3 +18,19 @@ operation::admin/image/upload[snippets='request-headers,response-fields,http-req
 
 ==== 성공
 operation::admin/image/delete[snippets='request-headers,request-parameters,response-fields,http-request,http-response']
+
+=== 이미지 추가
+게시물 이미지 업로드 시 사용한다.
+
+Access Token과 함께 요청하면 preSignedURL, key를 반환한다.
+
+==== 성공
+operation::user/image/upload[snippets='request-headers,response-fields,http-request,http-response']
+
+=== 이미지 삭제
+게시물 이미지 삭제 시 사용한다.
+
+해당 이미지 url, Access Token과 함께 요청하면 preSignedURL를 반환한다.
+
+==== 성공
+operation::user/image/delete[snippets='request-headers,request-parameters,response-fields,http-request,http-response']
