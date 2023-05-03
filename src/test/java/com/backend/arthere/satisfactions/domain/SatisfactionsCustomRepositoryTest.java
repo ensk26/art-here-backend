@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Import;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.backend.arthere.fixture.MemberFixtures.회원;
+
 @DataJpaTest
 @Import({QueryDslConfig.class, JpaConfig.class})
 class SatisfactionsRepositoryTest {
@@ -35,17 +37,16 @@ class SatisfactionsRepositoryTest {
 
 
         //given
-        Long arts_id = 1L;
         SatisfactionType satisfactionType = SatisfactionType.valueOfName("멋져요");
 
         List<Satisfactions> satisfactions = new ArrayList<>();
 
-        artsSaveData();
-        memberSaveData();
+        Long arts_id = artsSaveData();
         Arts arts = artsRepository.getReferenceById(arts_id);
 
         for (int i = 1; i <= 5; i++) {
-            Member member = memberRepository.getReferenceById(Long.parseLong(String.valueOf(i)));
+            Member member = 회원(null);
+            memberRepository.save(member);
             satisfactions.add(new Satisfactions(arts, member, satisfactionType));
         }
 
@@ -59,19 +60,19 @@ class SatisfactionsRepositoryTest {
 
     }
 
-    private void artsSaveData() {
+    private Long artsSaveData() {
 
         String artName = "모래작품";
         String imageURL = "image/sand";
         Address address = new Address("loadAddress");
 
-        artsRepository.save(
+        return artsRepository.save(
                 Arts.builder()
                         .artName(artName)
                         .imageURL(imageURL)
                         .location(new Location(37.564878339197044, 126.9758637182802))
                         .address(address)
-                        .category(Category.PICTURE).build());
+                        .category(Category.PICTURE).build()).getId();
 
     }
 
