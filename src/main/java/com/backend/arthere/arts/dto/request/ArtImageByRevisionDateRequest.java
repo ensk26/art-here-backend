@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class ArtImageByRevisionDateRequest implements Serializable {
+public class ArtImageByRevisionDateRequest {
 
     private LocalDateTime date;
 
@@ -39,6 +39,6 @@ public class ArtImageByRevisionDateRequest implements Serializable {
     }
 
     public void setCategory(final String category) {
-            this.category = Category.valueOfName(category);
+        this.category = Category.valueOfName(category);
     }
 }
