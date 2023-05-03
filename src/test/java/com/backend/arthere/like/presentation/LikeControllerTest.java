@@ -94,7 +94,7 @@ class LikeControllerTest extends ControllerTest {
         resultActions.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(
-                        document("like/subtarct",
+                        document("like/subtract",
                                 requestHeaders(
                                         headerWithName("Authorization")
                                                 .description("액세스 토큰")
