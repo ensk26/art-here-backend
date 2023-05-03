@@ -29,7 +29,7 @@ public class PostFixtures {
                 .content(게시물_내용)
                 .imageURL(게시물_사진)
                 .likeCount(좋아요_수)
-                .unlikeCount(싫어요_수)
+                .dislikeCount(싫어요_수)
                 .member(member).arts(arts).build();
     }
 
@@ -40,12 +40,12 @@ public class PostFixtures {
                 .content(게시물_내용)
                 .imageURL(게시물_사진)
                 .likeCount(좋아요_수)
-                .unlikeCount(싫어요_수)
+                .dislikeCount(싫어요_수)
                 .member(member).build();
     }
 
     public static PostResponse 게시물_응답() {
-        PostResponse postResponse = PostResponse.of(게시물(게시물_아이디, 회원(1L)), false);
+        PostResponse postResponse = PostResponse.of(게시물(게시물_아이디, 회원(1L)), false, false);
         postResponse.setDate(LocalDateTime.now(), LocalDateTime.now());
         return postResponse;
     }
