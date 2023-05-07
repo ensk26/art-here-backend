@@ -27,14 +27,14 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
 
     @Override
     public List<ArtImageResponse> findArtImageByRevisionDate(ArtImageByRevisionDateRequest request) {
-        return jpaQueryFactory.select(Projections.constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
-                .from(arts)
-                .where(
-                        revisionDateIdx(request.getDate(), request.getIdx()),
-                        containCategory(request.getCategory())
-                )
-                .limit(request.getLimit() + 1)
-                .fetch();
+
+        List<ArtImageResponse> revisionDate = findRevisionDateEqual(request);
+
+        if (revisionDate.size() < request.getLimit()) {
+            int limit = request.getLimit() - revisionDate.size();
+            revisionDate.addAll(findRevisionDateBefore(request, limit));
+        }
+        return revisionDate;
     }
 
     @Override
@@ -95,6 +95,32 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
                 .fetch();
     }
 
+    private List<ArtImageResponse> findRevisionDateEqual(ArtImageByRevisionDateRequest request) {
+
+        return jpaQueryFactory.select(Projections
+                        .constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
+                .from(arts)
+                .where(
+                        revisionDateEqualIdx(request.getDate(), request.getIdx()),
+                        containCategory(request.getCategory())
+                )
+                .limit(request.getLimit() + 1)
+                .fetch();
+    }
+
+    private List<ArtImageResponse> findRevisionDateBefore(ArtImageByRevisionDateRequest request, int limit) {
+
+        return jpaQueryFactory.select(Projections
+                        .constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
+                .from(arts)
+                .where(
+                        revisionDateBeforeIdx(request.getDate(), request.getIdx()),
+                        containCategory(request.getCategory())
+                )
+                .limit(limit + 1)
+                .fetch();
+    }
+
     private BooleanExpression containsAddress(final String query) {
         if (!StringUtils.hasText(query)) {
             return null;
@@ -131,11 +157,19 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
                 .fetch();
     }
 
-    private BooleanExpression revisionDateIdx(LocalDateTime dateIdx, Long idx) {
-        if (dateIdx == null || idx == null) {
-            return null;
-        }
+    private BooleanExpression revisionDateEqualIdx(LocalDateTime dateIdx, Long idx) {
 
-        return arts.revisionDate.loe(dateIdx).and(arts.id.loe(idx));
+        if (dateIdx == null || idx == null) {
+            return arts.revisionDate.loe(LocalDateTime.now());
+        }
+        return arts.revisionDate.eq(dateIdx).and(arts.id.lt(idx));
+    }
+
+    private BooleanExpression revisionDateBeforeIdx(LocalDateTime dateIdx, Long idx) {
+
+        if (dateIdx == null || idx == null) {
+            return arts.revisionDate.loe(LocalDateTime.now());
+        }
+        return arts.revisionDate.lt(dateIdx);
     }
 }
