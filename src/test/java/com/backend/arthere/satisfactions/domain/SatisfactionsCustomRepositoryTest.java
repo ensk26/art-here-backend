@@ -7,7 +7,7 @@ import com.backend.arthere.member.domain.Member;
 import com.backend.arthere.member.domain.MemberRepository;
 import com.backend.arthere.member.domain.Role;
 import com.backend.arthere.member.domain.SocialType;
-import com.backend.arthere.satisfactions.dto.response.SatisfactionsResponse;
+import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ class SatisfactionsRepositoryTest {
         satisfactionsRepository.saveAll(satisfactions);
 
         //when
-        List<SatisfactionsResponse> result = satisfactionsRepository.findSatisfactions(arts_id);
+        List<SatisfactionsListResponse> result = satisfactionsRepository.findSatisfactionsList(arts_id);
 
         ///then
         Assertions.assertThat(result.get(0).getCount()).isEqualTo(5);

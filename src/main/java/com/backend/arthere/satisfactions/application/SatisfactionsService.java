@@ -8,7 +8,7 @@ import com.backend.arthere.satisfactions.domain.SatisfactionType;
 import com.backend.arthere.satisfactions.domain.Satisfactions;
 import com.backend.arthere.satisfactions.domain.SatisfactionsRepository;
 import com.backend.arthere.satisfactions.dto.request.SaveSatisfactionsRequest;
-import com.backend.arthere.satisfactions.dto.response.SatisfactionsResponse;
+import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +26,9 @@ public class SatisfactionsService {
     private final MemberRepository memberRepository;
 
     //만족도 공유
-    public List<SatisfactionsResponse> findSatisfactions(Long id) {
+    public List<SatisfactionsListResponse> findSatisfactionsList(Long id) {
 
-        return satisfactionsRepository.findSatisfactions(id);
+        return satisfactionsRepository.findSatisfactionsList(id);
     }
 
     //만족도 추가, 수정
