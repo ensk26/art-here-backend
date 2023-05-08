@@ -100,6 +100,7 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
         return jpaQueryFactory.select(Projections
                         .constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
                 .from(arts)
+                .orderBy(arts.revisionDate.desc(), arts.id.desc())
                 .where(
                         revisionDateEqualIdx(request.getDate(), request.getIdx()),
                         containCategory(request.getCategory())
@@ -113,6 +114,7 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
         return jpaQueryFactory.select(Projections
                         .constructor(ArtImageResponse.class, arts.id, arts.artName, arts.imageURL))
                 .from(arts)
+                .orderBy(arts.revisionDate.desc(), arts.id.desc())
                 .where(
                         revisionDateBeforeIdx(request.getDate(), request.getIdx()),
                         containCategory(request.getCategory())
