@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
-public class ArtImageByArtNameRequest implements Serializable {
+public class ArtImageByArtNameRequest {
 
     private Long idx;
 
