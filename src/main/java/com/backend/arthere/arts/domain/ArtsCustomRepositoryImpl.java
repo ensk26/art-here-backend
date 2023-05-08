@@ -162,7 +162,7 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
     private BooleanExpression revisionDateEqualIdx(LocalDateTime dateIdx, Long idx) {
 
         if (dateIdx == null || idx == null) {
-            return arts.revisionDate.loe(LocalDateTime.now());
+            return null;
         }
         return arts.revisionDate.eq(dateIdx).and(arts.id.lt(idx));
     }
@@ -170,7 +170,7 @@ public class ArtsCustomRepositoryImpl implements ArtsCustomRepository {
     private BooleanExpression revisionDateBeforeIdx(LocalDateTime dateIdx, Long idx) {
 
         if (dateIdx == null || idx == null) {
-            return arts.revisionDate.loe(LocalDateTime.now());
+            return null;
         }
         return arts.revisionDate.lt(dateIdx);
     }
