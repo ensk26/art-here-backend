@@ -58,6 +58,7 @@ public class SecurityConfig {
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/auth/**", "/oauth2/**", "/login/**", "/api/posts").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/satisfaction/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
@@ -94,6 +95,7 @@ public class SecurityConfig {
             "/api/image/media/name",
             "/api/image/map",
             "/api/art",
-            "/api/art/map"
+            "/api/art/map",
+            "/api/satisfaction/list"
     };
 }
