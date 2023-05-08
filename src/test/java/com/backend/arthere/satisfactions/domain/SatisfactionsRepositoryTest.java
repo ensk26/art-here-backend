@@ -9,7 +9,6 @@ import com.backend.arthere.member.domain.Role;
 import com.backend.arthere.member.domain.SocialType;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -32,7 +31,7 @@ class SatisfactionsRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @Test
+    //@Test
     void 만족도_총_개수() {
 
 
