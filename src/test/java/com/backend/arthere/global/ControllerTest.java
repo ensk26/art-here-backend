@@ -5,6 +5,8 @@ import com.backend.arthere.auth.application.AuthService;
 import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.auth.presentation.AuthController;
 import com.backend.arthere.auth.presentation.AuthenticationArgumentResolver;
+import com.backend.arthere.comment.application.CommentService;
+import com.backend.arthere.comment.presentation.CommentController;
 import com.backend.arthere.dislike.application.DislikeService;
 import com.backend.arthere.dislike.presentation.DislikeController;
 import com.backend.arthere.like.application.LikeService;
@@ -29,7 +31,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(RestDocumentationExtension.class)
 @Import(RestDocsConfig.class)
 @WebMvcTest({AuthController.class, MemberController.class, PostController.class,
-            LikeController.class, DislikeController.class})
+            LikeController.class, DislikeController.class, CommentController.class})
 public class ControllerTest {
 
     @Autowired
@@ -49,6 +51,9 @@ public class ControllerTest {
 
     @MockBean
     protected DislikeService dislikeService;
+
+    @MockBean
+    protected CommentService commentService;
 
     @MockBean
     protected AuthenticationArgumentResolver authenticationArgumentResolver;
