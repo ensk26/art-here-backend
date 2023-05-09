@@ -1,0 +1,25 @@
+[[Comment]]
+== Comment
+
+=== 댓글 작성
+댓글을 작성한다.
+
+게시물 아이디, 액세스 토큰과 함께 요청한다.
+
+성공 시 201 created 상태코드와 리소스 생성 위치를 응답한다.
+
+==== 성공
+operation::comments/save[snippets='path-parameters,request-headers,request-fields,http-request,http-response']
+
+==== 실패
+===== 존재하지 않는 게시물
+operation::comments/save/notfound[snippets='http-request,http-response']
+
+=== 댓글 수정
+
+==== 성공
+operation::comments/update[snippets='path-parameters,request-headers,request-fields,http-request,http-response']
+
+==== 실패
+===== 존재하지 않는 댓글
+operation::comments/update/notfound[snippets='http-request,http-response']
