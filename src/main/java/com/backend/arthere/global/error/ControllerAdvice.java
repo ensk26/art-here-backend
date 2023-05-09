@@ -5,10 +5,12 @@ import com.backend.arthere.arts.exception.InvalidCategoryException;
 import com.backend.arthere.auth.exception.InvalidRefreshTokenException;
 import com.backend.arthere.auth.exception.InvalidTokenException;
 import com.backend.arthere.auth.exception.RefreshTokenNotFoundException;
+import com.backend.arthere.comment.exception.CommentNotFoundException;
 import com.backend.arthere.details.exception.DetailsNotFoundException;
 import com.backend.arthere.details.exception.InvalidFormatException;
 import com.backend.arthere.details.exception.InvalidSizeException;
 import com.backend.arthere.member.exception.MemberNotFoundException;
+import com.backend.arthere.member.exception.NotWriterException;
 import com.backend.arthere.post.exception.PostNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,29 +51,31 @@ public class ControllerAdvice {
     @ExceptionHandler({MissingRequestHeaderException.class})
     public ResponseEntity<ErrorResponse> handleHeader(final Exception error) {
         ErrorResponse errorResponse = new ErrorResponse(MISSING_REQUEST_HEADER);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler({MissingServletRequestParameterException.class})
     public ResponseEntity<ErrorResponse> handleParameter(final Exception error) {
         ErrorResponse errorResponse = new ErrorResponse(MISSING_REQUEST_PARAMETER);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<ErrorResponse> handleTypeMismatch(final Exception error) {
         ErrorResponse errorResponse = new ErrorResponse(TYPE_MISS_MATCH);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler({InvalidCategoryException.class, InvalidFormatException.class, InvalidSizeException.class})
+    @ExceptionHandler({InvalidCategoryException.class, InvalidFormatException.class, InvalidSizeException.class,
+            NotWriterException.class})
     public ResponseEntity<ErrorResponse> handleInvalid(final RuntimeException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler({RefreshTokenNotFoundException.class, MemberNotFoundException.class,
-            ArtsNotFoundException.class, DetailsNotFoundException.class, PostNotFoundException.class})
+            ArtsNotFoundException.class, DetailsNotFoundException.class, PostNotFoundException.class,
+            CommentNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFound(final RuntimeException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
