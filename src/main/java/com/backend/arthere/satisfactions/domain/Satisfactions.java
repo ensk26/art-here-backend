@@ -20,6 +20,7 @@ public class Satisfactions {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arts_id")
     private Arts arts;
@@ -30,9 +31,8 @@ public class Satisfactions {
     private Member member;
 
     @NotNull
-    @Column(length = 50)
+    @Column(name = "satisfaction", length = 50)
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "satisfaction")
     private SatisfactionType satisfactionType;
 
     @Builder
