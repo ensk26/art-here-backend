@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.backend.arthere.fixture.MemberFixtures.회원;
+import static com.backend.arthere.fixture.MemberFixtures.회원_아이디;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class MemberTest {
@@ -30,5 +31,16 @@ class MemberTest {
         member.changeName(name);
         //then
         assertThat(name).isEqualTo(member.getName());
+    }
+
+    @Test
+    @DisplayName("아이디가 같을 때 true 를 반환한다.")
+    public void 아이디_비교() throws Exception {
+        //given
+        Member member = 회원(회원_아이디);
+        //when
+        boolean sameId = member.isSameId(회원_아이디);
+        //then
+        assertThat(sameId).isTrue();
     }
 }
