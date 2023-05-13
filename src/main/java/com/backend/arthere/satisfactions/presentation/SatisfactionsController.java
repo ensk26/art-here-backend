@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/satisfaction")
@@ -23,7 +22,7 @@ public class SatisfactionsController {
     @GetMapping("/list")
     public ResponseEntity<?> findSatisfactionsList(@Valid @Min(value = 1, message = "id는 1이상의 수 입니다.") Long id) {
 
-        List<SatisfactionsListResponse> responses = satisfactionsService.findSatisfactionsList(id);
+        SatisfactionsListResponse responses = satisfactionsService.findSatisfactionsList(id);
         return ResponseEntity.ok(responses);
     }
 
@@ -32,7 +31,7 @@ public class SatisfactionsController {
     public ResponseEntity<?> saveSatisfactions(@Valid @RequestBody SaveSatisfactionsRequest request,
                                                @CurrentUser LoginMember loginMember) {
 
-        satisfactionsService.saveSatisfactions(request,loginMember.getId());
+        satisfactionsService.saveSatisfactions(request, loginMember.getId());
         //return ResponseEntity.created().build();
         return null;
     }

@@ -1,22 +1,26 @@
 package com.backend.arthere.satisfactions.dto.response;
 
-import com.backend.arthere.satisfactions.domain.SatisfactionType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 public class SatisfactionsListResponse {
 
-    private Long artsId;
+    List<SatisfactionsCountResponse> satisfactionsCount;
 
-    private String satisfaction;
+    Long starRating;
 
-    private Long count;
+    Long postCount;
 
-    public SatisfactionsListResponse(Long artsId, SatisfactionType satisfaction, Long count) {
-        this.artsId = artsId;
-        this.satisfaction = satisfaction.getSatisfactionName();
-        this.count = count;
+    public SatisfactionsListResponse(Long starRating, Long postCount) {
+        this.starRating = starRating;
+        this.postCount = postCount;
+    }
+
+    public void setSatisfactionsCount(List<SatisfactionsCountResponse> satisfactionsCount) {
+        this.satisfactionsCount = satisfactionsCount;
     }
 }
