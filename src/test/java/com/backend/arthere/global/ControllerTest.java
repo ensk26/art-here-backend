@@ -2,14 +2,15 @@ package com.backend.arthere.global;
 
 
 import com.backend.arthere.auth.application.AuthService;
-import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.auth.presentation.AuthController;
-import com.backend.arthere.auth.presentation.AuthenticationArgumentResolver;
+import com.backend.arthere.comment.application.CommentService;
+import com.backend.arthere.comment.presentation.CommentController;
 import com.backend.arthere.dislike.application.DislikeService;
 import com.backend.arthere.dislike.presentation.DislikeController;
 import com.backend.arthere.like.application.LikeService;
 import com.backend.arthere.like.presentation.LikeController;
 import com.backend.arthere.member.application.MemberService;
+import com.backend.arthere.member.domain.MemberRepository;
 import com.backend.arthere.member.presentation.MemberController;
 import com.backend.arthere.post.application.PostService;
 import com.backend.arthere.post.presentation.PostController;
@@ -23,13 +24,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.any;
+import java.util.Optional;
+
+import static com.backend.arthere.fixture.MemberFixtures.*;
 import static org.mockito.BDDMockito.given;
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension.class)
 @Import(RestDocsConfig.class)
 @WebMvcTest({AuthController.class, MemberController.class, PostController.class,
-            LikeController.class, DislikeController.class})
+            LikeController.class, DislikeController.class, CommentController.class})
 public class ControllerTest {
 
     @Autowired
@@ -51,16 +54,17 @@ public class ControllerTest {
     protected DislikeService dislikeService;
 
     @MockBean
-    protected AuthenticationArgumentResolver authenticationArgumentResolver;
+    protected CommentService commentService;
+
+    @MockBean
+    private MemberRepository memberRepository;
+
 
     @BeforeEach
     protected void setUp() throws Exception {
 
-        LoginMember loginMember = new LoginMember(1L);
-        given(authenticationArgumentResolver.supportsParameter(any()))
-                .willReturn(true);
-        given(authenticationArgumentResolver.resolveArgument(any(), any(), any(), any()))
-                .willReturn(loginMember);
+        given(memberRepository.findByEmail(회원_이메일))
+                .willReturn(Optional.of(회원(회원_아이디)));
 
     }
 

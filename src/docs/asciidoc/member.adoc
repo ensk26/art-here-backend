@@ -9,8 +9,6 @@ operation::api/member[snippets='request-headers,response-fields,http-request,htt
 ==== 실패 (존재하지 않은 회원 조회)
 operation::api/member/notFound[snippets='http-request,http-response']
 
----
-
 === 회원 이름 변경
 
 ==== 성공

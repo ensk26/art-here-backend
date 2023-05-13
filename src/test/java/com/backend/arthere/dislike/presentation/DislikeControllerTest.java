@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import static com.backend.arthere.fixture.MemberFixtures.회원_아이디;
 import static com.backend.arthere.fixture.PostFixtures.게시물_아이디;
 import static com.backend.arthere.fixture.TokenFixtures.액세스_토큰;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -32,7 +33,7 @@ class DislikeControllerTest extends ControllerTest {
     @WithMockUser
     public void 싫어요_1_증가() throws Exception {
         //given
-        doNothing().when(dislikeService).addDislike(게시물_아이디, 회원_아이디);
+        doNothing().when(dislikeService).addDislike(any(), any());
         //when
         ResultActions resultActions = mockMvc.perform(
                 post("/api/dislike/{postId}", 게시물_아이디)
@@ -62,7 +63,7 @@ class DislikeControllerTest extends ControllerTest {
     @WithMockUser
     public void 싫어요_1_감소() throws Exception {
         //given
-        doNothing().when(dislikeService).subtractDislike(게시물_아이디, 회원_아이디);
+        doNothing().when(dislikeService).subtractDislike(any(), any());
         //when
         ResultActions resultActions = mockMvc.perform(
                 delete("/api/dislike/{postId}", 게시물_아이디)

@@ -13,6 +13,7 @@ import com.backend.arthere.auth.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -57,6 +58,7 @@ public class SecurityConfig {
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/auth/**", "/oauth2/**", "/login/**", "/api/posts").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/posts/**/comments").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/satisfaction/**").hasRole("USER")
                 .anyRequest().authenticated()

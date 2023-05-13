@@ -1,73 +1,23 @@
-# art-here-backend
+![ART-HERE 서비스소개](https://github.com/art-here/art-here-backend/assets/70767115/a75732af-d5d8-414d-9f6d-eccb8c9cbe04)
 
-## 리팩토링
-### 목록
-|번호|내용|상태|
-|------|---|---|
-|:one:| 정적 팩토리 메서드 |<ul><li>- [ ] 진행 중</li><li>- [x] 완료</li></ul> |
-|:two:| 메소드 파라미터에 final 키워드를 추가하자 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:three:| 디렉토리 구조 변경 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:four:| 테스트 코드 리팩토링 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:five:| 성능 테스트 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:six:| e.printstacktrace() 제거 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:seven:| 역할 분리 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:eight:| 예외 정리 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
-|:nine:| 로깅 |<ul><li>- [ ] 진행 중</li><li>- [ ] 완료</li></ul> |
+### 링크
+#### [ART HERE 서비스](https://art-here.site)
+#### [ERD](https://www.erdcloud.com/d/esxhxPnu7yninSqYt)
+#### [API 문서](https://art-here.github.io/art-here-backend/src/main/resources/static/docs/index.html)
 
-<br/>
-
-### :one: 생성자 대신 정적 팩토리 메서드를 사용하자
-- 정적 팩토리 메서드
-  - 객체 생성의 역할을 하는 클래스 메서드
-- 사용 이유
-  -  메소드 이름을 가질 수 있다. -> 명확한 이름으로 값을 생성할 수 있다.
-  -  호출 때 마다 인스턴스를 새로 생성하지 않을 수 있다.
-  -  하위 클래스를 반환하는 유연성을 얻을 수 있다.
-  -  매개 변수에 따라 매번 다른 클래스의 객체를 반환할 수 있다.
-  -  정적 팩토리 메소드를 작성하는 시점에는 해당 객체의 클래스가 존재하지 않아도 된다.
-- 출처
-  - [이펙티브 자바](https://velog.io/@ljinsk3/%EC%A0%95%EC%A0%81-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C%EB%8A%94-%EC%99%9C-%EC%82%AC%EC%9A%A9%ED%95%A0%EA%B9%8C#%EC%A0%95%EC%A0%81-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C-%EB%84%A4%EC%9D%B4%EB%B0%8D-%EC%BB%A8%EB%B2%A4%EC%85%98)
+## 인프라
+![Infrastructure](https://github.com/art-here/art-here-backend/assets/70767115/fe431d65-af2f-470e-9f64-0a0651d17095)
 
 
-### :two: 메소드 파라미터에 final 키워드를 추가하자
-- 사용 이유
-  - 메소드 파라미터에 final 키워드를 붙여 메소드 내에서 변경하지 못하도록 한다. 변수의 재할당을 막을 수 있다.
-- 출처 
-  - [메소드 파라미터 final](https://hudi.blog/intellij-final-keyword/)
+## 배포 환경
+![CI_CD Pipeline](https://github.com/art-here/art-here-backend/assets/70767115/f4e90964-7003-477d-bded-9d1010e4eff7)
 
-### :four: 테스트 코드 리팩토링
-- 중복 제거
-- 테스트를 위해 데이터를 생성하는 메소드 재사용할 수 있도록 리팩토링
-- assertThat, Assertions.asserthat 와 같은 사용할 코드 형식 정하기
 
-### :five: 성능 테스트
-- 더미 데이터 생성
-  - Mysql 프로시저를 이용한 더미 데이터 생성
-  - 테스트 데이터 대량으로 생성해주는 사이트
-- 툴
-  - nGrinder, Jmeter ...
+## 사용 기술
+![Back-end](https://github.com/art-here/art-here-backend/assets/70767115/9e638ee7-a9fc-4606-8e94-572a40bfe57c)
 
-### :six: e.printstacktrace()는 취약하다!
-- 해당 메소드를 사용하면 패키지, 클래스 및 오류의 종류까지 전부 log에 출력을 하게 된다.  그러므로 해커가 만약 침투에 성공하였다면 해당 로그를 탈취하여 각종 클래스 및 정보를 획득 할 수 있기에 취약점 도구를 사용하면 "제거필요" 한 메소드로 자주 검출 된다.
-- 출처
-  - [취약한 printStackTrace 메소드](https://lts0606.tistory.com/570) 
-  - [e.printstacktrace() 사용하지 말아야 하는 이유](https://tgyun615.com/59)
-
-### :seven: 역할이 한눈에 보이도록 작성
-- 클래스나 메소드의 역할을 단위테스트가 쉬울 정도로 나누기
-- 재사용성을 높이기 위해 함수 이름에 기능만 포함되도록 구현
-- 모든 코드에 단위 테스트를 구현 후 코드를 다듬고 분리, 중복 제거를 진행하면서 리팩토링 진행
-- 코드 커버리지를 이용해 단위 테스트가 얼마나 충족됐는지 확인
-
-- 출처
-  - [[Clean Code] 3. 함수](https://velog.io/@leeyoungwoozz/Clean-Code-3.-%ED%95%A8%EC%88%98#1-%EC%9E%91%EA%B2%8C-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%9D%BC)
-  - [코드 커버리지(Code Coverage)가 뭔가요?](https://tecoble.techcourse.co.kr/post/2020-10-24-code-coverage/)
-
-### :eight: 예외 정리
-- 잘못된 URL을 입력할 때 401 Http 상태코드가 발생한다.
-- 클라이언트에서 잘못된 데이터로 요청 시 클라이언트 오류가 아닌 서버 오류가 발생한다.
-- 다른 사람 코드에 기능 추가 시 예외 메시지가 부족하면 어려움이 있을 수 있다. 
-
-### :nine: 로깅
-- 배포환경에서 장애가 발생하거나 문제가 발생했을 경우를 파악하기 위해 사용
-- logback이나 log4j2 프레임워크를 사용해서 구현해보자
+## 멤버
+Backend|Backend|Frontend|Frontend
+:---:|:---:|:---:|:---:
+<img src="https://avatars.githubusercontent.com/u/86236392?v=4" width="120px" height="120px" title="coucouluv"/>|<img src="https://avatars.githubusercontent.com/u/70767115?v=4" width="120px" height="120px" title="ensk26"/>|<img src="https://avatars.githubusercontent.com/u/84106842?s=400&u=19982dd284c2f7cbbbaa3fd10839e0d0d0c132b5&v=4" width="120px" height="120px" title="dgd03146"/>|<img src="https://avatars.githubusercontent.com/u/108715216?v=4" width="120px" height="120px" title="ohtmm"/>
+[박지연](https://github.com/coucouluv)|[서두나](https://github.com/ensk26)|[임거정](https://github.com/dgd03146)|[최지영](https://github.com/ohtmm)

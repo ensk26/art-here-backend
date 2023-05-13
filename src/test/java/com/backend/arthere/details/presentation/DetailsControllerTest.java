@@ -449,7 +449,7 @@ class DetailsControllerTest extends BaseControllerTest {
         List<Details> content = 관리자_작품_목록();
         Page<Details> page = new PageImpl<>(content, pageable, content.size());
 
-        given(detailsService.find(null, pageable))
+        given(detailsService.find(any(), any(Pageable.class)))
                 .willReturn(작품_목록_응답(page));
         //when
         ResultActions resultActions = mockMvc.perform(
