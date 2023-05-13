@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import static com.backend.arthere.fixture.MemberFixtures.회원_아이디;
 import static com.backend.arthere.fixture.PostFixtures.게시물_아이디;
 import static com.backend.arthere.fixture.TokenFixtures.액세스_토큰;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -31,7 +32,7 @@ class LikeControllerTest extends ControllerTest {
     @WithMockUser
     public void 좋아요_1_증가() throws Exception {
         //given
-        doNothing().when(likeService).addLike(게시물_아이디, 회원_아이디);
+        doNothing().when(likeService).addLike(any(), any());
         //when
         ResultActions resultActions = mockMvc.perform(
                 post("/api/like/{postId}", 게시물_아이디)
@@ -81,7 +82,7 @@ class LikeControllerTest extends ControllerTest {
     @WithMockUser
     public void 좋아요_1_감소() throws Exception {
         //given
-        doNothing().when(likeService).subtractLike(게시물_아이디, 회원_아이디);
+        doNothing().when(likeService).subtractLike(any(), any());
         //when
         ResultActions resultActions = mockMvc.perform(
                 delete("/api/like/{postId}", 게시물_아이디)
