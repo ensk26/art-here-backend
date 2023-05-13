@@ -4,7 +4,9 @@ import com.backend.arthere.auth.domain.CurrentUser;
 import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.comment.application.CommentService;
 import com.backend.arthere.comment.dto.request.CommentRequest;
+import com.backend.arthere.comment.dto.response.CommentPageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +34,20 @@ public class CommentController {
                                        @Valid @RequestBody CommentRequest commentRequest) {
         commentService.update(commentId, loginMember.getId(), commentRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<Void> delete(@PathVariable("commentId") final Long commentId,
+                                       @CurrentUser final LoginMember loginMember) {
+        commentService.delete(commentId, loginMember.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/posts/{postId}/comments")
+    public ResponseEntity<CommentPageResponse> find(@PathVariable("postId") final Long postId,
+                                                    final Pageable pageable,
+                                                    @CurrentUser final LoginMember loginMember) {
+        CommentPageResponse commentPageResponse = commentService.find(postId, pageable, loginMember.getId());
+        return ResponseEntity.ok().body(commentPageResponse);
     }
 }
