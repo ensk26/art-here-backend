@@ -67,4 +67,7 @@ public class Member {
         this.name = name;
     }
 
+    public boolean isSameId(final Long id) {
+        return this.id.equals(id);
+    }
 }

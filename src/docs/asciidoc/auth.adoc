@@ -17,8 +17,6 @@ operation::auth/issue/expired[snippets='http-request,http-response']
 
 operation::auth/issue/invalid[snippets='http-request,http-response']
 
----
-
 === 액세스 토큰 재발급
 액세스 토큰 기간이 만료되었을 때 재발급 요청을 보낸다.
 
@@ -30,8 +28,6 @@ operation::auth/reissue/expired[snippets='http-request,http-response']
 
 ==== 실패 (리프레시 토큰을 입력하지 않은 경우)
 operation::auth/reissue/invalid[snippets='http-request,http-response']
-
----
 
 === 로그아웃
 

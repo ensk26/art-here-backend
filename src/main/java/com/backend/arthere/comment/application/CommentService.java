@@ -3,6 +3,7 @@ package com.backend.arthere.comment.application;
 import com.backend.arthere.comment.domain.Comment;
 import com.backend.arthere.comment.domain.CommentRepository;
 import com.backend.arthere.comment.dto.request.CommentRequest;
+import com.backend.arthere.comment.dto.response.CommentPageResponse;
 import com.backend.arthere.comment.exception.CommentNotFoundException;
 import com.backend.arthere.member.domain.Member;
 import com.backend.arthere.member.domain.MemberRepository;
@@ -12,8 +13,11 @@ import com.backend.arthere.post.domain.Post;
 import com.backend.arthere.post.domain.PostRepository;
 import com.backend.arthere.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +45,22 @@ public class CommentService {
         validateWriter(member, comment);
 
         comment.updateContent(commentRequest.getContent());
+    }
+
+    @Transactional(readOnly = true)
+    public CommentPageResponse find(final Long postId, final Pageable pageable, final Long memberId) {
+        Slice<Comment> comments = commentRepository.findCommentByPostId(postId, pageable);
+
+        return CommentPageResponse.of(comments, memberId);
+    }
+
+    @Transactional
+    public void delete(final Long commentId, final Long memberId) {
+        Member member = findMember(memberId);
+        Comment comment = findComment(commentId);
+        validateWriter(member, comment);
+
+        commentRepository.delete(comment);
     }
 
     private void validateWriter(final Member member, final Comment comment) {
