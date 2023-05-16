@@ -15,12 +15,9 @@ public class SatisfactionsListResponse {
 
     Long postCount;
 
-    public SatisfactionsListResponse(Long starRating, Long postCount) {
+    public SatisfactionsListResponse(List<SatisfactionsCountResponse> satisfactionsCount, Long starRating, Long postCount) {
+        this.satisfactionsCount = satisfactionsCount;
         this.starRating = starRating;
         this.postCount = postCount;
-    }
-
-    public void setSatisfactionsCount(List<SatisfactionsCountResponse> satisfactionsCount) {
-        this.satisfactionsCount = satisfactionsCount;
     }
 }
