@@ -45,7 +45,7 @@ public class Arts extends BaseEntity {
     private Long postTotal = 0L;
 
     @NotNull
-    @Column(name = "satisfaction")
+    @Column(name = "star_rating")
     private Integer starRating = 0;
 
     @Builder
