@@ -33,7 +33,7 @@ public class SatisfactionsCustomRepositoryImpl implements SatisfactionsCustomRep
     public GetTotalToDetailsResponse getTotalToDetailsById(Long id) {
 
         return jpaQueryFactory.select(Projections.constructor
-                        (GetTotalToDetailsResponse.class, arts.postTotal, arts.starRating))
+                        (GetTotalToDetailsResponse.class, arts.starRating, arts.postTotal))
                 .from(arts)
                 .where(arts.id.eq(id))
                 .fetchOne();
