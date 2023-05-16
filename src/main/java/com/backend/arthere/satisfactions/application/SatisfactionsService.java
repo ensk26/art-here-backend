@@ -8,6 +8,7 @@ import com.backend.arthere.satisfactions.domain.SatisfactionType;
 import com.backend.arthere.satisfactions.domain.Satisfactions;
 import com.backend.arthere.satisfactions.domain.SatisfactionsRepository;
 import com.backend.arthere.satisfactions.dto.request.SaveSatisfactionsRequest;
+import com.backend.arthere.satisfactions.dto.response.GetTotalToDetailsResponse;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsCountResponse;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,8 @@ public class SatisfactionsService {
     public SatisfactionsListResponse findSatisfactionsList(Long id) {
 
         List<SatisfactionsCountResponse> satisfactionsCount = satisfactionsRepository.findSatisfactionsCount(id);
-        SatisfactionsListResponse satisfactionsListResponse = satisfactionsRepository.getTotalToDetailsById(id);
-        satisfactionsListResponse.setSatisfactionsCount(satisfactionsCount);
-        return satisfactionsListResponse;
+        GetTotalToDetailsResponse total = satisfactionsRepository.getTotalToDetailsById(id);
+        return new SatisfactionsListResponse(satisfactionsCount, total.getStarRating(), total.getPostCount());
     }
 
     //만족도 추가, 수정
