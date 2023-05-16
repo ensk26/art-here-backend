@@ -31,7 +31,11 @@ public class SatisfactionsService {
     public SatisfactionsListResponse findSatisfactionsList(Long id) {
 
         List<SatisfactionsCountResponse> satisfactionsCount = satisfactionsRepository.findSatisfactionsCount(id);
+        if (satisfactionsCount.isEmpty()) {
+            return null;
+        }
         GetTotalToDetailsResponse total = satisfactionsRepository.getTotalToDetailsById(id);
+
         return new SatisfactionsListResponse(satisfactionsCount, total.getStarRating(), total.getPostCount());
     }
 
