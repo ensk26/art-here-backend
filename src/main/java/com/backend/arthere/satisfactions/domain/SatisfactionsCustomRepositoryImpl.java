@@ -1,7 +1,7 @@
 package com.backend.arthere.satisfactions.domain;
 
+import com.backend.arthere.satisfactions.dto.response.GetTotalToDetailsResponse;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsCountResponse;
-import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.backend.arthere.details.domain.QDetails.details;
+import static com.backend.arthere.arts.domain.QArts.arts;
 import static com.backend.arthere.satisfactions.domain.QSatisfactions.satisfactions;
 
 @Repository
@@ -30,12 +30,12 @@ public class SatisfactionsCustomRepositoryImpl implements SatisfactionsCustomRep
     }
 
     @Override
-    public SatisfactionsListResponse getTotalToDetailsById(Long id) {
+    public GetTotalToDetailsResponse getTotalToDetailsById(Long id) {
 
         return jpaQueryFactory.select(Projections.constructor
-                        (SatisfactionsListResponse.class, details.postTotal, details.satisfaction))
-                .from(details)
-                .where(details.arts.id.eq(id))
+                        (GetTotalToDetailsResponse.class, arts.postTotal, arts.starRating))
+                .from(arts)
+                .where(arts.id.eq(id))
                 .fetchOne();
     }
 }
