@@ -11,11 +11,11 @@ public class SatisfactionsListResponse {
 
     List<SatisfactionsCountResponse> satisfactionsCount;
 
-    Long starRating;
+    Integer starRating;
 
     Long postCount;
 
-    public SatisfactionsListResponse(List<SatisfactionsCountResponse> satisfactionsCount, Long starRating, Long postCount) {
+    public SatisfactionsListResponse(List<SatisfactionsCountResponse> satisfactionsCount, Integer starRating, Long postCount) {
         this.satisfactionsCount = satisfactionsCount;
         this.starRating = starRating;
         this.postCount = postCount;
