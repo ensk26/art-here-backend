@@ -42,14 +42,6 @@ public class Details {
     @JoinColumn(name = "arts_id")
     private Arts arts;
 
-    @NotNull
-    @Column(name = "post_total")
-    private Long postTotal = 0L;
-
-    @NotNull
-    @Column(name = "satisfaction")
-    private Long satisfaction = 0L;
-
     @Builder
     public Details(final Long id, final String authorName, final String agency, final String info,
                    final boolean state, final ExhibitionPeriod period, final Arts arts) {
