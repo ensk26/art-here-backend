@@ -40,6 +40,14 @@ public class Arts extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @NotNull
+    @Column(name = "post_total")
+    private Long postTotal = 0L;
+
+    @NotNull
+    @Column(name = "star_rating")
+    private Integer starRating = 0;
+
     @Builder
     public Arts(Long id, String artName, String imageURL, Location location, Address address, Category category) {
         this.id = id;

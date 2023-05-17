@@ -8,6 +8,8 @@ import com.backend.arthere.satisfactions.domain.SatisfactionType;
 import com.backend.arthere.satisfactions.domain.Satisfactions;
 import com.backend.arthere.satisfactions.domain.SatisfactionsRepository;
 import com.backend.arthere.satisfactions.dto.request.SaveSatisfactionsRequest;
+import com.backend.arthere.satisfactions.dto.response.GetTotalToDetailsResponse;
+import com.backend.arthere.satisfactions.dto.response.SatisfactionsCountResponse;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,9 +28,15 @@ public class SatisfactionsService {
     private final MemberRepository memberRepository;
 
     //만족도 공유
-    public List<SatisfactionsListResponse> findSatisfactionsList(Long id) {
+    public SatisfactionsListResponse findSatisfactionsList(Long id) {
 
-        return satisfactionsRepository.findSatisfactionsList(id);
+        List<SatisfactionsCountResponse> satisfactionsCount = satisfactionsRepository.findSatisfactionsCount(id);
+        if (satisfactionsCount.isEmpty()) {
+            return null;
+        }
+        GetTotalToDetailsResponse total = satisfactionsRepository.getTotalToDetailsById(id);
+
+        return new SatisfactionsListResponse(satisfactionsCount, total.getStarRating(), total.getPostCount());
     }
 
     //만족도 추가, 수정
@@ -40,7 +48,7 @@ public class SatisfactionsService {
         List<Satisfactions> satisfactions = new ArrayList<>();
 
         for (SatisfactionType type : request.getSatisfactions()) {
-            satisfactions.add(new Satisfactions(arts,member,type));
+            satisfactions.add(new Satisfactions(arts, member, type));
         }
         satisfactionsRepository.saveAll(satisfactions);
     }

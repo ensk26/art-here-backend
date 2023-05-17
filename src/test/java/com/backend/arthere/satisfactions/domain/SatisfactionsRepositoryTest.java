@@ -31,33 +31,6 @@ class SatisfactionsRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    //@Test
-    void 만족도_총_개수() {
-
-
-        //given
-        SatisfactionType satisfactionType = SatisfactionType.valueOfName("멋져요");
-
-        List<Satisfactions> satisfactions = new ArrayList<>();
-
-        Long arts_id = artsSaveData();
-        Arts arts = artsRepository.getReferenceById(arts_id);
-
-        for (int i = 1; i <= 5; i++) {
-            Member member = 회원(null);
-            memberRepository.save(member);
-            satisfactions.add(new Satisfactions(arts, member, satisfactionType));
-        }
-
-        satisfactionsRepository.saveAll(satisfactions);
-
-        //when
-        List<SatisfactionsListResponse> result = satisfactionsRepository.findSatisfactionsList(arts_id);
-
-        ///then
-        Assertions.assertThat(result.get(0).getCount()).isEqualTo(5);
-
-    }
 
     private Long artsSaveData() {
 
