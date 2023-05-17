@@ -1,6 +1,7 @@
 package com.backend.arthere.details.application;
 
 import com.backend.arthere.arts.domain.Arts;
+import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.arts.exception.InvalidCategoryException;
 import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.domain.DetailsRepository;
@@ -39,6 +40,9 @@ import static org.mockito.Mockito.verify;
 class DetailsServiceTest {
     @Mock
     private DetailsRepository detailsRepository;
+
+    @Mock
+    private ArtsRepository artsRepository;
     @InjectMocks
     private DetailsService detailsService;
 
@@ -52,9 +56,10 @@ class DetailsServiceTest {
         Details details = 작품_세부정보(arts);
         ArtRequest artRequest = 작품_저장_요청();
 
+        given(artsRepository.save(any()))
+                .willReturn(arts);
         given(detailsRepository.save(any()))
                 .willReturn(details);
-
         //when
         ArtSaveResponse artSaveResponse = detailsService.save(artRequest);
 
@@ -176,10 +181,12 @@ class DetailsServiceTest {
     @DisplayName("작품 정보를 삭제한다.")
     public void 작품_정보_삭제() throws Exception {
         //given
-        Details details = 작품_세부정보(작품());
+        Arts arts = 작품();
+        Details details = 작품_세부정보(arts);
         given(detailsRepository.findByArtsId(anyLong()))
                 .willReturn(Optional.of(details));
         doNothing().when(detailsRepository).delete(details);
+        doNothing().when(artsRepository).delete(arts);
         //when
         detailsService.delete(작품_아이디);
         //then
