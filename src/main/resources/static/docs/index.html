@@ -3967,7 +3967,7 @@ Content-Type: application/json
 Content-Length: 341
 
 {
-  "message" : "담당기관을 입력하세요.\r\n카테고리를 입력하세요.\r\n위도를 입력하세요.\r\n경도를 입력하세요.\r\n상세 내용을 입력하세요.\r\n작가 이름을 입력하세요.\r\n작품명을 입력하세요.\r\n이미지 경로를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n"
+  "message" : "담당기관을 입력하세요.\r\n경도를 입력하세요.\r\n위도를 입력하세요.\r\n작품명을 입력하세요.\r\n상세 내용을 입력하세요.\r\n이미지 경로를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n작가 이름을 입력하세요.\r\n카테고리를 입력하세요.\r\n"
 }</code></pre>
 </div>
 </div>
@@ -4510,7 +4510,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1439
+Content-Length: 1445
 
 {
   "totalElements" : 3,
@@ -4528,8 +4528,8 @@ Content-Length: 1439
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-13T16:02:50.711343",
-    "revisionDate" : "2023-05-13T16:02:50.711343"
+    "createDate" : "2023-05-17T22:13:11.8910948",
+    "revisionDate" : "2023-05-17T22:13:11.8910948"
   }, {
     "id" : 2,
     "artName" : "작품",
@@ -4543,8 +4543,8 @@ Content-Length: 1439
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-13T16:02:50.711343",
-    "revisionDate" : "2023-05-13T16:02:50.711343"
+    "createDate" : "2023-05-17T22:13:11.8910948",
+    "revisionDate" : "2023-05-17T22:13:11.8920944"
   }, {
     "id" : 1,
     "artName" : "작품",
@@ -4558,8 +4558,8 @@ Content-Length: 1439
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-13T16:02:50.711343",
-    "revisionDate" : "2023-05-13T16:02:50.711343"
+    "createDate" : "2023-05-17T22:13:11.8920944",
+    "revisionDate" : "2023-05-17T22:13:11.8920944"
   } ]
 }</code></pre>
 </div>
@@ -4770,8 +4770,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-13T16:02:51.3783329",
-    "revisionDate" : "2023-05-13T16:02:51.3783329"
+    "createDate" : "2023-05-17T22:13:12.8963993",
+    "revisionDate" : "2023-05-17T22:13:12.8963993"
   }, {
     "id" : 2,
     "artName" : "작품",
@@ -4785,8 +4785,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-13T16:02:51.3783329",
-    "revisionDate" : "2023-05-13T16:02:51.3783329"
+    "createDate" : "2023-05-17T22:13:12.8963993",
+    "revisionDate" : "2023-05-17T22:13:12.8963993"
   }, {
     "id" : 1,
     "artName" : "작품",
@@ -4800,8 +4800,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-13T16:02:51.3783329",
-    "revisionDate" : "2023-05-13T16:02:51.3783329"
+    "createDate" : "2023-05-17T22:13:12.8963993",
+    "revisionDate" : "2023-05-17T22:13:12.8963993"
   } ]
 }</code></pre>
 </div>
@@ -5030,6 +5030,16 @@ Content-Length: 71
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">종료일 (yyyy-MM-dd)</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>location.latitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">위도</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>location.longitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">경도</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -5053,7 +5063,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 237
+Content-Length: 309
 
 {
   "id" : 1,
@@ -5064,7 +5074,11 @@ Content-Length: 237
   "startDate" : "2022-02-01",
   "endDate" : "2024-02-01",
   "roadAddress" : "서울시",
-  "category" : "공예"
+  "category" : "공예",
+  "location" : {
+    "latitude" : 12.1,
+    "longitude" : 12.5
+  }
 }</code></pre>
 </div>
 </div>
@@ -5412,14 +5426,14 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 310
+Content-Length: 308
 
 {
   "content" : "내용",
   "likeCount" : 2,
   "dislikeCount" : 2,
-  "createDate" : "2023-05-13T16:02:57.1415883",
-  "revisionDate" : "2023-05-13T16:02:57.1415883",
+  "createDate" : "2023-05-17T22:13:22.604382",
+  "revisionDate" : "2023-05-17T22:13:22.604382",
   "likeState" : false,
   "dislikeState" : false,
   "writer" : {
@@ -6256,8 +6270,8 @@ Content-Length: 905
   "commentResponses" : [ {
     "id" : 3,
     "content" : "댓글 내용",
-    "createDate" : "2023-05-13T16:02:47.6504491",
-    "revisionDate" : "2023-05-13T16:02:47.6504491",
+    "createDate" : "2023-05-17T22:13:06.3957255",
+    "revisionDate" : "2023-05-17T22:13:06.3957255",
     "sameWriter" : true,
     "writer" : {
       "id" : 1,
@@ -6267,8 +6281,8 @@ Content-Length: 905
   }, {
     "id" : 2,
     "content" : "댓글 내용",
-    "createDate" : "2023-05-13T16:02:47.6504491",
-    "revisionDate" : "2023-05-13T16:02:47.6504491",
+    "createDate" : "2023-05-17T22:13:06.3957255",
+    "revisionDate" : "2023-05-17T22:13:06.3957255",
     "sameWriter" : true,
     "writer" : {
       "id" : 1,
@@ -6278,8 +6292,8 @@ Content-Length: 905
   }, {
     "id" : 1,
     "content" : "댓글 내용",
-    "createDate" : "2023-05-13T16:02:47.6504491",
-    "revisionDate" : "2023-05-13T16:02:47.6504491",
+    "createDate" : "2023-05-17T22:13:06.3957255",
+    "revisionDate" : "2023-05-17T22:13:06.3957255",
     "sameWriter" : true,
     "writer" : {
       "id" : 1,
@@ -6475,7 +6489,7 @@ Content-Length: 48
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-05-09 14:00:04 +0900
+Last updated 2023-05-15 17:29:18 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
