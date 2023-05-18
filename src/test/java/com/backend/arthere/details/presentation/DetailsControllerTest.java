@@ -44,7 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import({TestConfig.class})
 @WebMvcTest(DetailsController.class)
 class DetailsControllerTest extends BaseControllerTest {
-
     @MockBean
     protected DetailsService detailsService;
     @Autowired
@@ -200,7 +199,11 @@ class DetailsControllerTest extends BaseControllerTest {
                                         fieldWithPath("startDate").type(JsonFieldType.STRING)
                                                 .description("시작일 (yyyy-MM-dd)"),
                                         fieldWithPath("endDate").type(JsonFieldType.STRING)
-                                                .description("종료일 (yyyy-MM-dd)")
+                                                .description("종료일 (yyyy-MM-dd)"),
+                                        fieldWithPath("location.latitude").type(JsonFieldType.NUMBER)
+                                                .description("위도"),
+                                        fieldWithPath("location.longitude").type(JsonFieldType.NUMBER)
+                                                .description("경도")
                                 )
                         ));
     }

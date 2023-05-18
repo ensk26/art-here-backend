@@ -2,6 +2,7 @@ package com.backend.arthere.details.application;
 
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.backend.arthere.arts.domain.ArtsRepository;
 import com.backend.arthere.details.domain.Details;
 import com.backend.arthere.details.domain.DetailsRepository;
 import com.backend.arthere.details.dto.request.ArtRequest;
@@ -23,6 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DetailsService {
     private final DetailsRepository detailsRepository;
+
+    private final ArtsRepository artsRepository;
+
     private final PresignedURLUtils presignedURLUtils;
 
     private final AmazonS3 adminS3Client;
@@ -32,9 +36,10 @@ public class DetailsService {
     @Transactional
     public ArtSaveResponse save(final ArtRequest artRequest) {
         Arts arts = artRequest.toArts();
-
         boolean state = getState(artRequest.getEndDate());
         Details details = artRequest.toDetails(arts, state);
+
+        artsRepository.save(arts);
         detailsRepository.save(details);
         return new ArtSaveResponse(arts.getId(), arts.getArtName());
     }
@@ -51,7 +56,9 @@ public class DetailsService {
     @Transactional
     public void delete(final Long artsId) {
         Details details = findDetails(artsId);
+        Arts arts = details.getArts();
         detailsRepository.delete(details);
+        artsRepository.delete(arts);
     }
 
     @Transactional

@@ -30,7 +30,6 @@ class DetailsRepositoryTest {
     private DetailsRepository detailsRepository;
     @Autowired
     private ArtsRepository artsRepository;
-
     @Test
     @DisplayName("작품 정보로 세부 정보를 조회한다.")
     public void 작품_정보로_세부정보를_조회() throws Exception {
@@ -54,8 +53,10 @@ class DetailsRepositoryTest {
     public void 최신순으로_작품_목록_데이터_반환() throws Exception {
         //given
         Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.desc("revisionDate")));
-        Details details1 = detailsRepository.save(작품_세부정보(작품(null), null));
-        Details details2 = detailsRepository.save(작품_세부정보(작품(null), null));
+        Arts arts1 = artsRepository.save(작품(null));
+        Arts arts2 = artsRepository.save(작품(null));
+        Details details1 = detailsRepository.save(작품_세부정보(arts1, null));
+        Details details2 = detailsRepository.save(작품_세부정보(arts2, null));
 
         //when
         Page<Details> page = detailsRepository.findDetailsWithArts(null, pageable);
@@ -74,8 +75,10 @@ class DetailsRepositoryTest {
     public void 작품명순으로_작품_목록_데이터_반환() throws Exception {
         //given
         Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.asc("artName")));
-        detailsRepository.save(작품_세부정보(작품(null), null));
-        detailsRepository.save(작품_세부정보(작품(null), null));
+        Arts arts1 = artsRepository.save(작품(null));
+        Arts arts2 = artsRepository.save(작품(null));
+        Details details1 = detailsRepository.save(작품_세부정보(arts1, null));
+        Details details2 = detailsRepository.save(작품_세부정보(arts2, null));
 
         //when
         Page<Details> page = detailsRepository.findDetailsWithArts(null, pageable);
@@ -92,8 +95,10 @@ class DetailsRepositoryTest {
     public void 검색어와_일치하는_작품명_있을_때_데이터_작품명순_반환() throws Exception {
         //given
         Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.asc("artName")));
-        detailsRepository.save(작품_세부정보(작품(null), null));
-        detailsRepository.save(작품_세부정보(작품(null), null));
+        Arts arts1 = artsRepository.save(작품(null));
+        Arts arts2 = artsRepository.save(작품(null));
+        Details details1 = detailsRepository.save(작품_세부정보(arts1, null));
+        Details details2 = detailsRepository.save(작품_세부정보(arts2, null));
 
         //when
         Page<Details> page = detailsRepository.findDetailsWithArts(작품명, pageable);
@@ -111,8 +116,10 @@ class DetailsRepositoryTest {
     public void 검색어와_일치하는_작품명_없을_때_빈_리스트_반환() throws Exception {
         //given
         Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.asc("artName")));
-        Details details1 = detailsRepository.save(작품_세부정보(작품(null), null));
-        Details details2 = detailsRepository.save(작품_세부정보(작품(null), null));
+        Arts arts1 = artsRepository.save(작품(null));
+        Arts arts2 = artsRepository.save(작품(null));
+        Details details1 = detailsRepository.save(작품_세부정보(arts1, null));
+        Details details2 = detailsRepository.save(작품_세부정보(arts2, null));
         String notFoundArtName = "없는이름";
 
         //when

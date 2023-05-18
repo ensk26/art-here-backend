@@ -38,7 +38,7 @@ public class Details {
     @Embedded
     private ExhibitionPeriod period;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "arts_id")
     private Arts arts;
 
