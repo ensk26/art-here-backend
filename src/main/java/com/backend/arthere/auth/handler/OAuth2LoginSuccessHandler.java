@@ -3,10 +3,12 @@ package com.backend.arthere.auth.handler;
 import com.backend.arthere.auth.domain.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.backend.arthere.auth.domain.UserPrincipal;
 import com.backend.arthere.auth.jwt.JwtTokenProvider;
+import com.backend.arthere.member.domain.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     @Value("${oauth.redirect-uri}")
     private String redirectUri;
+
+    private static long TEMPORARY_TOKEN_EXPIRE_TIME = 300000L;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -52,11 +56,14 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         String targetUrl = redirectUri;
         String token = jwtTokenProvider
-                .createToken(String.valueOf(principal.getId()), 1000*60*5);
+                .createToken(String.valueOf(principal.getId()), TEMPORARY_TOKEN_EXPIRE_TIME);
+
+        GrantedAuthority authority = principal.getAuthorities().stream().findFirst().get();
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
                 .queryParam("id", principal.getId())
+                .queryParam("role", Role.valueOfName(String.valueOf(authority)))
                 .build().toUriString();
     }
 }
