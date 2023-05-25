@@ -5,6 +5,7 @@ import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.satisfactions.application.SatisfactionsService;
 import com.backend.arthere.satisfactions.dto.request.SaveSatisfactionsRequest;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
+import com.backend.arthere.satisfactions.dto.response.SatisfactionsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,14 @@ public class SatisfactionsController {
     public ResponseEntity<?> findSatisfactionsList(@Valid @Min(value = 1, message = "id는 1이상의 수 입니다.") Long id) {
 
         SatisfactionsListResponse responses = satisfactionsService.findSatisfactionsList(id);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> findSatisfactions(@Valid @Min(value = 1, message = "id는 1이상의 수 입니다.") Long artId,
+                                               @CurrentUser LoginMember loginMember) {
+
+        SatisfactionsResponse responses = satisfactionsService.findSatisfactions(artId, loginMember.getId());
         return ResponseEntity.ok(responses);
     }
 
