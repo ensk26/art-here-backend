@@ -82,7 +82,8 @@ public class SatisfactionsService {
         }
         satisfactionsRepository.saveAll(satisfactions);
         starRatingsRepository.save(new StarRatings(arts, member, request.getStarRating()));
-        arts.updateStarRating(arts.getStarRating() + request.getStarRating() / arts.getStarRatingCount());
+        arts.updateStarRating(arts.getStarRating() + request.getStarRating());
+        arts.updateStarRatingCount(arts.getStarRatingCount() + 1);
     }
 
 
