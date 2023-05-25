@@ -7,6 +7,6 @@ public class ArtsNotFoundException extends RuntimeException {
     }
 
     public ArtsNotFoundException() {
-        this("해당 데이터가 존재하지 않습니다.");
+        this("해당 작품 데이터가 존재하지 않습니다.");
     }
 }
