@@ -1,4 +1,4 @@
-package com.backend.arthere.satisfactions.domain;
+package com.backend.arthere.starRatings.domain;
 
 import com.backend.arthere.arts.domain.Arts;
 import com.backend.arthere.member.domain.Member;

@@ -13,5 +13,5 @@ public interface SatisfactionsCustomRepository {
 
     List<SatisfactionType> findSatisfactionsType(Long artId, Long userId);
 
-    Integer findStarRatings(Long artId, Long userId);
+
 }

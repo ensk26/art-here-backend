@@ -12,7 +12,6 @@ import java.util.*;
 
 import static com.backend.arthere.arts.domain.QArts.arts;
 import static com.backend.arthere.satisfactions.domain.QSatisfactions.satisfactions;
-import static com.backend.arthere.satisfactions.domain.QStarRatings.starRatings;
 
 @Repository
 @RequiredArgsConstructor
@@ -62,15 +61,6 @@ public class SatisfactionsCustomRepositoryImpl implements SatisfactionsCustomRep
                 .from(satisfactions)
                 .where(satisfactions.arts.id.eq(artId), satisfactions.member.id.eq(userId))
                 .fetch();
-    }
-
-    @Override
-    public Integer findStarRatings(Long artId, Long userId) {
-
-        return jpaQueryFactory.select(starRatings.starRating.coalesce(0).as("starRating"))
-                .from(starRatings)
-                .where(starRatings.arts.id.eq(artId), satisfactions.member.id.eq(userId))
-                .fetchOne();
     }
 
 }
