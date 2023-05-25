@@ -5,7 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import static com.backend.arthere.satisfactions.domain.QSatisfactions.satisfactions;
-import static com.backend.arthere.satisfactions.domain.QStarRatings.starRatings;
+import static com.backend.arthere.starRatings.domain.QStarRatings.starRatings;
+
 
 @Repository
 @RequiredArgsConstructor
