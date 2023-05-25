@@ -3,7 +3,7 @@ package com.backend.arthere.satisfactions.presentation;
 import com.backend.arthere.auth.domain.CurrentUser;
 import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.satisfactions.application.SatisfactionsService;
-import com.backend.arthere.satisfactions.dto.request.SaveSatisfactionsRequest;
+import com.backend.arthere.satisfactions.dto.request.CreateSatisfactionsRequest;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/satisfaction")
@@ -35,16 +36,23 @@ public class SatisfactionsController {
         return ResponseEntity.ok(responses);
     }
 
-    //만족도 추가, 수정
     @PostMapping("")
-    public ResponseEntity<?> saveSatisfactions(@Valid @RequestBody SaveSatisfactionsRequest request,
-                                               @CurrentUser LoginMember loginMember) {
+    public ResponseEntity<?> createSatisfactions(@Valid @RequestBody CreateSatisfactionsRequest request,
+                                                 @CurrentUser LoginMember loginMember) throws Exception {
 
-        satisfactionsService.saveSatisfactions(request, loginMember.getId());
-        //return ResponseEntity.created().build();
+        satisfactionsService.createSatisfactions(request, loginMember.getId());
+        return ResponseEntity.created(URI.create("/api/satisfaction?" + request.getArtsId())).build();
+    }
+
+    //만족도 수정
+    @PatchMapping("")
+    public ResponseEntity<?> addSatisfactions(@Valid @RequestBody CreateSatisfactionsRequest request,
+                                              @CurrentUser LoginMember loginMember) {
         return null;
     }
 
-
     //만족도 삭제
+
+
+    //게시물 목록 구현
 }
