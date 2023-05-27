@@ -8,6 +8,7 @@ import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import javax.validation.constraints.Min;
 import java.net.URI;
 
 @RestController
+@Validated
 @RequestMapping("/api/satisfaction")
 @RequiredArgsConstructor
 public class SatisfactionsController {
@@ -22,14 +24,15 @@ public class SatisfactionsController {
     private final SatisfactionsService satisfactionsService;
 
     @GetMapping("/list")
-    public ResponseEntity<?> findSatisfactionsList(@Valid @Min(value = 1, message = "id는 1이상의 수 입니다.") Long id) {
+    public ResponseEntity<?> findSatisfactionsList(@Min(value = 1, message = "id는 1이상의 수 입니다.") Long id) {
 
         SatisfactionsListResponse responses = satisfactionsService.findSatisfactionsList(id);
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("")
-    public ResponseEntity<?> findSatisfactions(@Valid @Min(value = 1, message = "id는 1이상의 수 입니다.") Long artId,
+    public ResponseEntity<?> findSatisfactions(@Min(value = 1, message = "id는 1이상의 수 입니다.")
+                                               @RequestParam("id") Long artId,
                                                @CurrentUser LoginMember loginMember) {
 
         SatisfactionsResponse responses = satisfactionsService.findSatisfactions(artId, loginMember.getId());
@@ -38,7 +41,7 @@ public class SatisfactionsController {
 
     @PostMapping("")
     public ResponseEntity<?> createSatisfactions(@Valid @RequestBody CreateSatisfactionsRequest request,
-                                                 @CurrentUser LoginMember loginMember) throws Exception {
+                                                 @CurrentUser LoginMember loginMember) {
 
         satisfactionsService.createSatisfactions(request, loginMember.getId());
         return ResponseEntity.created(URI.create("/api/satisfaction?" + request.getArtsId())).build();
