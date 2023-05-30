@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetTotalToDetailsResponse {
 
-    Integer starRating;
+    private String starRating;
 
-    Long postCount;
+    private Long postCount;
 
-    public GetTotalToDetailsResponse(Integer starRating, Long postCount) {
-        this.starRating = starRating;
+    public GetTotalToDetailsResponse(Long starRating, Long starRatingCount, Long postCount) {
+        this.starRating = String.format("%.2f", (double) starRating / starRatingCount);
         this.postCount = postCount;
     }
 }

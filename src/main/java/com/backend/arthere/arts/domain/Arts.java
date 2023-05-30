@@ -46,7 +46,10 @@ public class Arts extends BaseEntity {
 
     @NotNull
     @Column(name = "star_rating")
-    private Integer starRating = 0;
+    private Long starRating = 0L;
+
+    @Column(name = "star_rating_count")
+    private Long starRatingCount = 0L;
 
     @Builder
     public Arts(Long id, String artName, String imageURL, Location location, Address address, Category category) {
@@ -84,5 +87,13 @@ public class Arts extends BaseEntity {
 
     public void updateCategory(final Category category) {
         this.category = category;
+    }
+
+    public void updateStarRating(final Long starRating) {
+        this.starRating = starRating;
+    }
+
+    public void updateStarRatingCount(final Long starRatingCount) {
+        this.starRatingCount = starRatingCount;
     }
 }

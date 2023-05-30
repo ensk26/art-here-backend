@@ -10,10 +10,10 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum SatisfactionType {
 
-    COOL("멋져요"), GOOD_LOCATION("장소에 어울려요"), NATURE_FRIENDLY("자연친화적"),
-    PHOTO_BOOTH("포토부스"), FUN("재밌어요"), DAMAGED("파손됐어요"),
-    NOT_PRETTY("안예쁘다"), MESSY("지저분함"), SUITABLE("장소랑 어울리지 않아요"),
-    UNPLEASANT("불쾌함");
+    COOL("멋져요"), GOOD_LOCATION("장소에 어울려요"), NATURE_FRIENDLY("자연힐링"),
+    PHOTO_BOOTH("여기가포토존"), FUN("재밌어요"), DAMAGED("파손됐어요"),
+    NOT_PRETTY("안예뻐요"), MESSY("지저분해요"), SUITABLE("장소랑안어울려요"),
+    UNPLEASANT("불쾌해요");
 
     private final String satisfactionName;
 

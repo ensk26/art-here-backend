@@ -10,4 +10,8 @@ public interface SatisfactionsCustomRepository {
     List<SatisfactionsCountResponse> findSatisfactionsCount(Long id);
 
     GetTotalToDetailsResponse getTotalToDetailsById(Long id);
+
+    List<SatisfactionType> findSatisfactionsType(Long artId, Long userId);
+
+
 }

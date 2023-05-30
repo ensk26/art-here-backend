@@ -11,21 +11,21 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class SaveSatisfactionsRequest {
+public class CreateSatisfactionsRequest {
 
     @Min(value = 1, message = "id는 1이상의 수 입니다.")
     private Long artsId;
 
-    @Min(value = 1, message = "score는 1이상의 수 입니다.")
+    @Min(value = 0, message = "score는 0이상의 수 입니다.")
     @Max(value = 5, message = "score는 5이하의 수 입니다.")
-    private Integer score;
+    private Integer starRating;
 
-    List<SatisfactionType> satisfactions;
+    private List<SatisfactionType> satisfactions;
 
-    public SaveSatisfactionsRequest(Long artsId, Integer score, List<String> satisfactions) {
+    public CreateSatisfactionsRequest(Long artsId, List<String> satisfactions, Integer starRating) {
         this.artsId = artsId;
-        this.score = score;
         this.satisfactions = toSatisfactionsType(satisfactions);
+        this.starRating = starRating;
     }
 
     private List<SatisfactionType> toSatisfactionsType(List<String> satisfactions) {
