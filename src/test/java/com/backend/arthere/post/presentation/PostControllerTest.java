@@ -65,6 +65,8 @@ class PostControllerTest extends ControllerTest {
                                            .description("좋아요 눌렀는지 여부"),
                                    fieldWithPath("dislikeState").type(JsonFieldType.BOOLEAN)
                                            .description("싫어요 눌렀는지 여부"),
+                                   fieldWithPath("sameWriter").type(JsonFieldType.BOOLEAN)
+                                           .description("게시물 작성자인지 여부"),
                                    fieldWithPath("writer.id").type(JsonFieldType.NUMBER)
                                            .description("작성자 아이디"),
                                    fieldWithPath("writer.name").type(JsonFieldType.STRING)
