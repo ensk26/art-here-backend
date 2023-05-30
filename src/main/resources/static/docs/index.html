@@ -3008,35 +3008,6 @@ Content-Length: 910
 <div class="sect4">
 <h5 id="_검색어와_일치하는_데이터가_없는_경우">검색어와 일치하는 데이터가 없는 경우</h5>
 <div class="sect5">
-<h6 id="_검색어와_일치하는_데이터가_없는_경우_request_parameters">Request parameters</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>idx</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청을 시작하는 id 위치</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>query</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">검색어</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>limit</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청하는 데이터 개수</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
 <h6 id="_검색어와_일치하는_데이터가_없는_경우_response_fields">Response fields</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -3967,7 +3938,7 @@ Content-Type: application/json
 Content-Length: 341
 
 {
-  "message" : "담당기관을 입력하세요.\r\n경도를 입력하세요.\r\n위도를 입력하세요.\r\n작품명을 입력하세요.\r\n상세 내용을 입력하세요.\r\n이미지 경로를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n작가 이름을 입력하세요.\r\n카테고리를 입력하세요.\r\n"
+  "message" : "작가 이름을 입력하세요.\r\n작품명을 입력하세요.\r\n이미지 경로를 입력하세요.\r\n카테고리를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n상세 내용을 입력하세요.\r\n위도를 입력하세요.\r\n담당기관을 입력하세요.\r\n경도를 입력하세요.\r\n"
 }</code></pre>
 </div>
 </div>
@@ -4528,8 +4499,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-17T22:13:11.8910948",
-    "revisionDate" : "2023-05-17T22:13:11.8910948"
+    "createDate" : "2023-05-30T22:54:18.8266664",
+    "revisionDate" : "2023-05-30T22:54:18.8266664"
   }, {
     "id" : 2,
     "artName" : "작품",
@@ -4543,8 +4514,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-17T22:13:11.8910948",
-    "revisionDate" : "2023-05-17T22:13:11.8920944"
+    "createDate" : "2023-05-30T22:54:18.8266664",
+    "revisionDate" : "2023-05-30T22:54:18.8266664"
   }, {
     "id" : 1,
     "artName" : "작품",
@@ -4558,8 +4529,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-17T22:13:11.8920944",
-    "revisionDate" : "2023-05-17T22:13:11.8920944"
+    "createDate" : "2023-05-30T22:54:18.8266664",
+    "revisionDate" : "2023-05-30T22:54:18.8266664"
   } ]
 }</code></pre>
 </div>
@@ -4770,8 +4741,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-17T22:13:12.8963993",
-    "revisionDate" : "2023-05-17T22:13:12.8963993"
+    "createDate" : "2023-05-30T22:54:19.6836669",
+    "revisionDate" : "2023-05-30T22:54:19.6836669"
   }, {
     "id" : 2,
     "artName" : "작품",
@@ -4785,8 +4756,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-17T22:13:12.8963993",
-    "revisionDate" : "2023-05-17T22:13:12.8963993"
+    "createDate" : "2023-05-30T22:54:19.6836669",
+    "revisionDate" : "2023-05-30T22:54:19.6836669"
   }, {
     "id" : 1,
     "artName" : "작품",
@@ -4800,8 +4771,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-05-17T22:13:12.8963993",
-    "revisionDate" : "2023-05-17T22:13:12.8963993"
+    "createDate" : "2023-05-30T22:54:19.6836669",
+    "revisionDate" : "2023-05-30T22:54:19.6836669"
   } ]
 }</code></pre>
 </div>
@@ -5389,6 +5360,11 @@ Content-Length: 58
 <td class="tableblock halign-left valign-top"><p class="tableblock">싫어요 눌렀는지 여부</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sameWriter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게시물 작성자인지 여부</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>writer.id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 아이디</p></td>
@@ -5426,16 +5402,17 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 308
+Content-Length: 334
 
 {
   "content" : "내용",
   "likeCount" : 2,
   "dislikeCount" : 2,
-  "createDate" : "2023-05-17T22:13:22.604382",
-  "revisionDate" : "2023-05-17T22:13:22.604382",
+  "createDate" : "2023-05-30T22:54:25.8306645",
+  "revisionDate" : "2023-05-30T22:54:25.8306645",
   "likeState" : false,
   "dislikeState" : false,
+  "sameWriter" : true,
   "writer" : {
     "id" : 1,
     "name" : "회원",
@@ -6263,15 +6240,15 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 905
+Content-Length: 899
 
 {
   "hasNext" : false,
   "commentResponses" : [ {
     "id" : 3,
     "content" : "댓글 내용",
-    "createDate" : "2023-05-17T22:13:06.3957255",
-    "revisionDate" : "2023-05-17T22:13:06.3957255",
+    "createDate" : "2023-05-30T22:54:15.929667",
+    "revisionDate" : "2023-05-30T22:54:15.929667",
     "sameWriter" : true,
     "writer" : {
       "id" : 1,
@@ -6281,8 +6258,8 @@ Content-Length: 905
   }, {
     "id" : 2,
     "content" : "댓글 내용",
-    "createDate" : "2023-05-17T22:13:06.3957255",
-    "revisionDate" : "2023-05-17T22:13:06.3957255",
+    "createDate" : "2023-05-30T22:54:15.929667",
+    "revisionDate" : "2023-05-30T22:54:15.929667",
     "sameWriter" : true,
     "writer" : {
       "id" : 1,
@@ -6292,8 +6269,8 @@ Content-Length: 905
   }, {
     "id" : 1,
     "content" : "댓글 내용",
-    "createDate" : "2023-05-17T22:13:06.3957255",
-    "revisionDate" : "2023-05-17T22:13:06.3957255",
+    "createDate" : "2023-05-30T22:54:15.929667",
+    "revisionDate" : "2023-05-30T22:54:15.929667",
     "sameWriter" : true,
     "writer" : {
       "id" : 1,
@@ -6489,7 +6466,7 @@ Content-Length: 48
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-05-15 17:29:18 +0900
+Last updated 2023-05-22 14:46:43 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
