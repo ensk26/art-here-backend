@@ -97,7 +97,7 @@ operation::image/media/address/category[snippets='request-parameters,response-fi
 
 ===== 검색어와 일치하는 데이터가 없는 경우
 
-operation::image/media/address/empty[snippets='request-parameters,response-fields,http-request,http-response']
+operation::image/media/address/empty[snippets='response-fields,http-request,http-response']
 
 ==== 실패
 
