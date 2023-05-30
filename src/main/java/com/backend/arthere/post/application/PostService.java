@@ -30,7 +30,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponse find(final Long id, final Long memberId) {
         Post post = findPost(id);
-        return PostResponse.of(post, isLike(id, memberId), isDislike(id, memberId));
+        return PostResponse.of(post, isLike(id, memberId), isDislike(id, memberId), memberId);
     }
 
     private boolean isLike(final Long id, final Long memberId) {
