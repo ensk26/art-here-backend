@@ -12,7 +12,12 @@ spring:
     console:
       enabled: true
   jpa:
-    show-sql: true
-    format-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
     hibernate:
       ddl-auto: create
+
+oauth:
+  redirect-uri: http://localhost:3000/oauth/success

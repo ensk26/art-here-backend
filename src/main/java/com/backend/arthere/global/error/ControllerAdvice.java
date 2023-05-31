@@ -9,6 +9,7 @@ import com.backend.arthere.comment.exception.CommentNotFoundException;
 import com.backend.arthere.details.exception.DetailsNotFoundException;
 import com.backend.arthere.details.exception.InvalidFormatException;
 import com.backend.arthere.details.exception.InvalidSizeException;
+import com.backend.arthere.member.exception.InvalidRoleException;
 import com.backend.arthere.member.exception.MemberNotFoundException;
 import com.backend.arthere.member.exception.NotWriterException;
 import com.backend.arthere.post.exception.PostNotFoundException;
@@ -67,7 +68,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({InvalidCategoryException.class, InvalidFormatException.class, InvalidSizeException.class,
-            NotWriterException.class})
+            NotWriterException.class, InvalidRoleException.class})
     public ResponseEntity<ErrorResponse> handleInvalid(final RuntimeException error) {
         ErrorResponse errorResponse = new ErrorResponse(error.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
