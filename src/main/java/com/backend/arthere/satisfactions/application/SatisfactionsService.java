@@ -77,7 +77,7 @@ public class SatisfactionsService {
 
         List<Satisfactions> satisfactions = new ArrayList<>();
 
-        for (SatisfactionType type : request.getSatisfactions()) {
+        for (SatisfactionType type : request.getSatisfactionsType()) {
             satisfactions.add(new Satisfactions(arts, member, type));
         }
         satisfactionsRepository.saveAll(satisfactions);
@@ -85,7 +85,6 @@ public class SatisfactionsService {
         arts.updateStarRating(arts.getStarRating() + request.getStarRating());
         arts.updateStarRatingCount(arts.getStarRatingCount() + 1);
     }
-
 
     //만족도 삭제
 }
