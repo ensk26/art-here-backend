@@ -2,5 +2,7 @@ package com.backend.arthere.starRatings.domain;
 
 public interface StarRatingsCustomRepository {
 
-    Integer findStarRatings(Long artId, Long userId);
+    Integer findStarRatingsId(Long artId, Long userId);
+
+    StarRatings findStarRatings(Long artId, Long userId);
 }
