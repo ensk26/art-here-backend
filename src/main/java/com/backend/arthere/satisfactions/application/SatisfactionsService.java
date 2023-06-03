@@ -9,6 +9,7 @@ import com.backend.arthere.member.exception.MemberNotFoundException;
 import com.backend.arthere.satisfactions.domain.SatisfactionType;
 import com.backend.arthere.satisfactions.domain.Satisfactions;
 import com.backend.arthere.satisfactions.domain.SatisfactionsRepository;
+import com.backend.arthere.satisfactions.dto.request.AddSatisfactionsRequest;
 import com.backend.arthere.satisfactions.dto.request.CreateSatisfactionsRequest;
 import com.backend.arthere.satisfactions.dto.response.GetTotalToDetailsResponse;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsCountResponse;
@@ -54,18 +55,19 @@ public class SatisfactionsService {
         for (SatisfactionType type : satisfactionsType) {
             satisfactions.add(type.getSatisfactionName());
         }
-        Integer starRatings = starRatingsRepository.findStarRatings(artId, userId);
+        Integer starRatings = starRatingsRepository.findStarRatingsId(artId, userId);
 
         return new SatisfactionsResponse(satisfactions, starRatings);
     }
 
-    public void createSatisfactions(CreateSatisfactionsRequest request, Long userId) {
+
+    public void createSatisfactions(CreateSatisfactionsRequest request, Long userId) throws Exception {
 
         Member member;
         Arts arts;
         try {
             arts = artsRepository.getReferenceById(request.getArtsId());
-        } catch (EntityNotFoundException e) {
+        } catch (Exception e) {
             throw new ArtsNotFoundException();
         }
 
@@ -84,7 +86,47 @@ public class SatisfactionsService {
         starRatingsRepository.save(new StarRatings(arts, member, request.getStarRating()));
         arts.updateStarRating(arts.getStarRating() + request.getStarRating());
         arts.updateStarRatingCount(arts.getStarRatingCount() + 1);
+        artsRepository.save(arts);
     }
 
-    //만족도 삭제
+    public void addSatisfactions(AddSatisfactionsRequest request, Long userId) throws Exception {
+
+        Member member;
+        Arts arts;
+        try {
+            arts = artsRepository.getReferenceById(request.getArtsId());
+            System.out.println("arts = " + arts);
+        } catch (EntityNotFoundException e) {
+            throw new ArtsNotFoundException();
+        }
+
+        try {
+            member = memberRepository.getReferenceById(userId);
+        } catch (EntityNotFoundException e) {
+            throw new MemberNotFoundException();
+        }
+
+        if (!request.getDeleteSatisfactions().isEmpty()) {
+
+            satisfactionsRepository.deleteSatisfactions(request.getArtsId(), userId, request.getDeleteSatisfactionsType());
+        }
+        if (!request.getAddSatisfactions().isEmpty()) {
+
+            List<Satisfactions> satisfactions = new ArrayList<>();
+
+            for (SatisfactionType type : request.getAddSatisfactionsType()) {
+                satisfactions.add(new Satisfactions(arts, member, type));
+            }
+            satisfactionsRepository.saveAll(satisfactions);
+        }
+        if (request.getStarRating() != null) {
+
+            StarRatings starRatings = starRatingsRepository.findStarRatings(request.getArtsId(), userId);
+            arts.updateStarRating(arts.getStarRating() - starRatings.getStarRating() + request.getStarRating());
+            artsRepository.save(arts);
+
+            starRatings.updateStarRating(request.getStarRating());
+            starRatingsRepository.save(starRatings);
+        }
+    }
 }
