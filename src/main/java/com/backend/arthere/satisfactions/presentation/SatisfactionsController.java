@@ -3,6 +3,7 @@ package com.backend.arthere.satisfactions.presentation;
 import com.backend.arthere.auth.domain.CurrentUser;
 import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.satisfactions.application.SatisfactionsService;
+import com.backend.arthere.satisfactions.dto.request.AddSatisfactionsRequest;
 import com.backend.arthere.satisfactions.dto.request.CreateSatisfactionsRequest;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsListResponse;
 import com.backend.arthere.satisfactions.dto.response.SatisfactionsResponse;
@@ -39,22 +40,22 @@ public class SatisfactionsController {
         return ResponseEntity.ok(responses);
     }
 
+
     @PostMapping("")
     public ResponseEntity<?> createSatisfactions(@Valid @RequestBody CreateSatisfactionsRequest request,
-                                                 @CurrentUser LoginMember loginMember) {
+                                                 @CurrentUser LoginMember loginMember) throws Exception {
 
         satisfactionsService.createSatisfactions(request, loginMember.getId());
         return ResponseEntity.created(URI.create("/api/satisfaction?" + request.getArtsId())).build();
     }
 
-    //만족도 수정
     @PatchMapping("")
-    public ResponseEntity<?> addSatisfactions(@Valid @RequestBody CreateSatisfactionsRequest request,
-                                              @CurrentUser LoginMember loginMember) {
-        return null;
-    }
+    public ResponseEntity<?> addSatisfactions(@Valid @RequestBody AddSatisfactionsRequest request,
+                                              @CurrentUser LoginMember loginMember) throws Exception {
 
-    //만족도 삭제
+        satisfactionsService.addSatisfactions(request, loginMember.getId());
+        return ResponseEntity.ok().build();
+    }
 
 
     //게시물 목록 구현

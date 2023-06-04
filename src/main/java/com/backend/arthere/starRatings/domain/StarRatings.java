@@ -43,4 +43,8 @@ public class StarRatings {
         this.member = member;
         this.starRating = starRating;
     }
+
+    public void updateStarRating(final Integer starRating) {
+        this.starRating = starRating;
+    }
 }

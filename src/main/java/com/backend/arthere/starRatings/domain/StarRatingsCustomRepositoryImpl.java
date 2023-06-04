@@ -14,9 +14,18 @@ public class StarRatingsCustomRepositoryImpl implements StarRatingsCustomReposit
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Integer findStarRatings(Long artId, Long userId) {
+    public Integer findStarRatingsId(Long artId, Long userId) {
 
         return jpaQueryFactory.select(starRatings.starRating.coalesce(0).as("starRating"))
+                .from(starRatings)
+                .where(starRatings.arts.id.eq(artId), starRatings.member.id.eq(userId))
+                .fetchOne();
+    }
+
+    @Override
+    public StarRatings findStarRatings(Long artId, Long userId) {
+
+        return jpaQueryFactory.select(starRatings)
                 .from(starRatings)
                 .where(starRatings.arts.id.eq(artId), starRatings.member.id.eq(userId))
                 .fetchOne();

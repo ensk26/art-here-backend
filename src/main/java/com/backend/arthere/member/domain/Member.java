@@ -1,5 +1,7 @@
 package com.backend.arthere.member.domain;
 
+import com.backend.arthere.satisfactions.domain.Satisfactions;
+import com.backend.arthere.starRatings.domain.StarRatings;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,9 +12,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "member")
 @EntityListeners(AuditingEntityListener.class)
@@ -33,7 +37,7 @@ public class Member {
     @NotNull
     @Column(name = "profile")
     private String profile;
-    
+
     @CreatedDate
     @Column(name = "create_date", updatable = false)
     private LocalDateTime createDate;
@@ -47,6 +51,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(name = "social_type", length = 50)
     private SocialType socialType;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private final Set<Satisfactions> satisfactions= new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private final Set<StarRatings> starRatings= new LinkedHashSet<>();
 
     @Builder
     public Member(final Long id, final String email, final String name, final String profile,

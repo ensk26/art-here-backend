@@ -1,12 +1,16 @@
 package com.backend.arthere.arts.domain;
 
 import com.backend.arthere.global.domain.BaseEntity;
+import com.backend.arthere.satisfactions.domain.Satisfactions;
+import com.backend.arthere.starRatings.domain.StarRatings;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -48,8 +52,15 @@ public class Arts extends BaseEntity {
     @Column(name = "star_rating")
     private Long starRating = 0L;
 
+    @NotNull
     @Column(name = "star_rating_count")
     private Long starRatingCount = 0L;
+
+    @OneToMany(mappedBy = "arts", cascade = CascadeType.REMOVE)
+    private final Set<Satisfactions> satisfactions= new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "arts", cascade = CascadeType.REMOVE)
+    private final Set<StarRatings> starRatings= new LinkedHashSet<>();
 
     @Builder
     public Arts(Long id, String artName, String imageURL, Location location, Address address, Category category) {

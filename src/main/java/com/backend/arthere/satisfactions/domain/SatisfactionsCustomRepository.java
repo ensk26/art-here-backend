@@ -13,5 +13,5 @@ public interface SatisfactionsCustomRepository {
 
     List<SatisfactionType> findSatisfactionsType(Long artId, Long userId);
 
-
+    void deleteSatisfactions(Long artId, Long userId, List<SatisfactionType> types);
 }

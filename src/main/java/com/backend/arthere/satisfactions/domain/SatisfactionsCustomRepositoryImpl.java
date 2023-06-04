@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static com.backend.arthere.arts.domain.QArts.arts;
@@ -63,4 +64,16 @@ public class SatisfactionsCustomRepositoryImpl implements SatisfactionsCustomRep
                 .fetch();
     }
 
+    @Override
+    @Transactional
+    public void deleteSatisfactions(Long artId, Long userId, List<SatisfactionType> types) {
+
+        jpaQueryFactory.delete(satisfactions)
+                .where(
+                        satisfactions.arts.id.eq(artId),
+                        satisfactions.member.id.eq(userId),
+                        satisfactions.satisfactionType.in(types)
+                )
+                .execute();
+    }
 }
