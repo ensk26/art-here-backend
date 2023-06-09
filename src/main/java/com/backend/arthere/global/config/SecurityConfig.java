@@ -98,6 +98,7 @@ public class SecurityConfig {
             "/api/image/map",
             "/api/art",
             "/api/art/map",
-            "/api/satisfaction/list"
+            "/api/satisfaction/list",
+            "/api/posts/list"
     };
 }
