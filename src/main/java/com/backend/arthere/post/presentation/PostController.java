@@ -5,12 +5,13 @@ import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.post.application.PostService;
 import com.backend.arthere.post.dto.response.PostResponse;
 import com.backend.arthere.post.dto.response.PostsResponse;
+import com.backend.arthere.post.dto.resquest.CreatePostsRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,6 +31,13 @@ public class PostController {
     public ResponseEntity<PostsResponse> findPosts(@RequestParam("id") Long artId, String sorting, String cursor) {
 
         return ResponseEntity.ok(postService.findPosts(artId, sorting, cursor));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createPost(@Valid @RequestBody CreatePostsRequest request,
+                                        @CurrentUser LoginMember loginMember) {
+        postService.createPost(request, loginMember.getId());
+        return ResponseEntity.created(URI.create("")).build();
     }
 
     // post 삭제
