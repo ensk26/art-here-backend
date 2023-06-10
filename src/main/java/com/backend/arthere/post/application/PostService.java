@@ -52,7 +52,9 @@ public class PostService {
         PostsResponse posts = postRepository.findPostsByArtsId(artId, sorting, cursor);
 
         for (PostInfoResponse post : posts.getPostInfo()) {
-            post.setImageURL(presignedURLUtils.createImageShareURL(post.getImageURL(), userS3Client, userBucketName));
+            if (!post.getImageURL().isEmpty()) {
+                post.setImageURL(presignedURLUtils.createImageShareURL(post.getImageURL(), userS3Client, userBucketName));
+            }
         }
         return posts;
     }
