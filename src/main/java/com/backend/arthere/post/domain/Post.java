@@ -12,7 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "post")
 public class Post extends BaseEntity {
@@ -62,4 +62,15 @@ public class Post extends BaseEntity {
         this.arts = arts;
     }
 
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
+    public void updateImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 }

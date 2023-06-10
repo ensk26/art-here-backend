@@ -1,4 +1,4 @@
-package com.backend.arthere.post.dto.resquest;
+package com.backend.arthere.post.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +10,10 @@ import javax.validation.constraints.Size;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatePostsRequest {
+public class AddPostsRequest {
 
-    private Long artId;
+    @NotNull
+    private Long postId;
 
     @NotNull
     @Size(max = 300)

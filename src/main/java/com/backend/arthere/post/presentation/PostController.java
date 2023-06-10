@@ -3,14 +3,16 @@ package com.backend.arthere.post.presentation;
 import com.backend.arthere.auth.domain.CurrentUser;
 import com.backend.arthere.auth.dto.LoginMember;
 import com.backend.arthere.post.application.PostService;
+import com.backend.arthere.post.dto.request.AddPostsRequest;
+import com.backend.arthere.post.dto.request.CreatePostsRequest;
 import com.backend.arthere.post.dto.response.PostResponse;
 import com.backend.arthere.post.dto.response.PostsResponse;
-import com.backend.arthere.post.dto.resquest.CreatePostsRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 
 @RequiredArgsConstructor
@@ -28,7 +30,8 @@ public class PostController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<PostsResponse> findPosts(@RequestParam("id") Long artId, String sorting, String cursor) {
+    public ResponseEntity<PostsResponse> findPosts(@RequestParam("id") @NotNull Long artId,
+                                                   String sorting, String cursor) {
 
         return ResponseEntity.ok(postService.findPosts(artId, sorting, cursor));
     }
@@ -40,7 +43,12 @@ public class PostController {
         return ResponseEntity.created(URI.create("")).build();
     }
 
-    // post 삭제
+    @PatchMapping
+    public ResponseEntity<?> addPost(@Valid @RequestBody AddPostsRequest request,
+                                     @CurrentUser LoginMember loginMember) throws Exception {
+        postService.addPost(request, loginMember.getId());
+        return ResponseEntity.ok().build();
+    }
 
-    // post 수정
+    // post 삭제
 }
