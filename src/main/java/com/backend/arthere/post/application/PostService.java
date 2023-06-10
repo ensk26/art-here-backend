@@ -122,6 +122,12 @@ public class PostService {
         post.updateImageURL(request.getImageURL());
     }
 
+    @Transactional
+    public void deletePost(Long postId, Long userId) throws Exception {
+        checkWriter(postId, userId);
+        postRepository.deleteById(postId);
+    }
+
     private void checkWriter(Long postId, Long userId) {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isEmpty()) {
