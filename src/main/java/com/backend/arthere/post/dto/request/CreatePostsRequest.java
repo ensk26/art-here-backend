@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class CreatePostsRequest {
 
+    @NotNull
     private Long artId;
 
     @NotNull
