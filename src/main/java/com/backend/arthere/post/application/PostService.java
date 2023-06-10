@@ -6,7 +6,9 @@ import com.backend.arthere.image.util.PresignedURLUtils;
 import com.backend.arthere.like.domain.LikeRepository;
 import com.backend.arthere.post.domain.Post;
 import com.backend.arthere.post.domain.PostRepository;
+import com.backend.arthere.post.dto.response.PostInfoResponse;
 import com.backend.arthere.post.dto.response.PostResponse;
+import com.backend.arthere.post.dto.response.PostsResponse;
 import com.backend.arthere.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,5 +46,16 @@ public class PostService {
     private Post findPost(final Long id) {
         return postRepository.findPostWithMember(id)
                 .orElseThrow(PostNotFoundException::new);
+    }
+
+    public PostsResponse findPosts(Long artId, String sorting, String cursor) {
+        PostsResponse posts = postRepository.findPostsByArtsId(artId, sorting, cursor);
+
+        for (PostInfoResponse post : posts.getPostInfo()) {
+            if (!post.getImageURL().isEmpty()) {
+                post.setImageURL(presignedURLUtils.createImageShareURL(post.getImageURL(), userS3Client, userBucketName));
+            }
+        }
+        return posts;
     }
 }
