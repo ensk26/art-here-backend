@@ -50,5 +50,10 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    // post 삭제
+    @DeleteMapping
+    public ResponseEntity<?> deletePost(@RequestParam("id") @NotNull Long postId,
+                                        @CurrentUser LoginMember loginMember) throws Exception {
+        postService.deletePost(postId, loginMember.getId());
+        return ResponseEntity.ok().build();
+    }
 }
