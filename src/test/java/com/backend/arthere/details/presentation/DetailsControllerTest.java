@@ -161,7 +161,7 @@ class DetailsControllerTest extends BaseControllerTest {
     @WithMockUser
     public void 작품_전체_정보_조회() throws Exception {
         //given
-        ArtResponse artResponse = ArtResponse.of(작품_세부정보(), 작품());
+        ArtResponse artResponse = ArtResponse.of(작품_세부정보(), 작품(), "이미지");
 
         given(detailsService.findArt(2L))
                 .willReturn(artResponse);
@@ -203,7 +203,9 @@ class DetailsControllerTest extends BaseControllerTest {
                                         fieldWithPath("location.latitude").type(JsonFieldType.NUMBER)
                                                 .description("위도"),
                                         fieldWithPath("location.longitude").type(JsonFieldType.NUMBER)
-                                                .description("경도")
+                                                .description("경도"),
+                                        fieldWithPath("imageURL").type(JsonFieldType.STRING)
+                                                .description("이미지 경로")
                                 )
                         ));
     }

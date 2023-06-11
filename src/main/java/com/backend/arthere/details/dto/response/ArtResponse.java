@@ -32,9 +32,11 @@ public class ArtResponse {
 
     private Location location;
 
+    private String imageURL;
+
     private ArtResponse(final Long id, final String authorName, final String agency, final String info,
-                       final boolean state, final LocalDate startDate, final LocalDate endDate,
-                       final String roadAddress, final String category, final Location location) {
+                        final boolean state, final LocalDate startDate, final LocalDate endDate,
+                        final String roadAddress, final String category, final Location location, final String imageURL) {
         this.id = id;
         this.authorName = authorName;
         this.agency = agency;
@@ -45,13 +47,13 @@ public class ArtResponse {
         this.roadAddress = roadAddress;
         this.category = category;
         this.location = location;
+        this.imageURL = imageURL;
     }
 
-    public static ArtResponse of(final Details details, final Arts arts) {
+    public static ArtResponse of(final Details details, final Arts arts, final String imageURL) {
         return new ArtResponse(details.getId(), details.getAuthorName(), details.getAgency(),
                 details.getInfo(), details.isState(), details.getPeriod().getStartDate(),
                 details.getPeriod().getEndDate(), arts.getAddress().getRoadAddress(),
-                arts.getCategory().getCategoryName(), arts.getLocation());
+                arts.getCategory().getCategoryName(), arts.getLocation(), imageURL);
     }
-
 }

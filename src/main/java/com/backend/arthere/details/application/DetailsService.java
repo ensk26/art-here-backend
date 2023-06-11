@@ -72,7 +72,7 @@ public class DetailsService {
     public ArtResponse findArt(final Long artsId) {
         Details details = findDetails(artsId);
         details.changeState();
-        return ArtResponse.of(details, details.getArts());
+        return ArtResponse.of(details, details.getArts(), getPresignedURL(details.getArts().getImageURL()));
     }
 
     @Transactional(readOnly = true)
@@ -87,7 +87,7 @@ public class DetailsService {
     }
 
     private boolean getState(final LocalDate endDate) {
-        if(endDate == null || endDate.isAfter(LocalDate.now())) {
+        if (endDate == null || endDate.isAfter(LocalDate.now())) {
             return true;
         }
         return false;
@@ -102,5 +102,12 @@ public class DetailsService {
             artForAdminResponses.add(ArtForAdminResponse.of(details, details.getArts(), presignedURL));
         }
         return new ArtPageResponse(page.getTotalElements(), page.getTotalPages(), artForAdminResponses);
+    }
+
+    private String getPresignedURL(final String imageURL) {
+        if (imageURL.isEmpty()) {
+            return imageURL;
+        }
+        return presignedURLUtils.createImageShareURL(imageURL, adminS3Client, adminBucketName);
     }
 }
