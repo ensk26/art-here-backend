@@ -3938,7 +3938,7 @@ Content-Type: application/json
 Content-Length: 341
 
 {
-  "message" : "경도를 입력하세요.\r\n담당기관을 입력하세요.\r\n상세 내용을 입력하세요.\r\n작품명을 입력하세요.\r\n위도를 입력하세요.\r\n작가 이름을 입력하세요.\r\n카테고리를 입력하세요.\r\n이미지 경로를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n"
+  "message" : "상세 내용을 입력하세요.\r\n이미지 경로를 입력하세요.\r\n도로명 주소를 입력하세요.\r\n위도를 입력하세요.\r\n작품명을 입력하세요.\r\n카테고리를 입력하세요.\r\n담당기관을 입력하세요.\r\n경도를 입력하세요.\r\n작가 이름을 입력하세요.\r\n"
 }</code></pre>
 </div>
 </div>
@@ -4499,8 +4499,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-06-05T00:21:59.9107328",
-    "revisionDate" : "2023-06-05T00:21:59.9107328"
+    "createDate" : "2023-06-14T16:17:41.9287332",
+    "revisionDate" : "2023-06-14T16:17:41.9287332"
   }, {
     "id" : 2,
     "artName" : "작품",
@@ -4514,8 +4514,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-06-05T00:21:59.9107328",
-    "revisionDate" : "2023-06-05T00:21:59.9117313"
+    "createDate" : "2023-06-14T16:17:41.9287332",
+    "revisionDate" : "2023-06-14T16:17:41.9287332"
   }, {
     "id" : 1,
     "artName" : "작품",
@@ -4529,8 +4529,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-06-05T00:21:59.9117313",
-    "revisionDate" : "2023-06-05T00:21:59.9117313"
+    "createDate" : "2023-06-14T16:17:41.9287332",
+    "revisionDate" : "2023-06-14T16:17:41.9287332"
   } ]
 }</code></pre>
 </div>
@@ -4741,8 +4741,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-06-05T00:22:00.9987327",
-    "revisionDate" : "2023-06-05T00:22:00.9987327"
+    "createDate" : "2023-06-14T16:17:43.2217369",
+    "revisionDate" : "2023-06-14T16:17:43.2227342"
   }, {
     "id" : 2,
     "artName" : "작품",
@@ -4756,8 +4756,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-06-05T00:22:00.9987327",
-    "revisionDate" : "2023-06-05T00:22:00.9987327"
+    "createDate" : "2023-06-14T16:17:43.2227342",
+    "revisionDate" : "2023-06-14T16:17:43.2227342"
   }, {
     "id" : 1,
     "artName" : "작품",
@@ -4771,8 +4771,8 @@ Content-Length: 1445
     "longitude" : 12.5,
     "roadAddress" : "서울시",
     "category" : "공예",
-    "createDate" : "2023-06-05T00:22:00.9987327",
-    "revisionDate" : "2023-06-05T00:22:00.9987327"
+    "createDate" : "2023-06-14T16:17:43.2227342",
+    "revisionDate" : "2023-06-14T16:17:43.2227342"
   } ]
 }</code></pre>
 </div>
@@ -4962,6 +4962,11 @@ Content-Length: 71
 <td class="tableblock halign-left valign-top"><p class="tableblock">작품 세부 정보 아이디 (작품 아이디와 다름)</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>artName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작품 이름</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>roadAddress</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">도로명 주소</p></td>
@@ -5011,6 +5016,11 @@ Content-Length: 71
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">경도</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>imageURL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지 경로</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -5034,10 +5044,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 309
+Content-Length: 363
 
 {
   "id" : 1,
+  "artName" : "작품",
   "authorName" : "홍길동",
   "agency" : "서울",
   "info" : "작품 설명",
@@ -5049,7 +5060,8 @@ Content-Length: 309
   "location" : {
     "latitude" : 12.1,
     "longitude" : 12.5
-  }
+  },
+  "imageURL" : "이미지"
 }</code></pre>
 </div>
 </div>
@@ -5402,14 +5414,14 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 333
+Content-Length: 334
 
 {
   "content" : "내용",
   "likeCount" : 2,
   "dislikeCount" : 2,
-  "createDate" : "2023-06-05T00:22:14.984406",
-  "revisionDate" : "2023-06-05T00:22:14.9854061",
+  "createDate" : "2023-06-14T16:17:53.6867364",
+  "revisionDate" : "2023-06-14T16:17:53.6867364",
   "likeState" : false,
   "dislikeState" : false,
   "sameWriter" : true,
@@ -6240,15 +6252,15 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 899
+Content-Length: 905
 
 {
   "hasNext" : false,
   "commentResponses" : [ {
     "id" : 3,
     "content" : "댓글 내용",
-    "createDate" : "2023-06-05T00:21:55.518731",
-    "revisionDate" : "2023-06-05T00:21:55.518731",
+    "createDate" : "2023-06-14T16:17:35.8624862",
+    "revisionDate" : "2023-06-14T16:17:35.8624862",
     "sameWriter" : true,
     "writer" : {
       "id" : 1,
@@ -6258,8 +6270,8 @@ Content-Length: 899
   }, {
     "id" : 2,
     "content" : "댓글 내용",
-    "createDate" : "2023-06-05T00:21:55.518731",
-    "revisionDate" : "2023-06-05T00:21:55.518731",
+    "createDate" : "2023-06-14T16:17:35.8624862",
+    "revisionDate" : "2023-06-14T16:17:35.8624862",
     "sameWriter" : true,
     "writer" : {
       "id" : 1,
@@ -6269,8 +6281,8 @@ Content-Length: 899
   }, {
     "id" : 1,
     "content" : "댓글 내용",
-    "createDate" : "2023-06-05T00:21:55.518731",
-    "revisionDate" : "2023-06-05T00:21:55.518731",
+    "createDate" : "2023-06-14T16:17:35.8624862",
+    "revisionDate" : "2023-06-14T16:17:35.8624862",
     "sameWriter" : true,
     "writer" : {
       "id" : 1,
