@@ -182,7 +182,9 @@ class DetailsControllerTest extends BaseControllerTest {
                                 ),
                                 responseFields(
                                         fieldWithPath("id").type(JsonFieldType.NUMBER)
-                                                        .description("작품 세부 정보 아이디 (작품 아이디와 다름)"),
+                                                .description("작품 세부 정보 아이디 (작품 아이디와 다름)"),
+                                        fieldWithPath("artName").type(JsonFieldType.STRING)
+                                                .description("작품 이름"),
                                         fieldWithPath("roadAddress").type(JsonFieldType.STRING)
                                                 .description("도로명 주소"),
                                         fieldWithPath("category").type(JsonFieldType.STRING)
@@ -422,7 +424,7 @@ class DetailsControllerTest extends BaseControllerTest {
                         )
                 );
     }
-    
+
     @Test
     @DisplayName("관리자가 저장되어 있지 않은 작품 삭제 요청시 404 에러가 발생한다.")
     @WithMockUser(roles = "ADMIN")
