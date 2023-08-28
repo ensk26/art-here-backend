@@ -40,6 +40,24 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
         return new PostsResponse(postInfos, generateCursor(sorting, postInfos.get(8).getId(), postInfos.get(8).getLike()));
     }
 
+    @Override
+    public PostsResponse findUserPostsByArtsId(Long artsId, String sorting, String cursor, Long userId) {
+
+        List<PostInfoResponse> postInfos = jpaQueryFactory.select(Projections.constructor(
+                        PostInfoResponse.class, post.id, post.title, post.member.name, post.imageURL, post.likeCount))
+                .from(post)
+                .orderBy(orderBy(sorting))
+                .where(post.arts.id.eq(artsId), cursorId(sorting, cursor), userId(userId))
+                .limit(9)
+                .fetch();
+
+        if (postInfos.size() < 9) {
+            return new PostsResponse(postInfos, null);
+        }
+
+        return new PostsResponse(postInfos, generateCursor(sorting, postInfos.get(8).getId(), postInfos.get(8).getLike()));
+    }
+
     private OrderSpecifier[] orderBy(String sorting) {
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
 
@@ -66,6 +84,10 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
                     .lpad(post.id.stringValue(), 8, '0')
                     .lt(cursor);
         }
+    }
+
+    private BooleanExpression userId(Long userId) {
+        return post.member.id.eq(userId);
     }
 
     String generateCursor(String sorting, Long id, Long likeCount) {

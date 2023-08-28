@@ -78,6 +78,17 @@ public class PostService {
         return posts;
     }
 
+    public PostsResponse findUserPosts(Long artId, String sorting, String cursor, Long userId) {
+        PostsResponse posts = postRepository.findUserPostsByArtsId(artId, sorting, cursor, userId);
+
+        for (PostInfoResponse post : posts.getPostInfo()) {
+            if (!post.getImageURL().isEmpty()) {
+                post.setImageURL(presignedURLUtils.createImageShareURL(post.getImageURL(), userS3Client, userBucketName));
+            }
+        }
+        return posts;
+    }
+
     @Transactional
     public void createPost(CreatePostsRequest request, Long userId) {
         try {
