@@ -36,6 +36,15 @@ public class PostController {
         return ResponseEntity.ok(postService.findPosts(artId, sorting, cursor));
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<PostsResponse> findUserPosts(@RequestParam("id") @NotNull Long artId,
+                                                       String sorting, String cursor,
+                                                       @CurrentUser final LoginMember loginMember) {
+
+        return ResponseEntity.ok(postService.findUserPosts(artId, sorting, cursor, loginMember.getId()));
+    }
+
+
     @PostMapping
     public ResponseEntity<?> createPost(@Valid @RequestBody CreatePostsRequest request,
                                         @CurrentUser LoginMember loginMember) {
